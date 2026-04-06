@@ -22,7 +22,7 @@ public partial class App : Application
     {
         try 
         {
-            m_window = new MainWindow();
+            m_window = new SplashWindow();
             m_window.Activate();
         }
         catch (System.Exception ex)

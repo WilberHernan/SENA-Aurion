@@ -226,7 +226,7 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         
         private void InitTypeTables()
         {
-            _typeNameTable = new string[24];
+            _typeNameTable = new string[25];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -248,11 +248,12 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             _typeNameTable[18] = "VisionaryOptimizer.ViewModels.MainViewModel";
             _typeNameTable[19] = "VisionaryOptimizer.ViewModels.ViewModelBase";
             _typeNameTable[20] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
-            _typeNameTable[21] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[22] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
-            _typeNameTable[23] = "Int32";
+            _typeNameTable[21] = "VisionaryOptimizer.SplashWindow";
+            _typeNameTable[22] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[23] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[24] = "Int32";
 
-            _typeTable = new global::System.Type[24];
+            _typeTable = new global::System.Type[25];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -274,9 +275,10 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             _typeTable[18] = typeof(global::VisionaryOptimizer.ViewModels.MainViewModel);
             _typeTable[19] = typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase);
             _typeTable[20] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
-            _typeTable[21] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[22] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
-            _typeTable[23] = typeof(global::System.Int32);
+            _typeTable[21] = typeof(global::VisionaryOptimizer.SplashWindow);
+            _typeTable[22] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[23] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[24] = typeof(global::System.Int32);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -315,7 +317,8 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         private object Activate_7_MicaBackdrop() { return new global::Microsoft.UI.Xaml.Media.MicaBackdrop(); }
         private object Activate_11_ProgressRing() { return new global::Microsoft.UI.Xaml.Controls.ProgressRing(); }
         private object Activate_16_MainWindow() { return new global::VisionaryOptimizer.MainWindow(); }
-        private object Activate_21_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_21_SplashWindow() { return new global::VisionaryOptimizer.SplashWindow(); }
+        private object Activate_22_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void StaticInitializer_0_XamlControlsResources() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources).TypeHandle);
         private void StaticInitializer_4_Color() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Windows.UI.Color).TypeHandle);
         private void StaticInitializer_5_ValueType() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.ValueType).TypeHandle);
@@ -329,8 +332,9 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         private void StaticInitializer_18_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.MainViewModel).TypeHandle);
         private void StaticInitializer_19_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase).TypeHandle);
         private void StaticInitializer_20_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
-        private void StaticInitializer_21_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
-        private void StaticInitializer_22_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
+        private void StaticInitializer_21_SplashWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.SplashWindow).TypeHandle);
+        private void StaticInitializer_22_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
+        private void StaticInitializer_23_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -338,7 +342,7 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             var newItem = (global::System.Object)item;
             collection.Add(newKey, newItem);
         }
-        private void VectorAdd_22_IList(object instance, object item)
+        private void VectorAdd_23_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -491,10 +495,18 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 21:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 21:   //  VisionaryOptimizer.SplashWindow
+                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
+                userType.Activator = Activate_21_SplashWindow;
+                userType.StaticInitializer = StaticInitializer_21_SplashWindow;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 22:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_21_TreeViewNode;
-                userType.StaticInitializer = StaticInitializer_21_TreeViewNode;
+                userType.Activator = Activate_22_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_22_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -506,15 +518,15 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 22:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 23:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_22_IList;
-                userType.CollectionAdd = VectorAdd_22_IList;
+                userType.StaticInitializer = StaticInitializer_23_IList;
+                userType.CollectionAdd = VectorAdd_23_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 23:   //  Int32
+            case 24:   //  Int32
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
             }

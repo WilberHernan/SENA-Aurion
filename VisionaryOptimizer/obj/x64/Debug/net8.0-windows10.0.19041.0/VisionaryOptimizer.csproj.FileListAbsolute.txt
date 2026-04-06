@@ -198,3 +198,10 @@ D:\SENA-Aurion\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\pri.r
 D:\SENA-Aurion\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\qualifiers.txt
 D:\SENA-Aurion\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\qualifiers.txt.intermediate
 D:\SENA-Aurion\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\MultipleQualifiersPerDimensionFound.txt
+D:\SENA-Aurion\VisionaryOptimizer\bin\x64\Debug\net8.0-windows10.0.19041.0\SplashWindow.xbf
+D:\SENA-Aurion\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\SplashWindow.g.i.cs
+D:\SENA-Aurion\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\SplashWindow.g.cs
+D:\SENA-Aurion\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\SplashWindow.xaml
+D:\SENA-Aurion\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\SplashWindow.xbf
+D:\SENA-Aurion\VisionaryOptimizer\bin\x64\Debug\net8.0-windows10.0.19041.0\Assets\Images\bg_splash.jpg
+D:\SENA-Aurion\VisionaryOptimizer\bin\x64\Debug\net8.0-windows10.0.19041.0\Assets\Images\facebook.png
