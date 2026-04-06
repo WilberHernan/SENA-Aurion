@@ -16,10 +16,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /> <!-- TopBar (32px window title + 52px app menu) = 84px -->
             <RowDefinition Height="*" /> <!-- Content Area -->
-            <RowDefinition Height="28" /> <!-- StatusBar -->
         </Grid.RowDefinitions>
 
-        <Viewbox Grid.RowSpan="3" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.05">
+        <Viewbox Grid.RowSpan="2" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.05">
             <Path Fill="#1DB870" Data="M0,80 C20,30 60,110 100,60 C140,10 180,80 220,40 L220,120 L0,120 Z">
                 <Path.RenderTransform>
                     <ScaleTransform ScaleX="10" ScaleY="10" />
@@ -45,7 +44,7 @@
             </Grid>
 
             <!-- TABS MENU HORIZONTAL HEADER PILLS -->
-            <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#0FFFFFFF" Background="#0C0A0F0D">
+            <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#0FFFFFFF" Background="#0C0A0F0D" CornerRadius="0,0,16,16">
                 <Grid Margin="32,0">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
                         <Line X1="0" Y1="0" X2="0" Y2="24" Stroke="#14FFFFFF" StrokeThickness="1" Margin="8,0" />
@@ -92,8 +91,8 @@
 
         <!-- 2. CONTENT AREA SIN BLUR-->
         <Grid Grid.Row="1">
-                <ScrollViewer x:Name="MainScroll" Padding="32" Background="Transparent">
-                    <StackPanel Spacing="32" HorizontalAlignment="Center" VerticalAlignment="Top" MaxWidth="1280" Width="1200" Margin="0,16,0,32">
+                <ScrollViewer x:Name="MainScroll" Padding="32,0" Background="Transparent">
+                    <StackPanel Spacing="32" HorizontalAlignment="Center" VerticalAlignment="Top" MaxWidth="1280" Width="1200" Margin="0,32,0,32">
                         
                         <!-- Panel de Estado Informativo (Movido arriba flotando o a la derecha) -->
                         <Grid>
@@ -484,12 +483,5 @@
                     </StackPanel>
                 </Grid>
         </Grid>
-
-        <Border Grid.Row="2" Background="#0A0F0D" BorderThickness="0,1,0,0" BorderBrush="#14FFFFFF">
-            <Grid Margin="32,0">
-                <TextBlock Text="Listo para inyectar entorno" VerticalAlignment="Center" Foreground="#8A9E94" FontSize="11" FontFamily="{StaticResource MonoFont}"/>
-                <TextBlock Text="v0.1.0-alpha" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#8A9E94" FontSize="11" FontFamily="{StaticResource MonoFont}"/>
-            </Grid>
-        </Border>
     </Grid>
 </Window>

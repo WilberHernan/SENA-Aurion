@@ -97,3 +97,4 @@ C:\Users\Will\Documents\CursorProyecto\VisionaryOptimizer\obj\x64\Debug\net8.0-w
 C:\Users\Will\Documents\CursorProyecto\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\qualifiers.txt
 C:\Users\Will\Documents\CursorProyecto\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\qualifiers.txt.intermediate
 C:\Users\Will\Documents\CursorProyecto\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\MultipleQualifiersPerDimensionFound.txt
+C:\Users\Will\Documents\CursorProyecto\VisionaryOptimizer\obj\x64\Debug\net8.0-windows10.0.19041.0\VisionaryOptimizer.sourcelink.json
