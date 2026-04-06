@@ -12,7 +12,74 @@
         <MicaBackdrop /> 
     </Window.SystemBackdrop>
 
-    <Grid x:ConnectionId='2' Background="Transparent" x:Name="RootGrid">
+    <Grid x:ConnectionId='2' Background="Transparent" x:Name="RootGrid" MinWidth="600" MinHeight="500">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:ConnectionId='3' x:Name="ResponsiveStates">
+                <!-- Pantalla Ancha -->
+                <VisualState x:ConnectionId='4' x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1200"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <!-- Pantalla Mediana -->
+                <VisualState x:ConnectionId='5' x:Name="MediumState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="900"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TabHomeText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabInputText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabNetworkText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabServicesText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabCleanerText.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <!-- Pantalla Pequeña -->
+                <VisualState x:ConnectionId='6' x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TabHomeText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabInputText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabNetworkText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabServicesText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabCleanerText.Visibility" Value="Collapsed" />
+
+                        <!-- Dashboard Pasa a 1 Columna y Se Acomodan en Fila -->
+                        <Setter Target="DashCol1.Width" Value="0" />
+                        <Setter Target="DashRightCol.(Grid.Column)" Value="0" />
+                        <Setter Target="DashRightCol.(Grid.Row)" Value="1" />
+
+                        <!-- Actions Buttons Pasando de Horizontal a Vertical -->
+                        <Setter Target="InputBtnCol1.Width" Value="0" />
+                        <Setter Target="InputBtnCol2.Width" Value="0" />
+                        <Setter Target="InputBtnCol0.Width" Value="*" />
+                        <Setter Target="InputBtn2.(Grid.Column)" Value="0" />
+                        <Setter Target="InputBtn2.(Grid.Row)" Value="1" />
+                        <Setter Target="InputBtn3.(Grid.Column)" Value="0" />
+                        <Setter Target="InputBtn3.(Grid.Row)" Value="2" />
+
+                        <Setter Target="NetBtnCol1.Width" Value="0" />
+                        <Setter Target="NetBtnCol2.Width" Value="0" />
+                        <Setter Target="NetBtnCol0.Width" Value="*" />
+                        <Setter Target="NetBtn2.(Grid.Column)" Value="0" />
+                        <Setter Target="NetBtn2.(Grid.Row)" Value="1" />
+                        <Setter Target="NetBtn3.(Grid.Column)" Value="0" />
+                        <Setter Target="NetBtn3.(Grid.Row)" Value="2" />
+
+                        <Setter Target="SrvBtnCol1.Width" Value="0" />
+                        <Setter Target="SrvBtnCol2.Width" Value="0" />
+                        <Setter Target="SrvBtnCol0.Width" Value="*" />
+                        <Setter Target="SrvBtn2.(Grid.Column)" Value="0" />
+                        <Setter Target="SrvBtn2.(Grid.Row)" Value="1" />
+                        <Setter Target="SrvBtn3.(Grid.Column)" Value="0" />
+                        <Setter Target="SrvBtn3.(Grid.Row)" Value="2" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /> <!-- TopBar (32px window title + 52px app menu) = 84px -->
             <RowDefinition Height="*" /> <!-- Content Area -->
@@ -34,7 +101,7 @@
             </Grid.RowDefinitions>
 
             <!-- Titulo Window Control Standard -->
-            <Grid x:ConnectionId='84' x:Name="AppCustomTitleBar" Grid.Row="0" Background="Transparent">
+            <Grid x:ConnectionId='100' x:Name="AppCustomTitleBar" Grid.Row="0" Background="Transparent">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0" Spacing="8" HorizontalAlignment="Left">
                     <Grid Width="16" Height="16" CornerRadius="8" Background="#1DB870">
                         <FontIcon Glyph="&#xE90C;" FontSize="10" Foreground="#0A0F0D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -48,42 +115,37 @@
                 <Grid Margin="32,0">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
                         <Line X1="0" Y1="0" X2="0" Y2="24" Stroke="#14FFFFFF" StrokeThickness="1" Margin="8,0" />
-                        <Button x:ConnectionId='85' x:Name="TabHome" CommandParameter="home"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                        <Button x:ConnectionId='101' x:Name="TabHome" CommandParameter="home"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <FontIcon Glyph="&#xE80F;" FontSize="14" />
-                                <TextBlock Text="Inicio" FontSize="13" />
+                                <TextBlock x:ConnectionId='110' x:Name="TabHomeText" Text="Inicio" FontSize="13" />
                             </StackPanel>
                         </Button>
-                        <Button x:ConnectionId='86' x:Name="TabInput" CommandParameter="input"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                        <Button x:ConnectionId='102' x:Name="TabInput" CommandParameter="input"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <FontIcon Glyph="&#xE144;" FontSize="14" />
-                                <TextBlock Text="Input" FontSize="13" />
+                                <TextBlock x:ConnectionId='109' x:Name="TabInputText" Text="Input" FontSize="13" />
                             </StackPanel>
                         </Button>
-                        <Button x:ConnectionId='87' x:Name="TabNetwork" CommandParameter="network"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                        <Button x:ConnectionId='103' x:Name="TabNetwork" CommandParameter="network"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <FontIcon Glyph="&#xE701;" FontSize="14" />
-                                <TextBlock Text="Network" FontSize="13" />
+                                <TextBlock x:ConnectionId='108' x:Name="TabNetworkText" Text="Network" FontSize="13" />
                             </StackPanel>
                         </Button>
-                        <Button x:ConnectionId='88' x:Name="TabServices" CommandParameter="services"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                        <Button x:ConnectionId='104' x:Name="TabServices" CommandParameter="services"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <FontIcon Glyph="&#xE9D9;" FontSize="14" />
-                                <TextBlock Text="Services" FontSize="13" />
+                                <TextBlock x:ConnectionId='107' x:Name="TabServicesText" Text="Services" FontSize="13" />
                             </StackPanel>
                         </Button>
-                        <Button x:ConnectionId='89' x:Name="TabCleaner" CommandParameter="cleaner"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                        <Button x:ConnectionId='105' x:Name="TabCleaner" CommandParameter="cleaner"                         Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <FontIcon Glyph="&#xE7FC;" FontSize="14" />
-                                <TextBlock Text="Cleaner" FontSize="13" />
+                                <TextBlock x:ConnectionId='106' x:Name="TabCleanerText" Text="Cleaner" FontSize="13" />
                             </StackPanel>
                         </Button>
                         <Line X1="0" Y1="0" X2="0" Y2="24" Stroke="#14FFFFFF" StrokeThickness="1" Margin="8,0" />
-                    </StackPanel>
-                    
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Spacing="8">
-                        <Ellipse Width="6" Height="6" Fill="#1DB870" />
-                        <TextBlock Text="System Ready" FontSize="12" FontFamily="{StaticResource MonoFont}" Foreground="#1DB870" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -91,37 +153,30 @@
 
         <!-- 2. CONTENT AREA SIN BLUR-->
         <Grid Grid.Row="1">
-                <ScrollViewer x:ConnectionId='3' x:Name="MainScroll" Padding="32,0" Background="Transparent">
-                    <StackPanel Spacing="32" HorizontalAlignment="Center" VerticalAlignment="Top" MaxWidth="1280" Width="1200" Margin="0,32,0,32">
+                <ScrollViewer x:ConnectionId='7' x:Name="MainScroll" Padding="16,0" Background="Transparent">
+                    <StackPanel Spacing="32" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="16,32,16,32">
                         
-                        <!-- Panel de Estado Informativo (Movido arriba flotando o a la derecha) -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <!-- Título General ELIMINADO para no duplicarse por módulo -->
-                            
-                            <InfoBar x:ConnectionId='83' Grid.Column="1" IsOpen="True" Severity="Informational" Title=""                                                         IsClosable="False" CornerRadius="8" Background="#0F1A14" />
-                        </Grid>
-
                         <!-- INICIO / DASHBOARD -->
-                        <StackPanel x:ConnectionId='6' Spacing="32"                                                                             >
+                        <StackPanel x:ConnectionId='10' Spacing="32"                                                                             >
                             <StackPanel Spacing="4">
                                 <TextBlock Text="DETALLES DEL EQUIPO" Style="{StaticResource PageTitleStyle}"/>
                                 <TextBlock Text="Vista general del entorno y recursos físicos." Style="{StaticResource BodyMutedStyle}"/>
                             </StackPanel>
                             
-                            <Grid ColumnSpacing="24">
+                            <Grid ColumnSpacing="24" RowSpacing="24">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition x:ConnectionId='74' x:Name="DashCol0" Width="*" />
+                                    <ColumnDefinition x:ConnectionId='75' x:Name="DashCol1" Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
                                 <!-- COLUMNA IZQUIERDA -->
-                                <StackPanel Grid.Column="0" Spacing="24">
+                                <StackPanel x:ConnectionId='76' x:Name="DashLeftCol" Grid.Column="0" Grid.Row="0" Spacing="24" Canvas.ZIndex="1">
                                     <!-- 1. EQUIPO -->
-                                    <Border x:ConnectionId='70' Style="{StaticResource HomeCardStyle}"                                                                        >
+                                    <Border x:ConnectionId='87' Style="{StaticResource HomeCardStyle}"                                                                        >
                                         <StackPanel Spacing="24">
                                             <StackPanel Orientation="Horizontal" Spacing="12">
                                                 <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
@@ -132,27 +187,27 @@
                                             <StackPanel Spacing="16">
                                                 <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
                                                     <TextBlock Text="Hostname:" Style="{StaticResource BodyMutedStyle}" VerticalAlignment="Center" Width="80"/>
-                                                    <TextBlock x:ConnectionId='82'                                                               IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                    <TextBlock x:ConnectionId='99'                                                               IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
                                                 </StackPanel>
-                                                <Line X1="0" Y1="0" X2="2000" Y2="0" Stroke="#0AFFFFFF" StrokeThickness="1" />
+                                                <Border Height="1" Background="#0AFFFFFF" HorizontalAlignment="Stretch" />
                                                 <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
                                                     <TextBlock Text="Serial:" Style="{StaticResource BodyMutedStyle}" VerticalAlignment="Center" Width="80"/>
-                                                    <TextBlock x:ConnectionId='81'                                                                IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                    <TextBlock x:ConnectionId='98'                                                                IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
                                                 </StackPanel>
-                                                <Line X1="0" Y1="0" X2="2000" Y2="0" Stroke="#0AFFFFFF" StrokeThickness="1" />
+                                                <Border Height="1" Background="#0AFFFFFF" HorizontalAlignment="Stretch" />
                                                 <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
-                                                    <TextBlock x:ConnectionId='80'                                                          IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="15" Foreground="{StaticResource SenaTextAccentBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock x:ConnectionId='97'                                                          IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="15" Foreground="{StaticResource SenaTextAccentBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
                                                     <TextBlock Text="Versión:" Style="{StaticResource BodyMutedStyle}" VerticalAlignment="Center" Width="80"/>
-                                                    <TextBlock x:ConnectionId='79'                                                             IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="13" Foreground="#8A9E94" VerticalAlignment="Center"/>
+                                                    <TextBlock x:ConnectionId='96'                                                             IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="13" Foreground="#8A9E94" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
 
                                     <!-- 2. CPU -->
-                                    <Border x:ConnectionId='71' Style="{StaticResource PremiumCardStyle}"                                                                        >
+                                    <Border x:ConnectionId='88' Style="{StaticResource PremiumCardStyle}"                                                                        >
                                         <StackPanel Spacing="24">
                                             <StackPanel Orientation="Horizontal" Spacing="12">
                                                 <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
@@ -162,17 +217,17 @@
                                             </StackPanel>
                                             <StackPanel Spacing="8">
                                                 <StackPanel Background="Transparent">
-                                                    <TextBlock x:ConnectionId='78'                                                            IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" TextWrapping="Wrap" />
+                                                    <TextBlock x:ConnectionId='95'                                                            IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" TextWrapping="Wrap" />
                                                 </StackPanel>
                                                 <StackPanel Background="Transparent">
-                                                    <TextBlock x:ConnectionId='77'                                                                IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="14" Foreground="{StaticResource SenaTextAccentBrush}" />
+                                                    <TextBlock x:ConnectionId='94'                                                                IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="14" Foreground="{StaticResource SenaTextAccentBrush}" />
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
 
                                     <!-- 3. DISCOS -->
-                                    <Border x:ConnectionId='72' Style="{StaticResource PremiumCardStyle}"                                                                        >
+                                    <Border x:ConnectionId='89' Style="{StaticResource PremiumCardStyle}"                                                                        >
                                         <StackPanel Spacing="24">
                                             <StackPanel Orientation="Horizontal" Spacing="12">
                                                 <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
@@ -180,11 +235,11 @@
                                                 </Grid>
                                                 <TextBlock Text="ALMACENAMIENTO" Style="{StaticResource CategoryHeaderStyle}" VerticalAlignment="Center"/>
                                             </StackPanel>
-                                            <ItemsControl x:ConnectionId='73'                                                               >
+                                            <ItemsControl x:ConnectionId='90'                                                               >
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate                                    >
-                                                        <Border x:ConnectionId='75' Margin="0,0,0,8" Background="Transparent" Padding="0">
-                                                            <TextBlock x:ConnectionId='76'                             IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontWeight="Medium" Foreground="#F0F4F2" FontSize="14" TextWrapping="Wrap"/>
+                                                        <Border x:ConnectionId='92' Margin="0,0,0,8" Background="Transparent" Padding="0">
+                                                            <TextBlock x:ConnectionId='93'                             IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontWeight="Medium" Foreground="#F0F4F2" FontSize="14" TextWrapping="Wrap"/>
                                                         </Border>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
@@ -194,9 +249,9 @@
                                 </StackPanel>
 
                                 <!-- COLUMNA DERECHA -->
-                                <StackPanel Grid.Column="1" Spacing="24">
-                                    <!-- 4. RAM -->
-                                    <Border x:ConnectionId='61' Style="{StaticResource HomeCardStyle}"                                                                        >
+                                <StackPanel x:ConnectionId='77' x:Name="DashRightCol" Grid.Column="1" Grid.Row="0" Spacing="24" Canvas.ZIndex="2">
+                                    <!-- 4. MEMORIA RAM -->
+                                    <Border x:ConnectionId='78' Style="{StaticResource HomeCardStyle}"                                                                        >
                                         <StackPanel Spacing="24">
                                             <StackPanel Orientation="Horizontal" Spacing="12">
                                                 <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
@@ -206,14 +261,14 @@
                                             </StackPanel>
                                             <StackPanel Spacing="8">
                                                 <StackPanel Background="Transparent">
-                                                    <TextBlock x:ConnectionId='69'                                                                IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" />
+                                                    <TextBlock x:ConnectionId='86'                                                                IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" />
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
 
                                     <!-- 5. GPU -->
-                                    <Border x:ConnectionId='62' Style="{StaticResource PremiumCardStyle}"                                                                        >
+                                    <Border x:ConnectionId='79' Style="{StaticResource PremiumCardStyle}"                                                                        >
                                         <StackPanel Spacing="24">
                                             <StackPanel Orientation="Horizontal" Spacing="12">
                                                 <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
@@ -223,14 +278,14 @@
                                             </StackPanel>
                                             <StackPanel Spacing="8">
                                                 <StackPanel Background="Transparent">
-                                                    <TextBlock x:ConnectionId='68'                                                            IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" TextWrapping="Wrap" />
+                                                    <TextBlock x:ConnectionId='85'                                                            IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" TextWrapping="Wrap" />
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
 
                                     <!-- 6. RED -->
-                                    <Border x:ConnectionId='63' Style="{StaticResource PremiumCardStyle}"                                                                        >
+                                    <Border x:ConnectionId='80' Style="{StaticResource PremiumCardStyle}"                                                                        >
                                         <StackPanel Spacing="24">
                                             <StackPanel Orientation="Horizontal" Spacing="12">
                                                 <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
@@ -238,13 +293,13 @@
                                                 </Grid>
                                                 <TextBlock Text="REDES (MAC Address)" Style="{StaticResource CategoryHeaderStyle}" VerticalAlignment="Center"/>
                                             </StackPanel>
-                                            <ItemsControl x:ConnectionId='64'                                                                      >
+                                            <ItemsControl x:ConnectionId='81'                                                                      >
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate                                      >
-                                                        <Border x:ConnectionId='66' Margin="0,0,0,8" Background="Transparent" Padding="0">
+                                                        <Border x:ConnectionId='83' Margin="0,0,0,8" Background="Transparent" Padding="0">
                                                             <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
                                                                 <TextBlock Text="MAC:" Style="{StaticResource BodyMutedStyle}" VerticalAlignment="Center"/>
-                                                                <TextBlock x:ConnectionId='67'                             IsTextSelectionEnabled="True" FontSize="14" TextWrapping="Wrap" FontFamily="{StaticResource MonoFont}" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                                <TextBlock x:ConnectionId='84'                             IsTextSelectionEnabled="True" FontSize="14" TextWrapping="Wrap" FontFamily="{StaticResource MonoFont}" Foreground="#F0F4F2" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Border>
                                                     </DataTemplate>
@@ -257,49 +312,54 @@
                         </StackPanel>
 
                         <!-- SECCIÓN INPUT (RATÓN/TECLADO) -->
-                        <StackPanel x:ConnectionId='7' Spacing="24"                                                                              >
+                        <StackPanel x:ConnectionId='11' Spacing="24"                                                                              >
                             <StackPanel Spacing="4">
                                 <TextBlock Text="INPUT RESPONSE" Style="{StaticResource PageTitleStyle}"/>
                                 <TextBlock Text="Reducción extrema de latencia en periféricos." FontSize="14" FontFamily="{StaticResource InterFont}" Foreground="#C8E6D9" Opacity="0.85"/>
                             </StackPanel>
                             
-                            <Border x:ConnectionId='48' Style="{StaticResource PremiumCardStyle}"                                                                        >
+                            <Border x:ConnectionId='58' Style="{StaticResource PremiumCardStyle}"                                                                        >
                                 <StackPanel Spacing="20">
                                     <TextBlock Text="ESTADO EN TIEMPO REAL" Style="{StaticResource CategoryHeaderStyle}" Foreground="#E8F5E9" />
-                                    <TextBlock x:ConnectionId='56'                                                       FontSize="15" FontFamily="{StaticResource InterFont}" Foreground="{StaticResource SenaTextAccentBrush}" FontWeight="Medium"/>
+                                    <TextBlock x:ConnectionId='66'                                                       FontSize="15" FontFamily="{StaticResource InterFont}" Foreground="{StaticResource SenaTextAccentBrush}" FontWeight="Medium"/>
                                     
-                                    <CheckBox x:ConnectionId='57' Content="SELECCIONAR TODO"                                                            FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                                    <CheckBox x:ConnectionId='67' Content="SELECCIONAR TODO"                                                            FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
 
-                                    <Grid ColumnSpacing="12" Margin="0,8,0,0">
+                                    <Grid ColumnSpacing="12" RowSpacing="12" Margin="0,8,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition x:ConnectionId='68' x:Name="InputBtnCol0" Width="*" />
+                                            <ColumnDefinition x:ConnectionId='69' x:Name="InputBtnCol1" Width="*" />
+                                            <ColumnDefinition x:ConnectionId='70' x:Name="InputBtnCol2" Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Button x:ConnectionId='58'                                                                                                                                                 Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}"                                                         CommandParameter="Input" />
-                                        <Button x:ConnectionId='59'                                                                                                                                                                   Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                          CommandParameter="Input" />
-                                        <Button x:ConnectionId='60'                                                                                                                                                                   Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                     CommandParameter="Input" />
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Button x:ConnectionId='71' x:Name="InputBtn1"                                                                                                                                                 Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}"                                                         CommandParameter="Input" />
+                                        <Button x:ConnectionId='72' x:Name="InputBtn2"                                                                                                                                                                   Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                          CommandParameter="Input" />
+                                        <Button x:ConnectionId='73' x:Name="InputBtn3"                                                                                                                                                                   Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                     CommandParameter="Input" />
                                     </Grid>
                                 </StackPanel>
                             </Border>
 
-                            <ItemsControl x:ConnectionId='49'                                                              >
+                            <ItemsControl x:ConnectionId='59'                                                              >
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate                                           >
-                                        <Border x:ConnectionId='51' Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12"                                                                        >
+                                        <Border x:ConnectionId='61' Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12"                                                                        >
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:ConnectionId='52' Grid.Column="0"                                              VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                                <CheckBox x:ConnectionId='62' Grid.Column="0"                                              VerticalAlignment="Center" Margin="0,0,16,0"/>
                                                 
                                                 <StackPanel Grid.Column="1" Spacing="4">
                                                     <StackPanel Orientation="Horizontal" Spacing="8">
-                                                        <TextBlock x:ConnectionId='54'                             FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
-                                                        <TextBlock x:ConnectionId='55'                                               FontSize="13" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
+                                                        <TextBlock x:ConnectionId='64'                             FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                        <TextBlock x:ConnectionId='65'                                               FontSize="13" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
                                                     </StackPanel>
-                                                    <TextBlock x:ConnectionId='53'                             Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                    <TextBlock x:ConnectionId='63'                             Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -309,49 +369,54 @@
                         </StackPanel>
 
                         <!-- SECCIÓN RED Y TCP -->
-                        <StackPanel x:ConnectionId='8' Spacing="24"                                                                                >
+                        <StackPanel x:ConnectionId='12' Spacing="24"                                                                                >
                             <StackPanel Spacing="4">
                                 <TextBlock Text="NETWORK &amp; TCP" Style="{StaticResource PageTitleStyle}"/>
                                 <TextBlock Text="Optimiza el protocolo TCP/IP para priorizar el ping en aplicaciones." Style="{StaticResource BodyMutedStyle}"/>
                             </StackPanel>
                             
-                            <Border x:ConnectionId='35' Style="{StaticResource PremiumCardStyle}"                                                                        >
+                            <Border x:ConnectionId='42' Style="{StaticResource PremiumCardStyle}"                                                                        >
                                 <StackPanel Spacing="20">
                                     <TextBlock Text="ESTADO EN TIEMPO REAL" Style="{StaticResource CategoryHeaderStyle}" Foreground="#D4944A" />
-                                    <TextBlock x:ConnectionId='43'                                                         FontSize="15" FontFamily="{StaticResource InterFont}" Foreground="#D4944A" FontWeight="Medium"/>
+                                    <TextBlock x:ConnectionId='50'                                                         FontSize="15" FontFamily="{StaticResource InterFont}" Foreground="#D4944A" FontWeight="Medium"/>
                                     
-                                    <CheckBox x:ConnectionId='44' Content="SELECCIONAR TODO"                                                              FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                                    <CheckBox x:ConnectionId='51' Content="SELECCIONAR TODO"                                                              FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
 
-                                    <Grid ColumnSpacing="12" Margin="0,8,0,0">
+                                    <Grid ColumnSpacing="12" RowSpacing="12" Margin="0,8,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition x:ConnectionId='52' x:Name="NetBtnCol0" Width="*" />
+                                            <ColumnDefinition x:ConnectionId='53' x:Name="NetBtnCol1" Width="*" />
+                                            <ColumnDefinition x:ConnectionId='54' x:Name="NetBtnCol2" Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Button x:ConnectionId='45'                                                                                                                                                 Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}"                                                         CommandParameter="Network" />
-                                        <Button x:ConnectionId='46'                                                                                                                                                                   Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                          CommandParameter="Network" />
-                                        <Button x:ConnectionId='47'                                                                                                                                                                   Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                     CommandParameter="Network" />
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Button x:ConnectionId='55' x:Name="NetBtn1"                                                                                                                                                 Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}"                                                         CommandParameter="Network" />
+                                        <Button x:ConnectionId='56' x:Name="NetBtn2"                                                                                                                                                                   Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                          CommandParameter="Network" />
+                                        <Button x:ConnectionId='57' x:Name="NetBtn3"                                                                                                                                                                   Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                     CommandParameter="Network" />
                                     </Grid>
                                 </StackPanel>
                             </Border>
 
-                            <ItemsControl x:ConnectionId='36'                                                                >
+                            <ItemsControl x:ConnectionId='43'                                                                >
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate                                           >
-                                        <Border x:ConnectionId='38' Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12"                                                                        >
+                                        <Border x:ConnectionId='45' Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12"                                                                        >
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:ConnectionId='39' Grid.Column="0"                                              VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                                <CheckBox x:ConnectionId='46' Grid.Column="0"                                              VerticalAlignment="Center" Margin="0,0,16,0"/>
                                                 
                                                 <StackPanel Grid.Column="1" Spacing="4">
                                                     <StackPanel Orientation="Horizontal" Spacing="8">
-                                                        <TextBlock x:ConnectionId='41'                             FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
-                                                        <TextBlock x:ConnectionId='42'                                               FontSize="13" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
+                                                        <TextBlock x:ConnectionId='48'                             FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                        <TextBlock x:ConnectionId='49'                                               FontSize="13" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
                                                     </StackPanel>
-                                                    <TextBlock x:ConnectionId='40'                             Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                    <TextBlock x:ConnectionId='47'                             Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -361,52 +426,57 @@
                         </StackPanel>
 
                         <!-- SECCIÓN SERVICIOS -->
-                        <StackPanel x:ConnectionId='9' Spacing="24"                                                                                 >
+                        <StackPanel x:ConnectionId='13' Spacing="24"                                                                                 >
                             <StackPanel Spacing="4">
                                 <TextBlock Text="SERVICIOS" Style="{StaticResource PageTitleStyle}"/>
                                 <TextBlock Text="Desactiva los procesos en segundo plano innecesarios (los críticos están bloqueados si usas Wi-Fi)." Style="{StaticResource BodyMutedStyle}"/>
                             </StackPanel>
 
-                            <Border x:ConnectionId='22' Style="{StaticResource PremiumCardStyle}"                                                                        >
+                            <Border x:ConnectionId='26' Style="{StaticResource PremiumCardStyle}"                                                                        >
                                 <StackPanel Spacing="20">
                                     <TextBlock Text="MODULARIDAD DE SERVICIOS" Style="{StaticResource CategoryHeaderStyle}" Foreground="#8A9E94" />
                                     <TextBlock Text="En lugar de aplicar todo globalmente, puedes mutar solo los servicios elegidos y restaurarlos aquí." Style="{StaticResource BodyMutedStyle}"/>
 
-                                    <CheckBox x:ConnectionId='31' Content="SELECCIONAR TODO"                                                               FontWeight="SemiBold" FontFamily="{StaticResource InterFont}"  Margin="0,8,0,0"/>
+                                    <CheckBox x:ConnectionId='35' Content="SELECCIONAR TODO"                                                               FontWeight="SemiBold" FontFamily="{StaticResource InterFont}"  Margin="0,8,0,0"/>
 
-                                    <Grid ColumnSpacing="12" Margin="0,8,0,0">
+                                    <Grid ColumnSpacing="12" RowSpacing="12" Margin="0,8,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition x:ConnectionId='36' x:Name="SrvBtnCol0" Width="*" />
+                                            <ColumnDefinition x:ConnectionId='37' x:Name="SrvBtnCol1" Width="*" />
+                                            <ColumnDefinition x:ConnectionId='38' x:Name="SrvBtnCol2" Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Button x:ConnectionId='32'                                                                                                                                                 Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}"                                                         CommandParameter="Services" />
-                                        <Button x:ConnectionId='33'                                                                                                                                                                   Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                          CommandParameter="Services" />
-                                        <Button x:ConnectionId='34'                                                                                                                                                                   Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                     CommandParameter="Services" />
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Button x:ConnectionId='39' x:Name="SrvBtn1"                                                                                                                                                 Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}"                                                         CommandParameter="Services" />
+                                        <Button x:ConnectionId='40' x:Name="SrvBtn2"                                                                                                                                                                   Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                          CommandParameter="Services" />
+                                        <Button x:ConnectionId='41' x:Name="SrvBtn3"                                                                                                                                                                   Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}"                                                     CommandParameter="Services" />
                                     </Grid>
                                 </StackPanel>
                             </Border>
 
-                            <ItemsControl x:ConnectionId='23'                                                                >
+                            <ItemsControl x:ConnectionId='27'                                                                >
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate                                          >
-                                        <Border x:ConnectionId='25' Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12"                                                                        >
+                                        <Border x:ConnectionId='29' Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12"                                                                        >
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 
-                                                <CheckBox x:ConnectionId='26' Grid.Column="0"                                                                                                VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                                <CheckBox x:ConnectionId='30' Grid.Column="0"                                                                                                VerticalAlignment="Center" Margin="0,0,16,0"/>
                                                 
                                                 <StackPanel Grid.Column="1" Spacing="6" VerticalAlignment="Center">
                                                     <StackPanel Orientation="Horizontal" Spacing="8">
-                                                        <TextBlock x:ConnectionId='29'                             FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
-                                                        <TextBlock x:ConnectionId='30'                                               FontSize="12" FontFamily="{StaticResource InterFont}" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
+                                                        <TextBlock x:ConnectionId='33'                             FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                        <TextBlock x:ConnectionId='34'                                               FontSize="12" FontFamily="{StaticResource InterFont}" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
                                                     </StackPanel>
-                                                    <TextBlock x:ConnectionId='27'                             Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                    <TextBlock x:ConnectionId='31'                             Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
 
-                                                    <TextBlock x:ConnectionId='28' Text="⚠️ Protegido por conexión Wi-Fi actual" FontFamily="{StaticResource InterFont}"                                                           Foreground="#D4944A" FontSize="12" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                                                    <TextBlock x:ConnectionId='32' Text="⚠️ Protegido por conexión Wi-Fi actual" FontFamily="{StaticResource InterFont}"                                                           Foreground="#D4944A" FontSize="12" FontWeight="SemiBold" Margin="0,4,0,0"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -416,47 +486,47 @@
                         </StackPanel>
 
                         <!-- SECCIÓN LIMPIEZA -->
-                        <StackPanel x:ConnectionId='10' Spacing="24"                                                                                >
+                        <StackPanel x:ConnectionId='14' Spacing="24"                                                                                >
                             <StackPanel Spacing="4">
                                 <TextBlock Text="LIMPIEZA PROFUNDA" Style="{StaticResource PageTitleStyle}"/>
                                 <TextBlock Text="Elimina datos innecesarios y optimiza el sistema." Style="{StaticResource BodyMutedStyle}"/>
                             </StackPanel>
 
-                            <Border x:ConnectionId='11' Style="{StaticResource PremiumCardStyle}" BorderBrush="#33E05555"                                                                        >
+                            <Border x:ConnectionId='15' Style="{StaticResource PremiumCardStyle}" BorderBrush="#33E05555"                                                                        >
                                 <StackPanel Spacing="20">
                                     <TextBlock Text="ZONA DE PELIGRO: ACCIONES DE LIMPIEZA" Style="{StaticResource CategoryHeaderStyle}" Foreground="#E05555" />
 
-                                    <CheckBox x:ConnectionId='20' Content="SELECCIONAR TODO"                                                              FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                                    <CheckBox x:ConnectionId='24' Content="SELECCIONAR TODO"                                                              FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
 
                                     <Grid ColumnSpacing="12" Margin="0,8,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Button x:ConnectionId='21'                                                                                                                                                 Grid.Column="0" Content="EJECUTAR LIMPIEZA" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}" Background="#E05555"                                                         CommandParameter="Cleaner" />
+                                        <Button x:ConnectionId='25'                                                                                                                                                 Grid.Column="0" Content="EJECUTAR LIMPIEZA" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}" Background="#E05555"                                                         CommandParameter="Cleaner" />
                                     </Grid>
                                 </StackPanel>
                             </Border>
 
-                            <ItemsControl x:ConnectionId='12'                                                                >
+                            <ItemsControl x:ConnectionId='16'                                                                >
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate                                          >
-                                        <Border x:ConnectionId='14' Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12"                                                                        >
+                                        <Border x:ConnectionId='18' Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12"                                                                        >
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:ConnectionId='15' Grid.Column="0"                                              VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                                <CheckBox x:ConnectionId='19' Grid.Column="0"                                              VerticalAlignment="Center" Margin="0,0,16,0"/>
 
                                                 <StackPanel Grid.Column="1" Spacing="4">
                                                     <StackPanel Orientation="Horizontal" Spacing="8">
-                                                        <TextBlock x:ConnectionId='18'                             FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
-                                                        <TextBlock x:ConnectionId='19'                                               FontSize="12" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
+                                                        <TextBlock x:ConnectionId='22'                             FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                        <TextBlock x:ConnectionId='23'                                               FontSize="12" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
                                                     </StackPanel>
-                                                    <TextBlock x:ConnectionId='16'                             Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                    <TextBlock x:ConnectionId='20'                             Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
 
                                                     <!-- Advertencia Roja Crítica -->
-                                                    <Border x:ConnectionId='17'                                                       Margin="0,8,0,0" Padding="8" CornerRadius="4" Background="#1AE05555">
+                                                    <Border x:ConnectionId='21'                                                       Margin="0,8,0,0" Padding="8" CornerRadius="4" Background="#1AE05555">
                                                         <StackPanel Orientation="Horizontal" Spacing="8">
                                                             <FontIcon Glyph="&#xE7BA;" Foreground="{StaticResource SenaWarningBrush}" FontSize="14" VerticalAlignment="Center"/>
                                                             <TextBlock Text="ESTA ACCIÓN ELIMINARÁ CARPETAS TEMPORALES DEL ENTORNO ACTUAL." FontFamily="{StaticResource InterFont}" FontWeight="Medium" Foreground="{StaticResource SenaWarningBrush}" FontSize="12" VerticalAlignment="Center" TextWrapping="Wrap"/>
@@ -473,11 +543,11 @@
                 </ScrollViewer>
 
                 <!-- CAPA FLOTANTE MIENTRAS OPTIMIZA (IS BUSY) -->
-                <Grid x:ConnectionId='4' Background="#E60A0F0D" 
+                <Grid x:ConnectionId='8' Background="#E60A0F0D" 
                                                                                             
                       Canvas.ZIndex="100">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
-                        <ProgressRing x:ConnectionId='5'                                                   Width="60" Height="60" Foreground="#1DB870" />
+                        <ProgressRing x:ConnectionId='9'                                                   Width="60" Height="60" Foreground="#1DB870" />
                         <TextBlock Text="Inyectando carga de entorno..." FontSize="18" Foreground="#F0F4F2" FontWeight="SemiBold" FontFamily="{StaticResource InterFont}" />
                         <TextBlock Text="Preparando modificaciones nativas" FontSize="14" Foreground="#8A9E94" FontFamily="{StaticResource InterFont}" HorizontalAlignment="Center"/>
                     </StackPanel>

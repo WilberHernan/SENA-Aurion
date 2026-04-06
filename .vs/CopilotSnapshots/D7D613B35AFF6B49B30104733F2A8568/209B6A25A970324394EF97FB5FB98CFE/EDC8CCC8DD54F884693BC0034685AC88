@@ -1,0 +1,573 @@
+﻿<Window
+    x:Class="VisionaryOptimizer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VisionaryOptimizer"
+    xmlns:viewmodels="using:VisionaryOptimizer.ViewModels"
+    xmlns:models="using:VisionaryOptimizer.Models"
+    xmlns:services="using:VisionaryOptimizer.Services"
+    Title="Visionary Optimizer">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop /> 
+    </Window.SystemBackdrop>
+
+    <Grid Background="Transparent" x:Name="RootGrid" MinWidth="600" MinHeight="500">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ResponsiveStates">
+                <!-- Pantalla Ancha -->
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1200"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <!-- Pantalla Mediana -->
+                <VisualState x:Name="MediumState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="900"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TabHomeText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabInputText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabNetworkText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabServicesText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabCleanerText.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <!-- Pantalla Pequeña -->
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TabHomeText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabInputText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabNetworkText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabServicesText.Visibility" Value="Collapsed" />
+                        <Setter Target="TabCleanerText.Visibility" Value="Collapsed" />
+
+                        <!-- Dashboard Pasa a 1 Columna y Se Acomodan en Fila -->
+                        <Setter Target="DashCol1.Width" Value="0" />
+                        <Setter Target="DashRightCol.(Grid.Column)" Value="0" />
+                        <Setter Target="DashRightCol.(Grid.Row)" Value="1" />
+
+                        <!-- Actions Buttons Pasando de Horizontal a Vertical -->
+                        <Setter Target="InputBtnCol1.Width" Value="0" />
+                        <Setter Target="InputBtnCol2.Width" Value="0" />
+                        <Setter Target="InputBtnCol0.Width" Value="*" />
+                        <Setter Target="InputBtn2.(Grid.Column)" Value="0" />
+                        <Setter Target="InputBtn2.(Grid.Row)" Value="1" />
+                        <Setter Target="InputBtn3.(Grid.Column)" Value="0" />
+                        <Setter Target="InputBtn3.(Grid.Row)" Value="2" />
+
+                        <Setter Target="NetBtnCol1.Width" Value="0" />
+                        <Setter Target="NetBtnCol2.Width" Value="0" />
+                        <Setter Target="NetBtnCol0.Width" Value="*" />
+                        <Setter Target="NetBtn2.(Grid.Column)" Value="0" />
+                        <Setter Target="NetBtn2.(Grid.Row)" Value="1" />
+                        <Setter Target="NetBtn3.(Grid.Column)" Value="0" />
+                        <Setter Target="NetBtn3.(Grid.Row)" Value="2" />
+
+                        <Setter Target="SrvBtnCol1.Width" Value="0" />
+                        <Setter Target="SrvBtnCol2.Width" Value="0" />
+                        <Setter Target="SrvBtnCol0.Width" Value="*" />
+                        <Setter Target="SrvBtn2.(Grid.Column)" Value="0" />
+                        <Setter Target="SrvBtn2.(Grid.Row)" Value="1" />
+                        <Setter Target="SrvBtn3.(Grid.Column)" Value="0" />
+                        <Setter Target="SrvBtn3.(Grid.Row)" Value="2" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <!-- TopBar (32px window title + 52px app menu) = 84px -->
+            <RowDefinition Height="*" /> <!-- Content Area -->
+        </Grid.RowDefinitions>
+
+        <Viewbox Grid.RowSpan="2" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.05">
+            <Path Fill="#1DB870" Data="M0,80 C20,30 60,110 100,60 C140,10 180,80 220,40 L220,120 L0,120 Z">
+                <Path.RenderTransform>
+                    <ScaleTransform ScaleX="10" ScaleY="10" />
+                </Path.RenderTransform>
+            </Path>
+        </Viewbox>
+
+        <!-- 1. BARRA NATIVA CUSTOM FIJA E ÍCONOS DE NAVEGACIÓN SENA -->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="52" />
+            </Grid.RowDefinitions>
+
+            <!-- Titulo Window Control Standard -->
+            <Grid x:Name="AppCustomTitleBar" Grid.Row="0" Background="Transparent">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0" Spacing="8" HorizontalAlignment="Left">
+                    <Grid Width="16" Height="16" CornerRadius="8" Background="#1DB870">
+                        <FontIcon Glyph="&#xE90C;" FontSize="10" Foreground="#0A0F0D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                    <TextBlock Text="Sena Aurion" FontSize="13" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Foreground="#4DEBA0" />
+                </StackPanel>
+            </Grid>
+
+            <!-- TABS MENU HORIZONTAL HEADER PILLS -->
+            <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#0FFFFFFF" Background="#0C0A0F0D" CornerRadius="0,0,16,16">
+                <Grid Margin="32,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                        <Line X1="0" Y1="0" X2="0" Y2="24" Stroke="#14FFFFFF" StrokeThickness="1" Margin="8,0" />
+                        <Button x:Name="TabHome" CommandParameter="home" Click="TabButton_Click" Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE80F;" FontSize="14" />
+                                <TextBlock x:Name="TabHomeText" Text="Inicio" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="TabInput" CommandParameter="input" Click="TabButton_Click" Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE144;" FontSize="14" />
+                                <TextBlock x:Name="TabInputText" Text="Input" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="TabNetwork" CommandParameter="network" Click="TabButton_Click" Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE701;" FontSize="14" />
+                                <TextBlock x:Name="TabNetworkText" Text="Network" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="TabServices" CommandParameter="services" Click="TabButton_Click" Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE9D9;" FontSize="14" />
+                                <TextBlock x:Name="TabServicesText" Text="Services" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="TabCleaner" CommandParameter="cleaner" Click="TabButton_Click" Padding="12,6" Background="Transparent" Foreground="#4DEBA0" BorderThickness="0" Opacity="0.6" CornerRadius="4" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE7FC;" FontSize="14" />
+                                <TextBlock x:Name="TabCleanerText" Text="Cleaner" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+                        <Line X1="0" Y1="0" X2="0" Y2="24" Stroke="#14FFFFFF" StrokeThickness="1" Margin="8,0" />
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Spacing="8">
+                        <Ellipse Width="6" Height="6" Fill="#1DB870" />
+                        <TextBlock Text="System Ready" FontSize="12" FontFamily="{StaticResource MonoFont}" Foreground="#1DB870" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- 2. CONTENT AREA SIN BLUR-->
+        <Grid Grid.Row="1">
+                <ScrollViewer x:Name="MainScroll" Padding="16,0" Background="Transparent">
+                    <StackPanel Spacing="32" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="1600" Margin="16,32,16,32">
+                        
+                        <!-- Panel de Estado Informativo (Movido arriba flotando o a la derecha) -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <!-- Título General ELIMINADO para no duplicarse por módulo -->
+                            
+                            <InfoBar Grid.Column="1" IsOpen="True" Severity="Informational" Title="" Message="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" IsClosable="False" CornerRadius="8" Background="#0F1A14" />
+                        </Grid>
+
+                        <!-- INICIO / DASHBOARD -->
+                        <StackPanel Spacing="32" Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionHome), Mode=OneWay}">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="DETALLES DEL EQUIPO" Style="{StaticResource PageTitleStyle}"/>
+                                <TextBlock Text="Vista general del entorno y recursos físicos." Style="{StaticResource BodyMutedStyle}"/>
+                            </StackPanel>
+                            
+                            <Grid ColumnSpacing="24" RowSpacing="24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="DashCol0" Width="*" />
+                                    <ColumnDefinition x:Name="DashCol1" Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!-- COLUMNA IZQUIERDA -->
+                                <StackPanel x:Name="DashLeftCol" Grid.Column="0" Grid.Row="0" Spacing="24" Canvas.ZIndex="1">
+                                    <!-- 1. EQUIPO -->
+                                    <Border Style="{StaticResource HomeCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                        <StackPanel Spacing="24">
+                                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                                <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
+                                                    <FontIcon Glyph="&#xE7F4;" FontSize="18" Foreground="#1DB870" />
+                                                </Grid>
+                                                <TextBlock Text="INFORMACIÓN DEL EQUIPO" Style="{StaticResource CategoryHeaderStyle}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <StackPanel Spacing="16">
+                                                <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
+                                                    <TextBlock Text="Hostname:" Style="{StaticResource BodyMutedStyle}" VerticalAlignment="Center" Width="80"/>
+                                                    <TextBlock Text="{x:Bind ViewModel.SystemInfo.MachineName, Mode=OneWay}" IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                                <Border Height="1" Background="#0AFFFFFF" HorizontalAlignment="Stretch" />
+                                                <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
+                                                    <TextBlock Text="Serial:" Style="{StaticResource BodyMutedStyle}" VerticalAlignment="Center" Width="80"/>
+                                                    <TextBlock Text="{x:Bind ViewModel.SystemInfo.SerialNumber, Mode=OneWay}" IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                                <Border Height="1" Background="#0AFFFFFF" HorizontalAlignment="Stretch" />
+                                                <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
+                                                    <TextBlock Text="{x:Bind ViewModel.SystemInfo.OsName, Mode=OneWay}" IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="15" Foreground="{StaticResource SenaTextAccentBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
+                                                    <TextBlock Text="Versión:" Style="{StaticResource BodyMutedStyle}" VerticalAlignment="Center" Width="80"/>
+                                                    <TextBlock Text="{x:Bind ViewModel.SystemInfo.OsVersion, Mode=OneWay}" IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="13" Foreground="#8A9E94" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- 2. CPU -->
+                                    <Border Style="{StaticResource PremiumCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                        <StackPanel Spacing="24">
+                                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                                <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
+                                                    <FontIcon Glyph="&#xE968;" FontSize="18" Foreground="#1DB870" />
+                                                </Grid>
+                                                <TextBlock Text="PROCESADOR (CPU)" Style="{StaticResource CategoryHeaderStyle}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <StackPanel Spacing="8">
+                                                <StackPanel Background="Transparent">
+                                                    <TextBlock Text="{x:Bind ViewModel.SystemInfo.CpuModel, Mode=OneWay}" IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                                <StackPanel Background="Transparent">
+                                                    <TextBlock Text="{x:Bind ViewModel.SystemInfo.CpuCoresText, Mode=OneWay}" IsTextSelectionEnabled="True" FontFamily="{StaticResource MonoFont}" FontSize="14" Foreground="{StaticResource SenaTextAccentBrush}" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- 3. DISCOS -->
+                                    <Border Style="{StaticResource PremiumCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                        <StackPanel Spacing="24">
+                                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                                <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
+                                                    <FontIcon Glyph="&#xE713;" FontSize="18" Foreground="#1DB870" />
+                                                </Grid>
+                                                <TextBlock Text="ALMACENAMIENTO" Style="{StaticResource CategoryHeaderStyle}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <ItemsControl ItemsSource="{x:Bind ViewModel.SystemInfo.Disks, Mode=OneWay}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate x:DataType="services:DiskInfoModel">
+                                                        <Border Margin="0,0,0,8" Background="Transparent" Padding="0">
+                                                            <TextBlock Text="{x:Bind DisplayText}" IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontWeight="Medium" Foreground="#F0F4F2" FontSize="14" TextWrapping="Wrap"/>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- COLUMNA DERECHA -->
+                                <StackPanel x:Name="DashRightCol" Grid.Column="1" Grid.Row="0" Spacing="24" Canvas.ZIndex="2">
+                                    <!-- 4. MEMORIA RAM -->
+                                    <Border Style="{StaticResource HomeCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                        <StackPanel Spacing="24">
+                                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                                <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
+                                                    <FontIcon Glyph="&#xE9A6;" FontSize="18" Foreground="#1DB870" />
+                                                </Grid>
+                                                <TextBlock Text="MEMORIA RAM" Style="{StaticResource CategoryHeaderStyle}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <StackPanel Spacing="8">
+                                                <StackPanel Background="Transparent">
+                                                    <TextBlock Text="{x:Bind ViewModel.SystemInfo.RamTotalText, Mode=OneWay}" IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- 5. GPU -->
+                                    <Border Style="{StaticResource PremiumCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                        <StackPanel Spacing="24">
+                                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                                <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
+                                                    <FontIcon Glyph="&#xE7F4;" FontSize="18" Foreground="#1DB870" />
+                                                </Grid>
+                                                <TextBlock Text="GRÁFICOS (GPU)" Style="{StaticResource CategoryHeaderStyle}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <StackPanel Spacing="8">
+                                                <StackPanel Background="Transparent">
+                                                    <TextBlock Text="{x:Bind ViewModel.SystemInfo.GpuModel, Mode=OneWay}" IsTextSelectionEnabled="True" FontFamily="{StaticResource InterFont}" FontSize="18" FontWeight="SemiBold" Foreground="#F0F4F2" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- 6. RED -->
+                                    <Border Style="{StaticResource PremiumCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                        <StackPanel Spacing="24">
+                                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                                <Grid Width="40" Height="40" CornerRadius="10" Background="#1A1DB870">
+                                                    <FontIcon Glyph="&#xE12B;" FontSize="18" Foreground="#1DB870" />
+                                                </Grid>
+                                                <TextBlock Text="REDES (MAC Address)" Style="{StaticResource CategoryHeaderStyle}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <ItemsControl ItemsSource="{x:Bind ViewModel.SystemInfo.MacAddresses, Mode=OneWay}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate x:DataType="services:NetworkMacModel">
+                                                        <Border Margin="0,0,0,8" Background="Transparent" Padding="0">
+                                                            <StackPanel Orientation="Horizontal" Spacing="16" Background="Transparent">
+                                                                <TextBlock Text="MAC:" Style="{StaticResource BodyMutedStyle}" VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{x:Bind DisplayText}" IsTextSelectionEnabled="True" FontSize="14" TextWrapping="Wrap" FontFamily="{StaticResource MonoFont}" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- SECCIÓN INPUT (RATÓN/TECLADO) -->
+                        <StackPanel Spacing="24" Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionInput), Mode=OneWay}">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="INPUT RESPONSE" Style="{StaticResource PageTitleStyle}"/>
+                                <TextBlock Text="Reducción extrema de latencia en periféricos." FontSize="14" FontFamily="{StaticResource InterFont}" Foreground="#C8E6D9" Opacity="0.85"/>
+                            </StackPanel>
+                            
+                            <Border Style="{StaticResource PremiumCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                <StackPanel Spacing="20">
+                                    <TextBlock Text="ESTADO EN TIEMPO REAL" Style="{StaticResource CategoryHeaderStyle}" Foreground="#E8F5E9" />
+                                    <TextBlock Text="{x:Bind ViewModel.InputStateText, Mode=OneWay}" FontSize="15" FontFamily="{StaticResource InterFont}" Foreground="{StaticResource SenaTextAccentBrush}" FontWeight="Medium"/>
+                                    
+                                    <CheckBox Content="SELECCIONAR TODO" IsChecked="{x:Bind ViewModel.SelectAllInput, Mode=TwoWay}" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
+
+                                    <Grid ColumnSpacing="12" RowSpacing="12" Margin="0,8,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition x:Name="InputBtnCol0" Width="*" />
+                                            <ColumnDefinition x:Name="InputBtnCol1" Width="*" />
+                                            <ColumnDefinition x:Name="InputBtnCol2" Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Button x:Name="InputBtn1" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="Btn_PointerEntered" PointerExited="Btn_PointerExited" Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}" Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="Input" />
+                                        <Button x:Name="InputBtn2" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="BtnSecondary_PointerEntered" PointerExited="BtnSecondary_PointerExited" Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}" Command="{x:Bind ViewModel.RevertSelectedModuleCommand}" CommandParameter="Input" />
+                                        <Button x:Name="InputBtn3" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="BtnSecondary_PointerEntered" PointerExited="BtnSecondary_PointerExited" Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}" Command="{x:Bind ViewModel.RevertAllModuleCommand}" CommandParameter="Input" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.InputTweakItems, Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="viewmodels:TweakItemViewModel">
+                                        <Border Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" IsChecked="{x:Bind IsSelected, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                                
+                                                <StackPanel Grid.Column="1" Spacing="4">
+                                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                                        <TextBlock Text="{x:Bind DisplayName}" FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="13" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
+                                                    </StackPanel>
+                                                    <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- SECCIÓN RED Y TCP -->
+                        <StackPanel Spacing="24" Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionNetwork), Mode=OneWay}">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="NETWORK &amp; TCP" Style="{StaticResource PageTitleStyle}"/>
+                                <TextBlock Text="Optimiza el protocolo TCP/IP para priorizar el ping en aplicaciones." Style="{StaticResource BodyMutedStyle}"/>
+                            </StackPanel>
+                            
+                            <Border Style="{StaticResource PremiumCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                <StackPanel Spacing="20">
+                                    <TextBlock Text="ESTADO EN TIEMPO REAL" Style="{StaticResource CategoryHeaderStyle}" Foreground="#D4944A" />
+                                    <TextBlock Text="{x:Bind ViewModel.NetworkStateText, Mode=OneWay}" FontSize="15" FontFamily="{StaticResource InterFont}" Foreground="#D4944A" FontWeight="Medium"/>
+                                    
+                                    <CheckBox Content="SELECCIONAR TODO" IsChecked="{x:Bind ViewModel.SelectAllNetwork, Mode=TwoWay}" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
+
+                                    <Grid ColumnSpacing="12" RowSpacing="12" Margin="0,8,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition x:Name="NetBtnCol0" Width="*" />
+                                            <ColumnDefinition x:Name="NetBtnCol1" Width="*" />
+                                            <ColumnDefinition x:Name="NetBtnCol2" Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Button x:Name="NetBtn1" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="Btn_PointerEntered" PointerExited="Btn_PointerExited" Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}" Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="Network" />
+                                        <Button x:Name="NetBtn2" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="BtnSecondary_PointerEntered" PointerExited="BtnSecondary_PointerExited" Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}" Command="{x:Bind ViewModel.RevertSelectedModuleCommand}" CommandParameter="Network" />
+                                        <Button x:Name="NetBtn3" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="BtnSecondary_PointerEntered" PointerExited="BtnSecondary_PointerExited" Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}" Command="{x:Bind ViewModel.RevertAllModuleCommand}" CommandParameter="Network" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.NetworkTweakItems, Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="viewmodels:TweakItemViewModel">
+                                        <Border Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" IsChecked="{x:Bind IsSelected, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                                
+                                                <StackPanel Grid.Column="1" Spacing="4">
+                                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                                        <TextBlock Text="{x:Bind DisplayName}" FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="13" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
+                                                    </StackPanel>
+                                                    <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- SECCIÓN SERVICIOS -->
+                        <StackPanel Spacing="24" Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionServices), Mode=OneWay}">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="SERVICIOS" Style="{StaticResource PageTitleStyle}"/>
+                                <TextBlock Text="Desactiva los procesos en segundo plano innecesarios (los críticos están bloqueados si usas Wi-Fi)." Style="{StaticResource BodyMutedStyle}"/>
+                            </StackPanel>
+
+                            <Border Style="{StaticResource PremiumCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                <StackPanel Spacing="20">
+                                    <TextBlock Text="MODULARIDAD DE SERVICIOS" Style="{StaticResource CategoryHeaderStyle}" Foreground="#8A9E94" />
+                                    <TextBlock Text="En lugar de aplicar todo globalmente, puedes mutar solo los servicios elegidos y restaurarlos aquí." Style="{StaticResource BodyMutedStyle}"/>
+
+                                    <CheckBox Content="SELECCIONAR TODO" IsChecked="{x:Bind ViewModel.SelectAllServices, Mode=TwoWay}" FontWeight="SemiBold" FontFamily="{StaticResource InterFont}"  Margin="0,8,0,0"/>
+
+                                    <Grid ColumnSpacing="12" RowSpacing="12" Margin="0,8,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition x:Name="SrvBtnCol0" Width="*" />
+                                            <ColumnDefinition x:Name="SrvBtnCol1" Width="*" />
+                                            <ColumnDefinition x:Name="SrvBtnCol2" Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Button x:Name="SrvBtn1" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="Btn_PointerEntered" PointerExited="Btn_PointerExited" Grid.Column="0" Content="APLICAR SELECCIONADOS" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}" Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="Services" />
+                                        <Button x:Name="SrvBtn2" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="BtnSecondary_PointerEntered" PointerExited="BtnSecondary_PointerExited" Grid.Column="1" Content="REVERTIR SELECCIÓN" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}" Command="{x:Bind ViewModel.RevertSelectedModuleCommand}" CommandParameter="Services" />
+                                        <Button x:Name="SrvBtn3" PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="BtnSecondary_PointerEntered" PointerExited="BtnSecondary_PointerExited" Grid.Column="2" Content="REVERTIR A FÁBRICA" HorizontalAlignment="Stretch" Style="{StaticResource SecondaryPremiumButton}" Command="{x:Bind ViewModel.RevertAllModuleCommand}" CommandParameter="Services" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.ServiceTweakItems, Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="viewmodels:ServiceTweakModel">
+                                        <Border Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <CheckBox Grid.Column="0" IsChecked="{x:Bind IsSelected, Mode=TwoWay}" IsEnabled="{x:Bind IsToggleEnabled, Mode=OneWay}" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                                
+                                                <StackPanel Grid.Column="1" Spacing="6" VerticalAlignment="Center">
+                                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                                        <TextBlock Text="{x:Bind DisplayName}" FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="14" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="12" FontFamily="{StaticResource InterFont}" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
+                                                    </StackPanel>
+                                                    <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+
+                                                    <TextBlock Text="⚠️ Protegido por conexión Wi-Fi actual" FontFamily="{StaticResource InterFont}" Visibility="{x:Bind IsWifiLockedVisibility, Mode=OneWay}" Foreground="#D4944A" FontSize="12" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- SECCIÓN LIMPIEZA -->
+                        <StackPanel Spacing="24" Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionCleaner), Mode=OneWay}">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="LIMPIEZA PROFUNDA" Style="{StaticResource PageTitleStyle}"/>
+                                <TextBlock Text="Elimina datos innecesarios y optimiza el sistema." Style="{StaticResource BodyMutedStyle}"/>
+                            </StackPanel>
+
+                            <Border Style="{StaticResource PremiumCardStyle}" BorderBrush="#33E05555" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                <StackPanel Spacing="20">
+                                    <TextBlock Text="ZONA DE PELIGRO: ACCIONES DE LIMPIEZA" Style="{StaticResource CategoryHeaderStyle}" Foreground="#E05555" />
+
+                                    <CheckBox Content="SELECCIONAR TODO" IsChecked="{x:Bind ViewModel.SelectAllCleaner, Mode=TwoWay}" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold" Margin="0,8,0,0"/>
+
+                                    <Grid ColumnSpacing="12" Margin="0,8,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Button PointerPressed="Btn_PointerPressed" PointerReleased="Btn_PointerReleased" PointerEntered="Btn_PointerEntered" PointerExited="Btn_PointerExited" Grid.Column="0" Content="EJECUTAR LIMPIEZA" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryPremiumButton}" Background="#E05555" Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="Cleaner" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.CleanerTweakItems, Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="viewmodels:CleanerTweakModel">
+                                        <Border Style="{StaticResource PremiumCardStyle}" Padding="16" Margin="0,0,0,12" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox Grid.Column="0" IsChecked="{x:Bind IsSelected, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,16,0"/>
+
+                                                <StackPanel Grid.Column="1" Spacing="4">
+                                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                                        <TextBlock Text="{x:Bind DisplayName}" FontFamily="{StaticResource InterFont}" FontWeight="Medium" FontSize="15" Foreground="#F0F4F2" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="12" FontFamily="{StaticResource InterFont}" VerticalAlignment="Center" Foreground="{StaticResource SenaTextAccentBrush}"/>
+                                                    </StackPanel>
+                                                    <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyMutedStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+
+                                                    <!-- Advertencia Roja Crítica -->
+                                                    <Border Visibility="{x:Bind IsDangerVisibility, Mode=OneWay}" Margin="0,8,0,0" Padding="8" CornerRadius="4" Background="#1AE05555">
+                                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                                            <FontIcon Glyph="&#xE7BA;" Foreground="{StaticResource SenaWarningBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="ESTA ACCIÓN ELIMINARÁ CARPETAS TEMPORALES DEL ENTORNO ACTUAL." FontFamily="{StaticResource InterFont}" FontWeight="Medium" Foreground="{StaticResource SenaWarningBrush}" FontSize="12" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- CAPA FLOTANTE MIENTRAS OPTIMIZA (IS BUSY) -->
+                <Grid Background="#E60A0F0D" 
+                      Visibility="{x:Bind BoolToVisibility(ViewModel.IsBusy), Mode=OneWay}" 
+                      Canvas.ZIndex="100">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
+                        <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" Width="60" Height="60" Foreground="#1DB870" />
+                        <TextBlock Text="Inyectando carga de entorno..." FontSize="18" Foreground="#F0F4F2" FontWeight="SemiBold" FontFamily="{StaticResource InterFont}" />
+                        <TextBlock Text="Preparando modificaciones nativas" FontSize="14" Foreground="#8A9E94" FontFamily="{StaticResource InterFont}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+        </Grid>
+    </Grid>
+</Window>

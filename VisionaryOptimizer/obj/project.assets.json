@@ -2784,11 +2784,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Will\\Documents\\CursorProyecto\\VisionaryOptimizer\\VisionaryOptimizer.csproj",
+      "projectUniqueName": "D:\\SENA-Aurion\\VisionaryOptimizer\\VisionaryOptimizer.csproj",
       "projectName": "VisionaryOptimizer",
-      "projectPath": "C:\\Users\\Will\\Documents\\CursorProyecto\\VisionaryOptimizer\\VisionaryOptimizer.csproj",
+      "projectPath": "D:\\SENA-Aurion\\VisionaryOptimizer\\VisionaryOptimizer.csproj",
       "packagesPath": "C:\\Users\\Will\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Will\\Documents\\CursorProyecto\\VisionaryOptimizer\\obj\\",
+      "outputPath": "D:\\SENA-Aurion\\VisionaryOptimizer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2807,6 +2807,7 @@
       },
       "frameworks": {
         "net8.0-windows10.0.19041": {
+          "framework": "net8.0-windows10.0.19041",
           "targetAlias": "net8.0-windows10.0.19041.0",
           "projectReferences": {}
         }
@@ -2825,6 +2826,7 @@
     },
     "frameworks": {
       "net8.0-windows10.0.19041": {
+        "framework": "net8.0-windows10.0.19041",
         "targetAlias": "net8.0-windows10.0.19041.0",
         "dependencies": {
           "CommunityToolkit.Mvvm": {

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dfxTcwN2OEM=",
+  "dgSpecHash": "F2wqZhJ/jNc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Will\\Documents\\CursorProyecto\\VisionaryOptimizer\\VisionaryOptimizer.csproj",
+  "projectFilePath": "D:\\SENA-Aurion\\VisionaryOptimizer\\VisionaryOptimizer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Will\\.nuget\\packages\\communitytoolkit.mvvm\\8.3.2\\communitytoolkit.mvvm.8.3.2.nupkg.sha512",
     "C:\\Users\\Will\\.nuget\\packages\\microsoft.web.webview2\\1.0.3179.45\\microsoft.web.webview2.1.0.3179.45.nupkg.sha512",

@@ -226,7 +226,7 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         
         private void InitTypeTables()
         {
-            _typeNameTable = new string[33];
+            _typeNameTable = new string[24];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -243,25 +243,16 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             _typeNameTable[13] = "Double";
             _typeNameTable[14] = "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings";
             _typeNameTable[15] = "Microsoft.UI.Xaml.DependencyObject";
-            _typeNameTable[16] = "Microsoft.UI.Xaml.Controls.InfoBar";
-            _typeNameTable[17] = "Microsoft.UI.Xaml.Controls.InfoBarSeverity";
-            _typeNameTable[18] = "String";
-            _typeNameTable[19] = "Microsoft.UI.Xaml.Controls.Primitives.ButtonBase";
-            _typeNameTable[20] = "System.Windows.Input.ICommand";
-            _typeNameTable[21] = "Microsoft.UI.Xaml.Style";
-            _typeNameTable[22] = "Microsoft.UI.Xaml.DataTemplate";
-            _typeNameTable[23] = "Microsoft.UI.Xaml.Controls.IconSource";
-            _typeNameTable[24] = "Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings";
-            _typeNameTable[25] = "VisionaryOptimizer.MainWindow";
-            _typeNameTable[26] = "Microsoft.UI.Xaml.Window";
-            _typeNameTable[27] = "VisionaryOptimizer.ViewModels.MainViewModel";
-            _typeNameTable[28] = "VisionaryOptimizer.ViewModels.ViewModelBase";
-            _typeNameTable[29] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
-            _typeNameTable[30] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[31] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
-            _typeNameTable[32] = "Int32";
+            _typeNameTable[16] = "VisionaryOptimizer.MainWindow";
+            _typeNameTable[17] = "Microsoft.UI.Xaml.Window";
+            _typeNameTable[18] = "VisionaryOptimizer.ViewModels.MainViewModel";
+            _typeNameTable[19] = "VisionaryOptimizer.ViewModels.ViewModelBase";
+            _typeNameTable[20] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
+            _typeNameTable[21] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[22] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[23] = "Int32";
 
-            _typeTable = new global::System.Type[33];
+            _typeTable = new global::System.Type[24];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -278,23 +269,14 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             _typeTable[13] = typeof(global::System.Double);
             _typeTable[14] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings);
             _typeTable[15] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
-            _typeTable[16] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBar);
-            _typeTable[17] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBarSeverity);
-            _typeTable[18] = typeof(global::System.String);
-            _typeTable[19] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.ButtonBase);
-            _typeTable[20] = typeof(global::System.Windows.Input.ICommand);
-            _typeTable[21] = typeof(global::Microsoft.UI.Xaml.Style);
-            _typeTable[22] = typeof(global::Microsoft.UI.Xaml.DataTemplate);
-            _typeTable[23] = typeof(global::Microsoft.UI.Xaml.Controls.IconSource);
-            _typeTable[24] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings);
-            _typeTable[25] = typeof(global::VisionaryOptimizer.MainWindow);
-            _typeTable[26] = typeof(global::Microsoft.UI.Xaml.Window);
-            _typeTable[27] = typeof(global::VisionaryOptimizer.ViewModels.MainViewModel);
-            _typeTable[28] = typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase);
-            _typeTable[29] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
-            _typeTable[30] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[31] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
-            _typeTable[32] = typeof(global::System.Int32);
+            _typeTable[16] = typeof(global::VisionaryOptimizer.MainWindow);
+            _typeTable[17] = typeof(global::Microsoft.UI.Xaml.Window);
+            _typeTable[18] = typeof(global::VisionaryOptimizer.ViewModels.MainViewModel);
+            _typeTable[19] = typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase);
+            _typeTable[20] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
+            _typeTable[21] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[22] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[23] = typeof(global::System.Int32);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -332,10 +314,8 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         private object Activate_0_XamlControlsResources() { return new global::Microsoft.UI.Xaml.Controls.XamlControlsResources(); }
         private object Activate_7_MicaBackdrop() { return new global::Microsoft.UI.Xaml.Media.MicaBackdrop(); }
         private object Activate_11_ProgressRing() { return new global::Microsoft.UI.Xaml.Controls.ProgressRing(); }
-        private object Activate_16_InfoBar() { return new global::Microsoft.UI.Xaml.Controls.InfoBar(); }
-        private object Activate_24_InfoBarTemplateSettings() { return new global::Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings(); }
-        private object Activate_25_MainWindow() { return new global::VisionaryOptimizer.MainWindow(); }
-        private object Activate_30_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_16_MainWindow() { return new global::VisionaryOptimizer.MainWindow(); }
+        private object Activate_21_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void StaticInitializer_0_XamlControlsResources() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources).TypeHandle);
         private void StaticInitializer_4_Color() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Windows.UI.Color).TypeHandle);
         private void StaticInitializer_5_ValueType() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.ValueType).TypeHandle);
@@ -345,16 +325,12 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         private void StaticInitializer_10_Enum() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Enum).TypeHandle);
         private void StaticInitializer_11_ProgressRing() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing).TypeHandle);
         private void StaticInitializer_14_ProgressRingTemplateSettings() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings).TypeHandle);
-        private void StaticInitializer_16_InfoBar() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.InfoBar).TypeHandle);
-        private void StaticInitializer_17_InfoBarSeverity() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.InfoBarSeverity).TypeHandle);
-        private void StaticInitializer_20_ICommand() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Windows.Input.ICommand).TypeHandle);
-        private void StaticInitializer_24_InfoBarTemplateSettings() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings).TypeHandle);
-        private void StaticInitializer_25_MainWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.MainWindow).TypeHandle);
-        private void StaticInitializer_27_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.MainViewModel).TypeHandle);
-        private void StaticInitializer_28_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase).TypeHandle);
-        private void StaticInitializer_29_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
-        private void StaticInitializer_30_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
-        private void StaticInitializer_31_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
+        private void StaticInitializer_16_MainWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.MainWindow).TypeHandle);
+        private void StaticInitializer_18_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.MainViewModel).TypeHandle);
+        private void StaticInitializer_19_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase).TypeHandle);
+        private void StaticInitializer_20_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
+        private void StaticInitializer_21_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
+        private void StaticInitializer_22_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -362,7 +338,7 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             var newItem = (global::System.Object)item;
             collection.Add(newKey, newItem);
         }
-        private void VectorAdd_31_IList(object instance, object item)
+        private void VectorAdd_22_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -481,110 +457,44 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 16:   //  Microsoft.UI.Xaml.Controls.InfoBar
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
-                userType.Activator = Activate_16_InfoBar;
-                userType.StaticInitializer = StaticInitializer_16_InfoBar;
-                userType.SetContentPropertyName("Microsoft.UI.Xaml.Controls.InfoBar.Content");
-                userType.AddMemberName("Content");
-                userType.AddMemberName("IsOpen");
-                userType.AddMemberName("Severity");
-                userType.AddMemberName("Title");
-                userType.AddMemberName("Message");
-                userType.AddMemberName("IsClosable");
-                userType.AddMemberName("ActionButton");
-                userType.AddMemberName("CloseButtonCommand");
-                userType.AddMemberName("CloseButtonCommandParameter");
-                userType.AddMemberName("CloseButtonStyle");
-                userType.AddMemberName("ContentTemplate");
-                userType.AddMemberName("IconSource");
-                userType.AddMemberName("IsIconVisible");
-                userType.AddMemberName("TemplateSettings");
-                xamlType = userType;
-                break;
-
-            case 17:   //  Microsoft.UI.Xaml.Controls.InfoBarSeverity
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Enum"));
-                userType.StaticInitializer = StaticInitializer_17_InfoBarSeverity;
-                userType.AddEnumValue("Informational", global::Microsoft.UI.Xaml.Controls.InfoBarSeverity.Informational);
-                userType.AddEnumValue("Success", global::Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success);
-                userType.AddEnumValue("Warning", global::Microsoft.UI.Xaml.Controls.InfoBarSeverity.Warning);
-                userType.AddEnumValue("Error", global::Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
-                xamlType = userType;
-                break;
-
-            case 18:   //  String
-                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 19:   //  Microsoft.UI.Xaml.Controls.Primitives.ButtonBase
-                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 20:   //  System.Windows.Input.ICommand
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_20_ICommand;
-                userType.SetIsReturnTypeStub();
-                xamlType = userType;
-                break;
-
-            case 21:   //  Microsoft.UI.Xaml.Style
-                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 22:   //  Microsoft.UI.Xaml.DataTemplate
-                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 23:   //  Microsoft.UI.Xaml.Controls.IconSource
-                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 24:   //  Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.StaticInitializer = StaticInitializer_24_InfoBarTemplateSettings;
-                userType.SetIsReturnTypeStub();
-                xamlType = userType;
-                break;
-
-            case 25:   //  VisionaryOptimizer.MainWindow
+            case 16:   //  VisionaryOptimizer.MainWindow
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_25_MainWindow;
-                userType.StaticInitializer = StaticInitializer_25_MainWindow;
+                userType.Activator = Activate_16_MainWindow;
+                userType.StaticInitializer = StaticInitializer_16_MainWindow;
                 userType.AddMemberName("ViewModel");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 26:   //  Microsoft.UI.Xaml.Window
+            case 17:   //  Microsoft.UI.Xaml.Window
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 27:   //  VisionaryOptimizer.ViewModels.MainViewModel
+            case 18:   //  VisionaryOptimizer.ViewModels.MainViewModel
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("VisionaryOptimizer.ViewModels.ViewModelBase"));
-                userType.StaticInitializer = StaticInitializer_27_MainViewModel;
+                userType.StaticInitializer = StaticInitializer_18_MainViewModel;
                 userType.SetIsReturnTypeStub();
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 28:   //  VisionaryOptimizer.ViewModels.ViewModelBase
+            case 19:   //  VisionaryOptimizer.ViewModels.ViewModelBase
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("CommunityToolkit.Mvvm.ComponentModel.ObservableObject"));
-                userType.StaticInitializer = StaticInitializer_28_ViewModelBase;
+                userType.StaticInitializer = StaticInitializer_19_ViewModelBase;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 29:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
+            case 20:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.StaticInitializer = StaticInitializer_29_ObservableObject;
+                userType.StaticInitializer = StaticInitializer_20_ObservableObject;
                 xamlType = userType;
                 break;
 
-            case 30:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 21:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_30_TreeViewNode;
-                userType.StaticInitializer = StaticInitializer_30_TreeViewNode;
+                userType.Activator = Activate_21_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_21_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -596,15 +506,15 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 31:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 22:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_31_IList;
-                userType.CollectionAdd = VectorAdd_31_IList;
+                userType.StaticInitializer = StaticInitializer_22_IList;
+                userType.CollectionAdd = VectorAdd_22_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 32:   //  Int32
+            case 23:   //  Int32
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
             }
@@ -781,192 +691,57 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.Value = (global::System.Double)Value;
         }
-        private object get_12_InfoBar_Content(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.Content;
-        }
-        private void set_12_InfoBar_Content(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.Content = (global::System.Object)Value;
-        }
-        private object get_13_InfoBar_IsOpen(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.IsOpen;
-        }
-        private void set_13_InfoBar_IsOpen(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.IsOpen = (global::System.Boolean)Value;
-        }
-        private object get_14_InfoBar_Severity(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.Severity;
-        }
-        private void set_14_InfoBar_Severity(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.Severity = (global::Microsoft.UI.Xaml.Controls.InfoBarSeverity)Value;
-        }
-        private object get_15_InfoBar_Title(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.Title;
-        }
-        private void set_15_InfoBar_Title(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.Title = (global::System.String)Value;
-        }
-        private object get_16_InfoBar_Message(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.Message;
-        }
-        private void set_16_InfoBar_Message(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.Message = (global::System.String)Value;
-        }
-        private object get_17_InfoBar_IsClosable(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.IsClosable;
-        }
-        private void set_17_InfoBar_IsClosable(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.IsClosable = (global::System.Boolean)Value;
-        }
-        private object get_18_InfoBar_ActionButton(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.ActionButton;
-        }
-        private void set_18_InfoBar_ActionButton(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.ActionButton = (global::Microsoft.UI.Xaml.Controls.Primitives.ButtonBase)Value;
-        }
-        private object get_19_InfoBar_CloseButtonCommand(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.CloseButtonCommand;
-        }
-        private void set_19_InfoBar_CloseButtonCommand(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.CloseButtonCommand = (global::System.Windows.Input.ICommand)Value;
-        }
-        private object get_20_InfoBar_CloseButtonCommandParameter(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.CloseButtonCommandParameter;
-        }
-        private void set_20_InfoBar_CloseButtonCommandParameter(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.CloseButtonCommandParameter = (global::System.Object)Value;
-        }
-        private object get_21_InfoBar_CloseButtonStyle(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.CloseButtonStyle;
-        }
-        private void set_21_InfoBar_CloseButtonStyle(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.CloseButtonStyle = (global::Microsoft.UI.Xaml.Style)Value;
-        }
-        private object get_22_InfoBar_ContentTemplate(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.ContentTemplate;
-        }
-        private void set_22_InfoBar_ContentTemplate(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.ContentTemplate = (global::Microsoft.UI.Xaml.DataTemplate)Value;
-        }
-        private object get_23_InfoBar_IconSource(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.IconSource;
-        }
-        private void set_23_InfoBar_IconSource(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.IconSource = (global::Microsoft.UI.Xaml.Controls.IconSource)Value;
-        }
-        private object get_24_InfoBar_IsIconVisible(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.IsIconVisible;
-        }
-        private void set_24_InfoBar_IsIconVisible(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            that.IsIconVisible = (global::System.Boolean)Value;
-        }
-        private object get_25_InfoBar_TemplateSettings(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
-            return that.TemplateSettings;
-        }
-        private object get_26_MainWindow_ViewModel(object instance)
+        private object get_12_MainWindow_ViewModel(object instance)
         {
             var that = (global::VisionaryOptimizer.MainWindow)instance;
             return that.ViewModel;
         }
-        private object get_27_TreeViewNode_Children(object instance)
+        private object get_13_TreeViewNode_Children(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Children;
         }
-        private object get_28_TreeViewNode_Content(object instance)
+        private object get_14_TreeViewNode_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Content;
         }
-        private void set_28_TreeViewNode_Content(object instance, object Value)
+        private void set_14_TreeViewNode_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_29_TreeViewNode_Depth(object instance)
+        private object get_15_TreeViewNode_Depth(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Depth;
         }
-        private object get_30_TreeViewNode_HasChildren(object instance)
+        private object get_16_TreeViewNode_HasChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasChildren;
         }
-        private object get_31_TreeViewNode_HasUnrealizedChildren(object instance)
+        private object get_17_TreeViewNode_HasUnrealizedChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasUnrealizedChildren;
         }
-        private void set_31_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
+        private void set_17_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.HasUnrealizedChildren = (global::System.Boolean)Value;
         }
-        private object get_32_TreeViewNode_IsExpanded(object instance)
+        private object get_18_TreeViewNode_IsExpanded(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.IsExpanded;
         }
-        private void set_32_TreeViewNode_IsExpanded(object instance, object Value)
+        private void set_18_TreeViewNode_IsExpanded(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.IsExpanded = (global::System.Boolean)Value;
         }
-        private object get_33_TreeViewNode_Parent(object instance)
+        private object get_19_TreeViewNode_Parent(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Parent;
@@ -1058,154 +833,56 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlMember.Getter = get_11_ProgressRing_Value;
                 xamlMember.Setter = set_11_ProgressRing_Value;
                 break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.Content":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Content", "Object");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_12_InfoBar_Content;
-                xamlMember.Setter = set_12_InfoBar_Content;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.IsOpen":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IsOpen", "Boolean");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_13_InfoBar_IsOpen;
-                xamlMember.Setter = set_13_InfoBar_IsOpen;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.Severity":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Severity", "Microsoft.UI.Xaml.Controls.InfoBarSeverity");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_14_InfoBar_Severity;
-                xamlMember.Setter = set_14_InfoBar_Severity;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.Title":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Title", "String");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_15_InfoBar_Title;
-                xamlMember.Setter = set_15_InfoBar_Title;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.Message":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Message", "String");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_16_InfoBar_Message;
-                xamlMember.Setter = set_16_InfoBar_Message;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.IsClosable":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IsClosable", "Boolean");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_17_InfoBar_IsClosable;
-                xamlMember.Setter = set_17_InfoBar_IsClosable;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.ActionButton":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "ActionButton", "Microsoft.UI.Xaml.Controls.Primitives.ButtonBase");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_18_InfoBar_ActionButton;
-                xamlMember.Setter = set_18_InfoBar_ActionButton;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.CloseButtonCommand":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "CloseButtonCommand", "System.Windows.Input.ICommand");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_19_InfoBar_CloseButtonCommand;
-                xamlMember.Setter = set_19_InfoBar_CloseButtonCommand;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.CloseButtonCommandParameter":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "CloseButtonCommandParameter", "Object");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_20_InfoBar_CloseButtonCommandParameter;
-                xamlMember.Setter = set_20_InfoBar_CloseButtonCommandParameter;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.CloseButtonStyle":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "CloseButtonStyle", "Microsoft.UI.Xaml.Style");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_21_InfoBar_CloseButtonStyle;
-                xamlMember.Setter = set_21_InfoBar_CloseButtonStyle;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.ContentTemplate":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "ContentTemplate", "Microsoft.UI.Xaml.DataTemplate");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_22_InfoBar_ContentTemplate;
-                xamlMember.Setter = set_22_InfoBar_ContentTemplate;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.IconSource":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IconSource", "Microsoft.UI.Xaml.Controls.IconSource");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_23_InfoBar_IconSource;
-                xamlMember.Setter = set_23_InfoBar_IconSource;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.IsIconVisible":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IsIconVisible", "Boolean");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_24_InfoBar_IsIconVisible;
-                xamlMember.Setter = set_24_InfoBar_IsIconVisible;
-                break;
-            case "Microsoft.UI.Xaml.Controls.InfoBar.TemplateSettings":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "TemplateSettings", "Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_25_InfoBar_TemplateSettings;
-                xamlMember.SetIsReadOnly();
-                break;
             case "VisionaryOptimizer.MainWindow.ViewModel":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("VisionaryOptimizer.MainWindow");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "ViewModel", "VisionaryOptimizer.ViewModels.MainViewModel");
-                xamlMember.Getter = get_26_MainWindow_ViewModel;
+                xamlMember.Getter = get_12_MainWindow_ViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Children":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Children", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>");
-                xamlMember.Getter = get_27_TreeViewNode_Children;
+                xamlMember.Getter = get_13_TreeViewNode_Children;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Content":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_28_TreeViewNode_Content;
-                xamlMember.Setter = set_28_TreeViewNode_Content;
+                xamlMember.Getter = get_14_TreeViewNode_Content;
+                xamlMember.Setter = set_14_TreeViewNode_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Depth":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Depth", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_29_TreeViewNode_Depth;
+                xamlMember.Getter = get_15_TreeViewNode_Depth;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasChildren":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "HasChildren", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_30_TreeViewNode_HasChildren;
+                xamlMember.Getter = get_16_TreeViewNode_HasChildren;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasUnrealizedChildren":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "HasUnrealizedChildren", "Boolean");
-                xamlMember.Getter = get_31_TreeViewNode_HasUnrealizedChildren;
-                xamlMember.Setter = set_31_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Getter = get_17_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Setter = set_17_TreeViewNode_HasUnrealizedChildren;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.IsExpanded":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_32_TreeViewNode_IsExpanded;
-                xamlMember.Setter = set_32_TreeViewNode_IsExpanded;
+                xamlMember.Getter = get_18_TreeViewNode_IsExpanded;
+                xamlMember.Setter = set_18_TreeViewNode_IsExpanded;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Parent":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Parent", "Microsoft.UI.Xaml.Controls.TreeViewNode");
-                xamlMember.Getter = get_33_TreeViewNode_Parent;
+                xamlMember.Getter = get_19_TreeViewNode_Parent;
                 xamlMember.SetIsReadOnly();
                 break;
             }
