@@ -1,0 +1,76 @@
+﻿<Window
+    x:Class="VisionaryOptimizer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewmodels="using:VisionaryOptimizer.ViewModels"
+    Title="Visionary Optimizer">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <NavigationView x:Name="NavView" PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" SelectionChanged="NavView_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Inicio" Tag="home">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE80F;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Input Response" Tag="input">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE144;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Red inteligente" Tag="network">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE701;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Servicios" Tag="services">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9D9;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Power Strategy" Tag="power">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE945;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <!-- Main Content Area -->
+            <Grid Padding="32">
+                <ScrollViewer>
+                    <StackPanel Spacing="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Visionary Optimizer" FontSize="36" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" FontSize="18" Foreground="{ThemeResource SystemAccentColor}" HorizontalAlignment="Center"/>
+                        
+                        <!-- Simple Summary View for 'home' -->
+                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                                BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,20,0,0">
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="Información Base de Datos (Offline)" FontWeight="SemiBold" FontSize="16" />
+                                <StackPanel Orientation="Horizontal" Spacing="40">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Tweaks Registro" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind ViewModel.RegistryTweakCount, Mode=OneWay}" FontSize="24" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Servicios Listados" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind ViewModel.ServiceCount, Mode=OneWay}" FontSize="24" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Wi-Fi Primario" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind ViewModel.WifiStatusText, Mode=OneWay}" FontSize="24" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Content="Aceptar y Ejecutar Optimización"
+                                Command="{x:Bind ViewModel.RunOptimizationCommand, Mode=OneWay}"
+                                Height="40" Margin="0,32,0,0" HorizontalAlignment="Stretch" Style="{ThemeResource AccentButtonStyle}" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </NavigationView>
+    </Grid>
+</Window>

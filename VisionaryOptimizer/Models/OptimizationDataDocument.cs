@@ -1,0 +1,152 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace VisionaryOptimizer.Models;
+
+/// <summary>Raíz deserializada de OptimizationData.json (fuente única de verdad offline).</summary>
+public sealed class OptimizationDataDocument
+{
+    [JsonPropertyName("schemaVersion")]
+    public int SchemaVersion { get; init; } = 1;
+
+    [JsonPropertyName("metadata")]
+    public OptimizationMetadata Metadata { get; init; } = new();
+
+    [JsonPropertyName("inputLatency")]
+    public InputLatencySection InputLatency { get; init; } = new();
+
+    [JsonPropertyName("networkTcp")]
+    public NetworkTcpSection NetworkTcp { get; init; } = new();
+
+    [JsonPropertyName("registryTweaks")]
+    public IList<RegistryTweakDefinition> RegistryTweaks { get; init; } = new List<RegistryTweakDefinition>();
+
+    [JsonPropertyName("services")]
+    public IList<ServiceDefinition> Services { get; init; } = new List<ServiceDefinition>();
+
+    [JsonPropertyName("cleaner")]
+    public CleanerSection Cleaner { get; init; } = new();
+}
+
+public sealed class CleanerSection
+{
+    [JsonPropertyName("description")]
+    public string Description { get; init; } = "";
+
+    [JsonPropertyName("tasks")]
+    public IList<CleanerTaskDefinition> Tasks { get; init; } = new List<CleanerTaskDefinition>();
+}
+
+public sealed class CleanerTaskDefinition
+{
+    [JsonPropertyName("id")]
+    public string Id { get; init; } = "";
+
+    [JsonPropertyName("displayLabel")]
+    public string DisplayLabel { get; init; } = "";
+
+    [JsonPropertyName("description")]
+    public string Description { get; init; } = "";
+
+    [JsonPropertyName("defaultRecommended")]
+    public bool DefaultRecommended { get; init; }
+
+    [JsonPropertyName("isDanger")]
+    public bool IsDanger { get; init; }
+}
+
+public sealed class OptimizationMetadata
+{
+    [JsonPropertyName("product")]
+    public string Product { get; init; } = "";
+
+    [JsonPropertyName("targetOs")]
+    public string TargetOs { get; init; } = "";
+
+    [JsonPropertyName("alignmentNotes")]
+    public IList<string> AlignmentNotes { get; init; } = new List<string>();
+}
+
+public sealed class InputLatencySection
+{
+    [JsonPropertyName("description")]
+    public string Description { get; init; } = "";
+
+    [JsonPropertyName("tweaks")]
+    public IList<RegistryTweakDefinition> Tweaks { get; init; } = new List<RegistryTweakDefinition>();
+}
+
+public sealed class NetworkTcpSection
+{
+    [JsonPropertyName("description")]
+    public string Description { get; init; } = "";
+
+    [JsonPropertyName("wifiCriticalServices")]
+    public IList<string> WifiCriticalServices { get; init; } = new List<string>();
+
+    [JsonPropertyName("tweaks")]
+    public IList<RegistryTweakDefinition> Tweaks { get; init; } = new List<RegistryTweakDefinition>();
+}
+
+public sealed class RegistryTweakDefinition
+{
+    [JsonPropertyName("id")]
+    public string Id { get; init; } = "";
+
+    [JsonPropertyName("displayName")]
+    public string DisplayName { get; init; } = "";
+
+    [JsonPropertyName("category")]
+    public string Category { get; init; } = "";
+
+    [JsonPropertyName("hive")]
+    public string Hive { get; init; } = "CurrentUser";
+
+    [JsonPropertyName("subKey")]
+    public string SubKey { get; init; } = "";
+
+    [JsonPropertyName("valueName")]
+    public string ValueName { get; init; } = "";
+
+    [JsonPropertyName("valueKind")]
+    public string ValueKind { get; init; } = "DWord";
+
+    [JsonPropertyName("valueData")]
+    public JsonElement? ValueData { get; init; }
+
+    [JsonPropertyName("requiresAdmin")]
+    public bool RequiresAdmin { get; init; }
+
+    [JsonPropertyName("rationale")]
+    public string Rationale { get; init; } = "";
+
+    [JsonPropertyName("sourceAlignment")]
+    public string SourceAlignment { get; init; } = "";
+}
+
+public sealed class ServiceDefinition
+{
+    [JsonPropertyName("id")]
+    public string Id { get; init; } = "";
+
+    [JsonPropertyName("serviceName")]
+    public string ServiceName { get; init; } = "";
+
+    [JsonPropertyName("displayLabel")]
+    public string DisplayLabel { get; init; } = "";
+
+    [JsonPropertyName("group")]
+    public string ServiceGroup { get; init; } = "";
+
+    [JsonPropertyName("defaultRecommended")]
+    public bool DefaultRecommended { get; init; }
+
+    [JsonPropertyName("neverDisableWhenWifi")]
+    public bool NeverDisableWhenWifi { get; init; }
+
+    [JsonPropertyName("requiresAdmin")]
+    public bool RequiresAdmin { get; init; } = true;
+
+    [JsonPropertyName("userDescription")]
+    public string UserDescription { get; init; } = "";
+}

@@ -1,0 +1,396 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+namespace VisionaryOptimizer.ViewModels;
+
+public sealed partial class InstallerViewModel : ObservableObject
+{
+    private readonly Action<bool, string> _setBusyStatus;
+
+    public InstallerViewModel(Action<bool, string> setBusyStatus)
+    {
+        _setBusyStatus = setBusyStatus;
+        InitializeApps();
+    }
+
+    [ObservableProperty]
+    private string _installerSearchText = string.Empty;
+    partial void OnInstallerSearchTextChanged(string value) => FilterApps();
+
+    [ObservableProperty]
+    private string _installerSelectedCategory = "Todas";
+    partial void OnInstallerSelectedCategoryChanged(string value) => FilterApps();
+
+    [ObservableProperty]
+    private string _installLogs = string.Empty;
+
+    public ObservableCollection<string> InstallerCategories { get; } = new() { "Todas" };
+    public ObservableCollection<AppItem> AllAppItems { get; } = new();
+    public ObservableCollection<AppItem> FilteredAppItems { get; } = new();
+
+    private void FilterApps()
+    {
+        FilteredAppItems.Clear();
+        foreach (var app in AllAppItems)
+        {
+            if (InstallerSelectedCategory != "Todas" && app.Category != InstallerSelectedCategory)
+                continue;
+
+            if (!string.IsNullOrWhiteSpace(InstallerSearchText) && 
+                !app.Name.Contains(InstallerSearchText, StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            FilteredAppItems.Add(app);
+        }
+    }
+
+    private void InitializeApps()
+    {
+        var appsData = new List<(string Cat, string Name, string Id)>
+        {
+            ("AI-Automation", "AI as Workspace", "NitroRCr.AIasWorkspace"),
+            ("AI-Automation", "ChatGPT", "OpenAI.ChatGPT"),
+            ("AI-Automation", "Claude", "Anthropic.Claude"),
+            ("AI-Automation", "Claude Code", "Anthropic.ClaudeCode"),
+            ("AI-Automation", "DeepL", "DeepL.DeepL"),
+            ("AI-Automation", "GitHub Copilot", "GitHub.Copilot"),
+            ("AI-Automation", "GPT4All", "nomic.gpt4all"),
+            ("AI-Automation", "Jan", "Jan.Jan"),
+            ("AI-Automation", "LM Studio", "ElementLabs.LMStudio"),
+            ("AI-Automation", "Microsoft AI Shell", "Microsoft.AIShell"),
+            ("AI-Automation", "Ollama", "Ollama.Ollama"),
+
+            ("Browsers", "Brave", "Brave.Brave"),
+            ("Browsers", "Chrome", "Google.Chrome"),
+            ("Browsers", "Chromium", "Hibbiki.Chromium"),
+            ("Browsers", "Edge", "Microsoft.Edge"),
+            ("Browsers", "Firefox", "Mozilla.Firefox"),
+            ("Browsers", "Firefox ESR", "Mozilla.Firefox.ESR"),
+            ("Browsers", "LibreWolf", "LibreWolf.LibreWolf"),
+            ("Browsers", "Thorium Browser AVX2", "Alex313031.Thorium.AVX2"),
+            ("Browsers", "Tor Browser", "TorProject.TorBrowser"),
+            ("Browsers", "Vivaldi", "Vivaldi.Vivaldi"),
+            ("Browsers", "Zen Browser", "Zen-Team.Zen-Browser"),
+
+            ("Communications", "Discord", "Discord.Discord"),
+            ("Communications", "Element", "Element.Element"),
+            ("Communications", "Proton Mail", "Proton.ProtonMail"),
+            ("Communications", "Signal", "OpenWhisperSystems.Signal"),
+            ("Communications", "Slack", "SlackTechnologies.Slack"),
+            ("Communications", "Telegram", "Telegram.TelegramDesktop"),
+            ("Communications", "Teams", "Microsoft.Teams"),
+            ("Communications", "Zoom", "Zoom.Zoom"),
+
+            ("Development", "Git", "Git.Git"),
+            ("Development", "GitHub Desktop", "GitHub.GitHubDesktop"),
+            ("Development", "JetBrains Toolbox", "JetBrains.Toolbox"),
+            ("Development", "NodeJS", "OpenJS.NodeJS"),
+            ("Development", "NodeJS LTS", "OpenJS.NodeJS.LTS"),
+            ("Development", "Python 3.14", "Python.Python.3.14"),
+            ("Development", "Visual Studio Code", "Microsoft.VisualStudioCode"),
+            ("Development", "Visual Studio 2022 Community", "Microsoft.VisualStudio.2022.Community"),
+            ("Development", "Docker Desktop", "Docker.DockerDesktop"),
+            ("Development", "Rust", "Rustlang.Rust.MSVC"),
+
+            ("Document", "LibreOffice", "TheDocumentFoundation.LibreOffice"),
+            ("Document", "Notepad++", "Notepad++.Notepad++"),
+            ("Document", "Obsidian", "Obsidian.Obsidian"),
+            ("Document", "ONLYOFFICE Desktop", "ONLYOFFICE.DesktopEditors"),
+            ("Document", "Sumatra PDF", "SumatraPDF.SumatraPDF"),
+
+            ("Games", "Steam", "Valve.Steam"),
+            ("Games", "Epic Games Launcher", "EpicGames.EpicGamesLauncher"),
+            ("Games", "GOG Galaxy", "GOG.Galaxy"),
+            ("Games", "Heroic Games Launcher", "HeroicGamesLauncher.HeroicGamesLauncher"),
+            ("Games", "Playnite", "Playnite.Playnite"),
+
+            ("Microsoft Tools", "PowerShell", "Microsoft.PowerShell"),
+            ("Microsoft Tools", "PowerToys", "Microsoft.PowerToys"),
+            ("Microsoft Tools", "Windows Terminal", "Microsoft.WindowsTerminal"),
+            ("Microsoft Tools", ".NET Desktop Runtime 8", "Microsoft.DotNet.DesktopRuntime.8"),
+            ("Microsoft Tools", ".NET Desktop Runtime 9", "Microsoft.DotNet.DesktopRuntime.9"),
+            ("Microsoft Tools", "Visual C++ 2015-2022 x64", "Microsoft.VCRedist.2015+.x64"),
+
+            ("Multimedia Tools", "VLC", "VideoLAN.VLC"),
+            ("Multimedia Tools", "OBS Studio", "OBSProject.OBSStudio"),
+            ("Multimedia Tools", "ShareX", "ShareX.ShareX"),
+            ("Multimedia Tools", "HandBrake", "HandBrake.HandBrake"),
+            ("Multimedia Tools", "Audacity", "Audacity.Audacity"),
+            ("Multimedia Tools", "GIMP", "GIMP.GIMP.3"),
+            ("Multimedia Tools", "yt-dlp", "yt-dlp.yt-dlp"),
+
+            ("Utilities", "7-Zip", "7zip.7zip"),
+            ("Utilities", "BleachBit", "BleachBit.BleachBit"),
+            ("Utilities", "Rufus", "Rufus.Rufus"),
+            ("Utilities", "WinSCP", "WinSCP.WinSCP"),
+            ("Utilities", "Wireshark", "WiresharkFoundation.Wireshark"),
+            ("Utilities", "Sandboxie Plus", "Sandboxie.Plus"),
+            ("Utilities", "Wise Program Uninstaller", "WiseCleaner.WiseProgramUninstaller"),
+            ("Utilities", "SpaceSniffer", "UderzoSoftware.SpaceSniffer")
+        };
+
+        var categories = appsData.Select(x => x.Cat).Distinct().OrderBy(x => x).ToList();
+        foreach (var c in categories) InstallerCategories.Add(c);
+
+        foreach (var item in appsData)
+        {
+            AllAppItems.Add(new AppItem 
+            { 
+                Category = item.Cat, 
+                Name = item.Name, 
+                WingetId = item.Id 
+            });
+        }
+
+        FilterApps();
+    }
+
+    [RelayCommand]
+    public async Task DetectInstalledAppsAsync()
+    {
+        SetBusy(true, "Detectando aplicaciones instaladas...");
+        InstallLogs = "Detectando aplicaciones instaladas mediante Winget...\n";
+
+        try
+        {
+            string output = await ExecuteWingetAsync("list");
+
+            if (output != "error")
+            {
+                foreach (var app in AllAppItems)
+                {
+                    app.IsInstalled = output.Contains(app.WingetId, StringComparison.OrdinalIgnoreCase);
+                }
+                Log("Detección completada.");
+                SetBusy(true, "Detección completada.");
+            }
+        }
+        finally
+        {
+            SetBusy(false, "Sistema listo");
+        }
+    }
+
+    [RelayCommand]
+    public async Task InstallSelectedAppsAsync()
+    {
+        var selected = AllAppItems.Where(a => a.IsSelected).ToList();
+        if(!selected.Any()) return;
+
+        SetBusy(true, "Iniciando instalación de lote...");
+        Log("Comenzando instalación de lote...");
+
+        try
+        {
+            foreach(var app in selected)
+            {
+                SetBusy(true, $"Iniciando instalación de {app.Name}...");
+                Log($"Iniciando instalación de {app.Name}...");
+
+                string res = await ExecuteWingetAsync($"install --id {app.WingetId} --silent --accept-package-agreements --accept-source-agreements --force");
+
+                if (res != "error" && !res.Contains("failed", StringComparison.OrdinalIgnoreCase))
+                {
+                    Log($"✅ Instalación completada exitosamente: {app.Name}");
+                }
+                else
+                {
+                    Log($"❌ Error en la instalación de {app.Name}");
+                }
+            }
+        }
+        finally
+        {
+            SetBusy(false, "Instalación de lote finalizada");
+            await DetectInstalledAppsAsync(); // Refresh
+        }
+    }
+
+    [RelayCommand]
+    public async Task UninstallSelectedAppsAsync()
+    {
+        var selected = AllAppItems.Where(a => a.IsSelected).ToList();
+        if(!selected.Any()) return;
+
+        SetBusy(true, "Comenzando desinstalación...");
+        Log("Comenzando desinstalación...");
+
+        try
+        {
+            foreach(var app in selected)
+            {
+                SetBusy(true, $"Iniciando desinstalación de {app.Name}...");
+                Log($"Iniciando desinstalación de {app.Name}...");
+
+                string res = await ExecuteWingetAsync($"uninstall --id {app.WingetId} --silent --accept-source-agreements --force");
+
+                if (res != "error")
+                {
+                    Log($"✅ Desinstalación completada exitosamente: {app.Name}");
+                }
+                else
+                {
+                    Log($"❌ Error en la desinstalación de {app.Name}");
+                }
+            }
+        }
+        finally
+        {
+            SetBusy(false, "Desinstalación de lote finalizada");
+            await DetectInstalledAppsAsync(); // Refresh
+        }
+    }
+
+    [RelayCommand]
+    public async Task UpdateAllAppsAsync()
+    {
+        SetBusy(true, "Buscando actualizaciones disponibles...");
+        Log("Buscando actualizaciones disponibles...");
+
+        try
+        {
+            string output = await ExecuteWingetAsync("upgrade --all --silent --accept-package-agreements --accept-source-agreements");
+            if (!output.Contains("No hay", StringComparison.OrdinalIgnoreCase))
+                Log("✅ Actualización completada.");
+        }
+        finally
+        {
+            SetBusy(false, "Actualización finalizada");
+            await DetectInstalledAppsAsync(); // Refresh
+        }
+    }
+
+    [RelayCommand]
+    public void SelectAllInstallApps(bool select)
+    {
+        foreach (var app in FilteredAppItems)
+        {
+            app.IsSelected = select;
+        }
+    }
+
+    private void Log(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message)) return;
+        InstallLogs += $"[{DateTime.Now:HH:mm:ss}] {message}\n";
+    }
+
+    private void SetBusy(bool isBusy, string message)
+    {
+        _setBusyStatus(isBusy, message);
+    }
+
+    private async Task<string> ExecuteWingetAsync(string arguments)
+    {
+        string downloadDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+        string fullArgs = arguments;
+        string script = $@"
+$ErrorActionPreference = 'SilentlyContinue'
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+$winget = (Get-Command winget.exe -ErrorAction SilentlyContinue).Source
+if (-not $winget) {{
+    $winget = Join-Path $env:LOCALAPPDATA 'Microsoft\WindowsApps\winget.exe'
+}}
+if (-not (Test-Path $winget)) {{
+    $winget = Join-Path $env:ProgramFiles 'WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe\winget.exe'
+}}
+& $winget {fullArgs}
+";
+        string encodedCommand = Convert.ToBase64String(System.Text.Encoding.Unicode.GetBytes(script));
+
+        var psi = new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = "powershell.exe",
+            Arguments = $"-NoProfile -ExecutionPolicy Bypass -EncodedCommand {encodedCommand}",
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            StandardOutputEncoding = System.Text.Encoding.UTF8,
+            StandardErrorEncoding = System.Text.Encoding.UTF8,
+            WorkingDirectory = downloadDir
+        };
+
+        var dispatcher = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+        var outputBuilder = new System.Text.StringBuilder();
+
+        try
+        {
+            using var process = System.Diagnostics.Process.Start(psi);
+            if (process == null) return "error";
+
+            Task ReadStreamAsync(System.IO.StreamReader reader)
+            {
+                return Task.Run(async () =>
+                {
+                    var buffer = new char[128];
+                    int read;
+                    var lineBuf = new System.Text.StringBuilder();
+
+                    while ((read = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        string chunk = new string(buffer, 0, read);
+                        outputBuilder.Append(chunk);
+
+                        foreach (char c in chunk)
+                        {
+                            if (c == '\r' || c == '\n')
+                            {
+                                if (lineBuf.Length > 0)
+                                {
+                                    string line = lineBuf.ToString().Trim();
+                                    lineBuf.Clear();
+
+                                    if (!string.IsNullOrEmpty(line))
+                                    {
+                                        string msg = line.Trim();
+                                        dispatcher.TryEnqueue(() => 
+                                        {
+                                            if (msg.Contains(""██"") || (msg.Contains(""%"") && msg.Length > 20))
+                                            {
+                                                SetBusy(true, msg); 
+                                            }
+                                            else 
+                                            {
+                                                Log(msg);
+                                                SetBusy(true, msg);
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                lineBuf.Append(c);
+                            }
+                        }
+                    }
+                    if (lineBuf.Length > 0)
+                    {
+                        string lastLine = lineBuf.ToString().Trim();
+                        dispatcher.TryEnqueue(() => { Log(lastLine); SetBusy(true, lastLine); });
+                    }
+                });
+            }
+
+            var t1 = ReadStreamAsync(process.StandardOutput);
+            var t2 = ReadStreamAsync(process.StandardError);
+
+            await process.WaitForExitAsync();
+            await Task.WhenAll(t1, t2);
+
+            return outputBuilder.ToString();
+        }
+        catch (Exception ex)
+        {
+            dispatcher.TryEnqueue(() => Log($""❌ Error Winget: {ex.Message}""));
+            return ""error"";
+        }
+    }
+}

@@ -1,0 +1,120 @@
+﻿using System.Text.Json;
+using Microsoft.Win32;
+using VisionaryOptimizer.Models;
+
+namespace VisionaryOptimizer.Services;
+
+/// <summary>Acceso al registro con comprobación previa y registro de incidencias.</summary>
+public sealed class RegistryService
+{
+    private readonly IOptimizationLogger _log;
+
+    public RegistryService(IOptimizationLogger log) => _log = log;
+
+    public async Task ApplyTweakAsync(RegistryTweakDefinition tweak, CancellationToken cancellationToken = default)
+    {
+        await _log.LogAsync("Registry", $"Aplicar:{tweak.Id}", "Inicio", cancellationToken).ConfigureAwait(false);
+
+        var outcome = await Task.Run(() => ApplyTweakCore(tweak), cancellationToken).ConfigureAwait(false);
+
+        await _log.LogAsync("Registry", $"Aplicar:{tweak.Id}", outcome, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>Regla de oro: si la clave no existe, no se crea; se devuelve mensaje para el log.</summary>
+    private static string ApplyTweakCore(RegistryTweakDefinition tweak)
+    {
+        try
+        {
+            using var root = GetRootKey(tweak.Hive);
+            if (root is null)
+                return "Colmena no soportada · omitido";
+
+            // Interceptar configuraciones per-interface para protocolos de Red (como las guías estándar de Leatrix/Fr33thy)
+            if (tweak.SubKey.EndsWith(@"Tcpip\Parameters\Interfaces", StringComparison.OrdinalIgnoreCase))
+            {
+                using var interfaceKey = root.OpenSubKey(tweak.SubKey, writable: true);
+                if (interfaceKey is null) return "Sin acceso de escritura · interfaces";
+
+                int appliedCount = 0;
+                var kind = ParseValueKind(tweak.ValueKind);
+                var value = ConvertValue(tweak.ValueData, kind);
+
+                foreach (var ifaceName in interfaceKey.GetSubKeyNames())
+                {
+                    using var ifaceNode = interfaceKey.OpenSubKey(ifaceName, writable: true);
+                    if (ifaceNode != null)
+                    {
+                        ifaceNode.SetValue(tweak.ValueName, value, kind);
+                        appliedCount++;
+                    }
+                }
+                return appliedCount > 0 ? $"OK en {appliedCount} interfaces" : "No hay interfaces";
+            }
+
+            // Flujo estándar Check-Before-Action
+            using var probe = root.OpenSubKey(tweak.SubKey, writable: false);
+            if (probe is null)
+                return "Clave no encontrada - Saltando";
+
+            using var writable = root.OpenSubKey(tweak.SubKey, writable: true);
+            if (writable is null)
+                return "Sin acceso de escritura · omitido";
+
+            var defaultKind = ParseValueKind(tweak.ValueKind);
+            var defaultValue = ConvertValue(tweak.ValueData, defaultKind);
+            writable.SetValue(tweak.ValueName, defaultValue, defaultKind);
+            return "OK";
+        }
+        catch (Exception ex)
+        {
+            return $"Error:{ex.Message}";
+        }
+    }
+
+    private static RegistryKey? GetRootKey(string hive) =>
+        hive.Trim() switch
+        {
+            "CurrentUser" => Registry.CurrentUser,
+            "LocalMachine" => Registry.LocalMachine,
+            "Users" => Registry.Users,
+            "ClassesRoot" => Registry.ClassesRoot,
+            _ => null,
+        };
+
+    private static RegistryValueKind ParseValueKind(string kind) =>
+        kind.Trim() switch
+        {
+            "String" or "REG_SZ" => RegistryValueKind.String,
+            "DWord" or "REG_DWORD" => RegistryValueKind.DWord,
+            "QWord" or "REG_QWORD" => RegistryValueKind.QWord,
+            "ExpandString" or "REG_EXPAND_SZ" => RegistryValueKind.ExpandString,
+            "MultiString" or "REG_MULTI_SZ" => RegistryValueKind.MultiString,
+            "Binary" or "REG_BINARY" => RegistryValueKind.Binary,
+            _ => RegistryValueKind.String,
+        };
+
+    private static object ConvertValue(JsonElement? data, RegistryValueKind kind)
+    {
+        if (data is null || !data.HasValue)
+            return string.Empty;
+
+        var el = data.Value;
+        if (el.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
+            return string.Empty;
+        return kind switch
+        {
+            RegistryValueKind.DWord => el.ValueKind == JsonValueKind.Number
+                ? el.GetInt32()
+                : int.TryParse(el.GetString(), out var d) ? d : 0,
+            RegistryValueKind.QWord => el.ValueKind == JsonValueKind.Number
+                ? el.GetInt64()
+                : long.TryParse(el.GetString(), out var q) ? q : 0L,
+            RegistryValueKind.MultiString => el.ValueKind == JsonValueKind.Array
+                ? el.EnumerateArray().Select(e => e.GetString() ?? "").ToArray()
+                : new[] { el.GetString() ?? "" },
+            _ => el.ValueKind == JsonValueKind.Number
+                ? el.GetRawText()
+                : el.GetString() ?? "",
+        };
+    }
+}

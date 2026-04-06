@@ -1,0 +1,137 @@
+﻿using System.Diagnostics;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using VisionaryOptimizer.Models;
+
+namespace VisionaryOptimizer.Services;
+
+/// <summary>Plan Visionary vía powercfg: duplicar esquema, aplicar GUIDs y activar.</summary>
+public sealed class PowerService
+{
+    private readonly IOptimizationLogger _log;
+
+    private static readonly Regex GuidRegex = new(
+        @"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+        RegexOptions.Compiled);
+
+    public PowerService(IOptimizationLogger log) => _log = log;
+
+    public async Task ApplyVisionaryPlanAsync(PowerPlanVisionaryDefinition plan, CancellationToken cancellationToken = default)
+    {
+        await _log.LogAsync("Power", "Visionary", "Inicio", cancellationToken).ConfigureAwait(false);
+
+        var baseScheme = ResolveBaseSchemeGuid(plan.BaseTemplate);
+        var newGuid = await DuplicateSchemeAsync(baseScheme, cancellationToken).ConfigureAwait(false);
+        if (newGuid is null)
+        {
+            await _log.LogAsync("Power", "DuplicarEsquema", "Fallo · sin GUID", cancellationToken).ConfigureAwait(false);
+            return;
+        }
+
+        await RunPowerCfgAsync($"/changename {newGuid} {Quote(plan.Name)}", cancellationToken).ConfigureAwait(false);
+
+        foreach (var s in plan.Settings)
+        {
+            if (!PowerSchemeGuids.TryResolveSubgroup(s.Subgroup, out var sub) ||
+                !PowerSchemeGuids.TryResolveSetting(s.SettingGuid, out var set))
+            {
+                await _log.LogAsync("Power", $"Map:{s.SettingGuid}",
+                    "Subgrupo o ajuste desconocido · omitido", cancellationToken).ConfigureAwait(false);
+                continue;
+            }
+
+            await RunPowerCfgAsync(
+                $"/setacvalueindex {newGuid} {sub} {set} {s.AcValue.Trim()}",
+                cancellationToken).ConfigureAwait(false);
+            await RunPowerCfgAsync(
+                $"/setdcvalueindex {newGuid} {sub} {set} {s.DcValue.Trim()}",
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        /* Respuesta de CPU más inmediata: política de inactividad del procesador (sin overclock). */
+        await RunPowerCfgAsync(
+            $"/setacvalueindex {newGuid} {PowerSchemeGuids.SubgroupProcessor} {PowerSchemeGuids.SettingProcessorIdlePolicy} 0",
+            cancellationToken).ConfigureAwait(false);
+        await RunPowerCfgAsync(
+            $"/setdcvalueindex {newGuid} {PowerSchemeGuids.SubgroupProcessor} {PowerSchemeGuids.SettingProcessorIdlePolicy} 0",
+            cancellationToken).ConfigureAwait(false);
+
+        await RunPowerCfgAsync($"/setactive {newGuid}", cancellationToken).ConfigureAwait(false);
+
+        await _log.LogAsync("Power", "Visionary", $"Activo · esquema {newGuid}", cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task RevertVisionaryPlanAsync(CancellationToken cancellationToken = default)
+    {
+        await _log.LogAsync("Power", "Visionary", "Reverting to Balanced", cancellationToken).ConfigureAwait(false);
+        // Equilibrado GUID defecto de Windows
+        await RunPowerCfgAsync("/setactive 381b4222-f694-41f0-9685-ff5bb260df2e", cancellationToken).ConfigureAwait(false);
+    }
+
+    private static string ResolveBaseSchemeGuid(string template) =>
+        template.Trim().ToUpperInvariant() switch
+        {
+            "SCHEME_MIN" or "HIGH" or "PERFORMANCE" => PowerSchemeGuids.SchemeHighPerformance,
+            _ => PowerSchemeGuids.SchemeHighPerformance,
+        };
+
+    private async Task<string?> DuplicateSchemeAsync(string baseGuid, CancellationToken cancellationToken)
+    {
+        var (exit, stdout, _) = await RunPowerCfgCaptureAsync($"/duplicatescheme {baseGuid}", cancellationToken)
+            .ConfigureAwait(false);
+        if (exit != 0)
+        {
+            await _log.LogAsync("Power", "/duplicatescheme", $"Exit:{exit} {stdout}", cancellationToken)
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        var m = GuidRegex.Match(stdout);
+        return m.Success ? m.Value : null;
+    }
+
+    private async Task RunPowerCfgAsync(string arguments, CancellationToken cancellationToken)
+    {
+        var (exit, stdout, stderr) = await RunPowerCfgCaptureAsync(arguments, cancellationToken).ConfigureAwait(false);
+        var tail = string.IsNullOrWhiteSpace(stderr) ? stdout : stderr;
+        await _log.LogAsync("Power", $"powercfg {arguments}", exit == 0 ? "OK" : $"Exit:{exit} {tail}", cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    private static async Task<(int Exit, string StdOut, string StdErr)> RunPowerCfgCaptureAsync(
+        string arguments,
+        CancellationToken cancellationToken)
+    {
+        return await Task.Run(
+            () =>
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = Path.Combine(Environment.SystemDirectory, "powercfg.exe"),
+                    Arguments = arguments,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+                using var p = Process.Start(psi);
+                if (p is null)
+                    return (-1, "", "No se pudo iniciar powercfg");
+
+                var stdout = p.StandardOutput.ReadToEnd();
+                var stderr = p.StandardError.ReadToEnd();
+                p.WaitForExit(120_000);
+                return (p.ExitCode, stdout, stderr);
+            },
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private static string Quote(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return "\"Visionary\"";
+        return name.Contains(' ', StringComparison.Ordinal)
+            ? $"\"{name.Replace("\"", "\\\"", StringComparison.Ordinal)}\""
+            : name;
+    }
+}

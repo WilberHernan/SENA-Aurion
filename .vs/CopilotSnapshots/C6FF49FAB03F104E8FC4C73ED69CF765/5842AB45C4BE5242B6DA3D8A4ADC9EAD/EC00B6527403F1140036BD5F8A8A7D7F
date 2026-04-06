@@ -1,0 +1,14 @@
+﻿<Window
+    x:Class="VisionaryOptimizer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Visionary Optimizer">
+
+    <Grid MinWidth="400" MinHeight="300">
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="24"
+            Text="Visionary Optimizer" />
+    </Grid>
+</Window>

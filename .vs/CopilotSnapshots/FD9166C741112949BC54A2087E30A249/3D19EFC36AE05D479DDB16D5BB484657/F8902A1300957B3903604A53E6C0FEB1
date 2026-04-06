@@ -1,0 +1,47 @@
+﻿using System;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
+using VisionaryOptimizer.Services;
+using VisionaryOptimizer.ViewModels;
+
+namespace VisionaryOptimizer;
+
+public sealed partial class MainWindow : Window
+{
+    public MainViewModel ViewModel { get; }
+
+    public MainWindow()
+    {
+        var log = new FileOptimizationLogger();
+        var registry = new RegistryService(log);
+        var services = new WindowsServiceOptimizer(log);
+        var engine = new OptimizationEngine(log, registry, services);
+        var provider = new JsonOptimizationDataProvider();
+
+        ViewModel = new MainViewModel(provider, engine);
+
+        this.InitializeComponent();
+
+        // 1. Integración de la Barra de Título moderna (Windows 11+)
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar(AppCustomTitleBar);
+
+        // 2. Selección automática de la primera pestaña al abrir
+        if (NavView != null && NavView.MenuItems.Count > 0)
+        {
+            NavView.SelectedItem = NavView.MenuItems[0];
+        }
+    }
+
+    private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    {
+        if (args.SelectedItem is NavigationViewItem item && item.Tag is string tag)
+        {
+            ViewModel.SelectedTag = tag;
+        }
+    }
+
+    // Convertidor directo de función para x:Bind en la ventana (más rápido y seguro en WinUI 3 para objetos Window)
+    public Visibility BoolToVisibility(bool isVisible) => isVisible ? Visibility.Visible : Visibility.Collapsed;
+}

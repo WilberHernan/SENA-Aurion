@@ -1,0 +1,119 @@
+﻿using System.ServiceProcess;
+using Microsoft.Win32;
+using VisionaryOptimizer.Models;
+
+namespace VisionaryOptimizer.Services;
+
+/// <summary>Gestión de servicios con ServiceController + registro Start; sin depender solo de consola.</summary>
+public sealed class WindowsServiceOptimizer
+{
+    private const int StartDisabled = 4;
+
+    private readonly IOptimizationLogger _log;
+
+    public WindowsServiceOptimizer(IOptimizationLogger log) => _log = log;
+
+    public async Task ApplyDisableIfRequestedAsync(
+        ServiceDefinition definition,
+        bool userWantsDisable,
+        bool blockByWifi,
+        CancellationToken cancellationToken = default)
+    {
+        var name = definition.ServiceName;
+        await _log.LogAsync("Servicios", $"Evaluar:{name}", "Inicio", cancellationToken).ConfigureAwait(false);
+
+        if (!userWantsDisable)
+        {
+            await _log.LogAsync("Servicios", $"Evaluar:{name}", "Usuario no solicitó deshabilitar · omitido", cancellationToken)
+                .ConfigureAwait(false);
+            return;
+        }
+
+        if (blockByWifi)
+        {
+            await _log.LogAsync("Servicios", $"BloqueoWiFi:{name}",
+                "Adaptador Wi‑Fi activo · no se modifica servicio crítico", cancellationToken).ConfigureAwait(false);
+            return;
+        }
+
+        var outcome = await Task.Run(() => TryDisableService(name), cancellationToken).ConfigureAwait(false);
+        await _log.LogAsync("Servicios", $"Deshabilitar:{name}", outcome, cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task RevertServicesAsync(IEnumerable<ServiceDefinition> services, CancellationToken cancellationToken = default)
+    {
+        await Task.Run(() => {
+            // Simular restauración a estado Auto (2) o Manual (3) para todos los deshabilitados
+            foreach (var svc in services)
+            {
+                try
+                {
+                    using var key = Registry.LocalMachine.OpenSubKey(
+                        $@"SYSTEM\CurrentControlSet\Services\{svc.ServiceName}", writable: true);
+                    if (key != null)
+                    {
+                        var start = key.GetValue("Start") as int? ?? 2;
+                        if (start == StartDisabled)
+                        {
+                            // 3 (Manual) es seguro para la mayoría de servicios de W11 revertidos
+                            key.SetValue("Start", 3, RegistryValueKind.DWord);
+                        }
+                    }
+                }
+                catch { }
+            }
+        }, cancellationToken);
+    }
+
+    private string TryDisableService(string serviceName)
+    {
+        try
+        {
+            using var sc = new ServiceController(serviceName);
+            _ = sc.Status;
+        }
+        catch (InvalidOperationException)
+        {
+            return "Servicio no encontrado · omitido";
+        }
+
+        var start = GetServiceStartType(serviceName);
+        if (start == StartDisabled)
+            return "Ya optimizado";
+
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(
+                $@"SYSTEM\CurrentControlSet\Services\{serviceName}", writable: true);
+            if (key is null)
+                return "Clave de servicio no encontrada - Saltando";
+
+            key.SetValue("Start", StartDisabled, RegistryValueKind.DWord);
+
+            using var sc = new ServiceController(serviceName);
+            if (sc.Status == ServiceControllerStatus.Running)
+                sc.Stop();
+            sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
+
+            return "Deshabilitado";
+        }
+        catch (Exception ex)
+        {
+            return $"Error:{ex.Message}";
+        }
+    }
+
+    private static int? GetServiceStartType(string serviceName)
+    {
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey($@"SYSTEM\CurrentControlSet\Services\{serviceName}");
+            var o = key?.GetValue("Start");
+            return o as int? ?? (o is long l ? (int)l : null);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+}

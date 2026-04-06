@@ -1,0 +1,50 @@
+﻿namespace VisionaryOptimizer.Services;
+
+/// <summary>GUID oficiales de subgrupos y ajustes de energía (powercfg).</summary>
+internal static class PowerSchemeGuids
+{
+    internal const string SubgroupProcessor = "54533251-82be-4824-96c1-47b60b740d00";
+    internal const string SubgroupSleep = "238c9fa8-0aad-41ed-83f4-97be242c8f20";
+    internal const string SubgroupUsb = "2a737441-1930-4402-8177-499ce86f4cd9";
+    internal const string SubgroupPciExpress = "501a4d13-42af-4429-9fd1-a8218c268e20";
+
+    internal const string SettingProcThrottleMin = "893dee8e-2bef-41e0-89c6-b55d0929964c";
+    internal const string SettingProcThrottleMax = "bc5038f7-23e0-4960-96da-33abaf5935ed";
+    internal const string SettingSleepIdle = "29f6c1db-86da-48c5-9fdb-03b6b82366f2";
+    internal const string SettingUsbSelectiveSuspend = "48e6b7b2-50f1-4d62-9d14-9d441d7d0d24";
+    internal const string SettingPciExpressAspm = "ee12f906-d277-404b-b6da-e5fa1a576df5";
+
+    /// <summary>Processor idle disable (respuesta más inmediata; menos estacionamiento agresivo).</summary>
+    internal const string SettingProcessorIdlePolicy = "0cc5b647-c1df-4637-891a-dec35c318583";
+
+    /// <summary>High Performance (plantilla base).</summary>
+    internal const string SchemeHighPerformance = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c";
+
+    internal static bool TryResolveSubgroup(string? code, out string guid)
+    {
+        guid = code?.Trim().ToUpperInvariant() switch
+        {
+            "SUB_PROCESSOR" => SubgroupProcessor,
+            "SUB_SLEEP" => SubgroupSleep,
+            "SUB_USB" => SubgroupUsb,
+            "SUB_PCIEXPRESS" => SubgroupPciExpress,
+            _ => "",
+        };
+        return guid.Length > 0;
+    }
+
+    internal static bool TryResolveSetting(string? code, out string guid)
+    {
+        guid = code?.Trim().ToUpperInvariant() switch
+        {
+            "PROCTHROTTLEMIN" => SettingProcThrottleMin,
+            "PROCTHROTTLEMAX" => SettingProcThrottleMax,
+            "STANDBYIDLE" => SettingSleepIdle,
+            "USBCASEH" => SettingUsbSelectiveSuspend,
+            "ASPM" => SettingPciExpressAspm,
+            "PROCESSORIDLEPOLICY" => SettingProcessorIdlePolicy,
+            _ => "",
+        };
+        return guid.Length > 0;
+    }
+}

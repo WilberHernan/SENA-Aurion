@@ -1,0 +1,23 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace VisionaryOptimizer.ViewModels;
+
+public sealed partial class AppItem : ObservableObject
+{
+    [ObservableProperty]
+    private string _name = string.Empty;
+
+    [ObservableProperty]
+    private string _wingetId = string.Empty;
+
+    [ObservableProperty]
+    private string _category = string.Empty;
+
+    [ObservableProperty]
+    private bool _isInstalled;
+
+    [ObservableProperty]
+    private bool _isSelected;
+
+    public Microsoft.UI.Xaml.Visibility InvertBool(bool val) => !val ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+}

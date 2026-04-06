@@ -1,0 +1,55 @@
+﻿using System;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
+using VisionaryOptimizer.Services;
+using VisionaryOptimizer.ViewModels;
+
+namespace VisionaryOptimizer;
+
+// Convertidor para facilitar el enlace de datos booleanos a visibilidad en la UI
+public sealed class BoolToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language) =>
+        (value is bool b && b) ? Visibility.Visible : Visibility.Collapsed;
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language) =>
+        throw new NotImplementedException();
+}
+
+public sealed partial class MainWindow : Window
+{
+    public MainViewModel ViewModel { get; }
+
+    public MainWindow()
+    {
+        var log = new FileOptimizationLogger();
+        var registry = new RegistryService(log);
+        var services = new WindowsServiceOptimizer(log);
+        var power = new PowerService(log);
+        var engine = new OptimizationEngine(log, registry, services, power);
+        var provider = new JsonOptimizationDataProvider();
+
+        ViewModel = new MainViewModel(provider, engine);
+
+        this.InitializeComponent();
+
+        // 1. Integración de la Barra de Título moderna (Windows 11+)
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar(AppCustomTitleBar);
+
+        // 2. Selección automática de la primera pestaña al abrir
+        if (NavView != null && NavView.MenuItems.Count > 0)
+        {
+            NavView.SelectedItem = NavView.MenuItems[0];
+        }
+    }
+
+    private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    {
+        if (args.SelectedItem is NavigationViewItem item && item.Tag is string tag)
+        {
+            ViewModel.SelectedTag = tag;
+        }
+    }
+}

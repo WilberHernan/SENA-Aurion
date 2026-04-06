@@ -1,0 +1,159 @@
+﻿using System;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
+using VisionaryOptimizer.Services;
+using VisionaryOptimizer.ViewModels;
+
+namespace VisionaryOptimizer;
+
+public sealed partial class MainWindow : Window
+{
+    public MainViewModel ViewModel { get; }
+
+    public MainWindow()
+    {
+        var log = new FileOptimizationLogger();
+        var registry = new RegistryService(log);
+        var services = new WindowsServiceOptimizer(log);
+        var engine = new OptimizationEngine(log, registry, services);
+        var provider = new JsonOptimizationDataProvider();
+
+        ViewModel = new MainViewModel(provider, engine);
+
+        try 
+        {
+            this.InitializeComponent();
+        }
+        catch (System.Exception ex)
+        {
+            // Escribir el fallo en pantalla
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            throw;
+        }
+
+        // 1. Integración de la Barra de Título moderna (Windows 11+)
+        try 
+        {
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppCustomTitleBar);
+        } catch { /* Fail quiet under unsupported shells */ }
+
+        // Removemos seleccion en NavView que ya no existe (reemplazado por Clic en Tabs si estuvieran atados en VM,
+        // Por ahora lo atamos a "home" forzado para carga inicial).
+        ViewModel.SelectedTag = "home";
+    }
+
+    private void TabButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.CommandParameter is string tag)
+        {
+            ViewModel.SelectedTag = tag;
+            
+            // Restablecer opacidad a 0.6 en todos los botones de tabs
+            if (btn.Parent is StackPanel panel)
+            {
+                foreach (var child in panel.Children)
+                {
+                    if (child is Button b)
+                    {
+                        b.Opacity = 0.6;
+                    }
+                }
+            }
+
+            // Resaltar el seleccionado con opacidad completa
+            btn.Opacity = 1.0;
+        }
+    }
+
+    private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    {
+        // ... (Mantengo la función por si hay algún binding oculto rezagado)
+    }
+
+    private void MainScroll_ViewChanged(object sender, ScrollViewerViewChangedEventArgs args)
+    {
+       // Removed topBlur Bottom Blur triggers completely.
+    }
+
+    private void Card_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        // Dejo intacto solo por prevenir un null reference de hover, las cards ahora transicionan en su Template
+    }
+
+    private void Card_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        // Nullified internal manual assignment (Using pure XAML animations now to prevent null dict exceptions)
+        if (sender is Border b)
+        {
+            try 
+            {
+               if(Application.Current.Resources.TryGetValue("GlassCardBackground", out object resource) && resource is Microsoft.UI.Xaml.Media.Brush bg)
+               {
+                   b.Background = bg;
+               }
+            } 
+            catch { /* Ignored logic errors on WinUI 3 Window launch layout cycles */ }
+        }
+    }
+
+    private void Btn_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 1.01;
+            trans.ScaleY = 1.01;
+        }
+    }
+
+    private void Btn_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 1.0;
+            trans.ScaleY = 1.0;
+        }
+    }
+
+    private void BtnSecondary_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            btn.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(30, 29, 184, 112));
+            trans.ScaleX = 1.01;
+            trans.ScaleY = 1.01;
+        }
+    }
+
+    private void BtnSecondary_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            btn.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            trans.ScaleX = 1.0;
+            trans.ScaleY = 1.0;
+        }
+    }
+
+    private void Btn_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 0.98;
+            trans.ScaleY = 0.98;
+        }
+    }
+
+    private void Btn_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 1.01;
+            trans.ScaleY = 1.01;
+        }
+    }
+
+    // Convertidor directo de función para x:Bind en la ventana (más rápido y seguro en WinUI 3 para objetos Window)
+    public Visibility BoolToVisibility(bool isVisible) => isVisible ? Visibility.Visible : Visibility.Collapsed;
+}

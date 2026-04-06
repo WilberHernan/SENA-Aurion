@@ -1,0 +1,289 @@
+﻿using System;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
+using VisionaryOptimizer.Services;
+using VisionaryOptimizer.ViewModels;
+
+namespace VisionaryOptimizer;
+
+public sealed partial class MainWindow : Window
+{
+    public MainViewModel ViewModel { get; }
+
+    public MainWindow()
+    {
+        var log = new FileOptimizationLogger();
+        var registry = new RegistryService(log);
+        var services = new WindowsServiceOptimizer(log);
+        var engine = new OptimizationEngine(log, registry, services);
+        var provider = new JsonOptimizationDataProvider();
+
+        ViewModel = new MainViewModel(provider, engine);
+
+        this.InitializeComponent();
+
+        // 1. Integración de la Barra de Título moderna (Windows 11+)
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar(AppCustomTitleBar);
+
+        // 2. Selección automática de la primera pestaña al abrir
+        if (NavView != null && NavView.MenuItems.Count > 0)
+        {
+            NavView.SelectedItem = NavView.MenuItems[0];
+        }
+    }
+
+    private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    {
+        if (args.SelectedItem is NavigationViewItem item && item.Tag is string tag)
+        {
+            ViewModel.SelectedTag = tag;
+        }
+    }
+
+    private void MainScroll_ViewChanged(object sender, ScrollViewerViewChangedEventArgs args)
+    {
+        if (sender is ScrollViewer scroll)
+        {
+            double current = scroll.VerticalOffset;
+            double max = scroll.ScrollableHeight;
+
+            // Busca los bordes en el layout (ya que en WinUI3 x:Name puede no mapearse directo a Window fields con facilidad sin FindName)
+            var topBlur = (Border)RootGrid.FindName("TopBlurBarrier");
+            var bottomBlur = (Border)RootGrid.FindName("BottomBlurBarrier");
+
+            if (topBlur != null && bottomBlur != null)
+            {
+                if (max > 0)
+                {
+                    topBlur.Opacity = Math.Min(1.0, current / 60.0);
+                    bottomBlur.Opacity = Math.Clamp((max - current) / 60.0, 0.0, 1.0);
+                }
+                else
+                {
+                    topBlur.Opacity = 0;
+                    bottomBlur.Opacity = 0;
+                }
+            }
+        }
+    }
+
+    private void Card_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Border b)
+        {
+            b.Background = Application.Current.Resources["GlassCardHoverBackground"] as Microsoft.UI.Xaml.Media.Brush;
+            b.BorderBrush = Application.Current.Resources["SenaSecondaryBrush"] as Microsoft.UI.Xaml.Media.Brush;
+            b.BorderThickness = new Thickness(1);
+        }
+    }
+
+    private void Card_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Border b)
+        {
+            // Revertir a estilo Glass dependiendo si era HomeCard o Premium Normal
+            bool isHome = b.BorderThickness.Top > 2; // Hack visual to detect the 6px top line
+            
+            b.Background = Application.Current.Resources["GlassCardBackground"] as Microsoft.UI.Xaml.Media.Brush;
+            if(!isHome)
+            {
+               b.BorderBrush = Application.Current.Resources["GlassCardBorder"] as Microsoft.UI.Xaml.Media.Brush;
+            }
+        }
+    }
+
+    private void Btn_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            btn.Background = Application.Current.Resources["SenaHoverButtonGradient"] as Microsoft.UI.Xaml.Media.Brush;
+            trans.ScaleX = 1.01;
+            trans.ScaleY = 1.01;
+        }
+    }
+
+    private void Btn_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            btn.Background = Application.Current.Resources["SenaButtonGradient"] as Microsoft.UI.Xaml.Media.Brush;
+            trans.ScaleX = 1.0;
+            trans.ScaleY = 1.0;
+        }
+    }
+
+    private void BtnSecondary_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            btn.Background = Application.Current.Resources["SenaAccentOpacityBrush"] as Microsoft.UI.Xaml.Media.Brush;
+            trans.ScaleX = 1.01;
+            trans.ScaleY = 1.01;
+        }
+    }
+
+    private void BtnSecondary_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            btn.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            trans.ScaleX = 1.0;
+            trans.ScaleY = 1.0;
+        }
+    }
+
+    private void Btn_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 0.98;
+            trans.ScaleY = 0.98;
+        }
+    }
+
+    private void Btn_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 1.01;
+            trans.ScaleY = 1.01;
+        }
+    }
+
+    private void CopyRow_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is FrameworkElement element)
+        {
+            Button? btn = null;
+            
+            // Si el nombre especifico The DataTemplate tiene CopyBtn default name
+            btn = element.FindName("CopyBtn") as Button;
+            
+            if (btn == null)
+            {
+                // Buscar sub-elementos manualmente (VisualTree Helper approach)
+                foreach(var child in ((StackPanel)element).Children)
+                {
+                    if (child is Button button)
+                    {
+                         btn = button;
+                         break;
+                    }
+                }
+            }
+
+            if (btn != null)
+                btn.Opacity = 1;
+        }
+    }
+
+    private void CopyRow_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is FrameworkElement element)
+        {
+            Button? btn = null;
+            
+            // Si el nombre especifico The DataTemplate tiene CopyBtn default name
+            btn = element.FindName("CopyBtn") as Button;
+            
+            if (btn == null)
+            {
+                // Buscar sub-elementos manualmente
+                foreach(var child in ((StackPanel)element).Children)
+                {
+                    if (child is Button button)
+                    {
+                         btn = button;
+                         break;
+                    }
+                }
+            }
+
+            if (btn != null)
+                btn.Opacity = 0;
+        }
+    }
+
+    private void CopyIcon_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn)
+        {
+            btn.Background = Application.Current.Resources["SenaAccentOpacityBrush"] as Microsoft.UI.Xaml.Media.Brush;
+            if (btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+            {
+                trans.ScaleX = 1.1;
+                trans.ScaleY = 1.1;
+            }
+        }
+    }
+
+    private void CopyIcon_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn)
+        {
+            btn.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            if (btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+            {
+                trans.ScaleX = 1.0;
+                trans.ScaleY = 1.0;
+            }
+        }
+    }
+
+    private void CopyIcon_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 0.95;
+            trans.ScaleY = 0.95;
+        }
+    }
+
+    private void CopyIcon_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn)
+        {
+            if (btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+            {
+                trans.ScaleX = 1.1;
+                trans.ScaleY = 1.1;
+            }
+            
+            // Clipboard logic
+            if (btn.Tag is string textToCopy && !string.IsNullOrWhiteSpace(textToCopy))
+            {
+                var package = new Windows.ApplicationModel.DataTransfer.DataPackage();
+                package.SetText(textToCopy);
+                Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(package);
+
+                ShowToastNotification($"Copiado: {textToCopy}");
+            }
+        }
+    }
+
+    private void ShowToastNotification(string message)
+    {
+        var toast = (Border)RootGrid.FindName("CopyToastNotification");
+        var toastText = (TextBlock)RootGrid.FindName("CopyToastText");
+        
+        if (toast != null && toastText != null)
+        {
+            toastText.Text = message;
+            toast.Opacity = 1;
+            toast.Visibility = Visibility.Visible;
+            
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.5) };
+            timer.Tick += (s, e) =>
+            {
+                toast.Opacity = 0;
+                timer.Stop();
+            };
+            timer.Start();
+        }
+    }
+
+    // Convertidor directo de función para x:Bind en la ventana (más rápido y seguro en WinUI 3 para objetos Window)
+    public Visibility BoolToVisibility(bool isVisible) => isVisible ? Visibility.Visible : Visibility.Collapsed;
+}

@@ -1,0 +1,23 @@
+﻿using Microsoft.UI.Xaml;
+using Microsoft.Windows.ApplicationModel.DynamicDependency;
+
+namespace VisionaryOptimizer;
+
+/// <summary>Punto de entrada WinUI 3 (unpackaged).</summary>
+public static class Program
+{
+    [STAThread]
+    private static void Main(string[] args)
+    {
+        // WASDK 1.6: Bootstrap.Initialize() ya no existe; TryInitialize alinea con el runtime del paquete NuGet.
+        const uint majorMinorVersion = 0x00010006;
+        const string versionTag = "";
+        var minVersion = new Microsoft.Windows.ApplicationModel.DynamicDependency.PackageVersion(0x1770010A08C10000UL);
+        var options = Bootstrap.InitializeOptions.OnNoMatch_ShowUI;
+        if (!Bootstrap.TryInitialize(majorMinorVersion, versionTag, minVersion, options, out int hr))
+            Environment.Exit(hr);
+
+        WinRT.ComWrappersSupport.InitializeComWrappers();
+        Application.Start(static _ => new App());
+    }
+}

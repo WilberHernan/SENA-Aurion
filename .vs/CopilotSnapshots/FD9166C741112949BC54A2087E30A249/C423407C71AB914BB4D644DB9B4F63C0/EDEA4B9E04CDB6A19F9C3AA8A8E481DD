@@ -1,0 +1,505 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+namespace VisionaryOptimizer.ViewModels;
+
+public sealed partial class InstallerViewModel : ObservableObject
+{
+    private readonly Action<bool, string> _setBusyStatus;
+    // Dispatcher guardado en constructor desde el hilo UI
+    private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcher;
+
+    public InstallerViewModel(Action<bool, string> setBusyStatus)
+    {
+        _setBusyStatus = setBusyStatus;
+        // Capturar dispatcher en el hilo UI (constructor siempre corre en UI)
+        _dispatcher = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+        InitializeApps();
+    }
+
+    [ObservableProperty]
+    private string _installerSearchText = string.Empty;
+    partial void OnInstallerSearchTextChanged(string value) => FilterApps();
+
+    [ObservableProperty]
+    private string _installerSelectedCategory = "Todas";
+    partial void OnInstallerSelectedCategoryChanged(string value) => FilterApps();
+
+    [ObservableProperty]
+    private string _installLogs = string.Empty;
+
+    public ObservableCollection<string> InstallerCategories { get; } = new() { "Todas" };
+    public ObservableCollection<AppItem> AllAppItems { get; } = new();
+    public ObservableCollection<AppItem> FilteredAppItems { get; } = new();
+
+    private void FilterApps()
+    {
+        FilteredAppItems.Clear();
+        foreach (var app in AllAppItems)
+        {
+            if (InstallerSelectedCategory != "Todas" && app.Category != InstallerSelectedCategory)
+                continue;
+            if (!string.IsNullOrWhiteSpace(InstallerSearchText) &&
+                !app.Name.Contains(InstallerSearchText, StringComparison.OrdinalIgnoreCase))
+                continue;
+            FilteredAppItems.Add(app);
+        }
+    }
+
+    private void InitializeApps()
+    {
+        var appsData = new List<(string Cat, string Name, string Id)>
+        {
+            ("AI-Automation", "AI as Workspace", "NitroRCr.AIasWorkspace"),
+            ("AI-Automation", "ChatGPT", "OpenAI.ChatGPT"),
+            ("AI-Automation", "Claude", "Anthropic.Claude"),
+            ("AI-Automation", "Claude Code", "Anthropic.ClaudeCode"),
+            ("AI-Automation", "DeepL", "DeepL.DeepL"),
+            ("AI-Automation", "GitHub Copilot", "GitHub.Copilot"),
+            ("AI-Automation", "GPT4All", "nomic.gpt4all"),
+            ("AI-Automation", "Jan", "Jan.Jan"),
+            ("AI-Automation", "LM Studio", "ElementLabs.LMStudio"),
+            ("AI-Automation", "Microsoft AI Shell", "Microsoft.AIShell"),
+            ("AI-Automation", "Ollama", "Ollama.Ollama"),
+            ("Browsers", "Brave", "Brave.Brave"),
+            ("Browsers", "Chrome", "Google.Chrome"),
+            ("Browsers", "Chromium", "Hibbiki.Chromium"),
+            ("Browsers", "Edge", "Microsoft.Edge"),
+            ("Browsers", "Firefox", "Mozilla.Firefox"),
+            ("Browsers", "Firefox ESR", "Mozilla.Firefox.ESR"),
+            ("Browsers", "LibreWolf", "LibreWolf.LibreWolf"),
+            ("Browsers", "Thorium Browser AVX2", "Alex313031.Thorium.AVX2"),
+            ("Browsers", "Tor Browser", "TorProject.TorBrowser"),
+            ("Browsers", "Vivaldi", "Vivaldi.Vivaldi"),
+            ("Browsers", "Zen Browser", "Zen-Team.Zen-Browser"),
+            ("Communications", "Discord", "Discord.Discord"),
+            ("Communications", "Element", "Element.Element"),
+            ("Communications", "Proton Mail", "Proton.ProtonMail"),
+            ("Communications", "Signal", "OpenWhisperSystems.Signal"),
+            ("Communications", "Slack", "SlackTechnologies.Slack"),
+            ("Communications", "Telegram", "Telegram.TelegramDesktop"),
+            ("Communications", "Teams", "Microsoft.Teams"),
+            ("Communications", "Zoom", "Zoom.Zoom"),
+            ("Development", "Git", "Git.Git"),
+            ("Development", "GitHub Desktop", "GitHub.GitHubDesktop"),
+            ("Development", "JetBrains Toolbox", "JetBrains.Toolbox"),
+            ("Development", "NodeJS", "OpenJS.NodeJS"),
+            ("Development", "NodeJS LTS", "OpenJS.NodeJS.LTS"),
+            ("Development", "Python 3.14", "Python.Python.3.14"),
+            ("Development", "Visual Studio Code", "Microsoft.VisualStudioCode"),
+            ("Development", "Visual Studio 2022 Community", "Microsoft.VisualStudio.2022.Community"),
+            ("Development", "Docker Desktop", "Docker.DockerDesktop"),
+            ("Development", "Rust", "Rustlang.Rust.MSVC"),
+            ("Document", "LibreOffice", "TheDocumentFoundation.LibreOffice"),
+            ("Document", "Notepad++", "Notepad++.Notepad++"),
+            ("Document", "Obsidian", "Obsidian.Obsidian"),
+            ("Document", "ONLYOFFICE Desktop", "ONLYOFFICE.DesktopEditors"),
+            ("Document", "Sumatra PDF", "SumatraPDF.SumatraPDF"),
+            ("Games", "Steam", "Valve.Steam"),
+            ("Games", "Epic Games Launcher", "EpicGames.EpicGamesLauncher"),
+            ("Games", "GOG Galaxy", "GOG.Galaxy"),
+            ("Games", "Heroic Games Launcher", "HeroicGamesLauncher.HeroicGamesLauncher"),
+            ("Games", "Playnite", "Playnite.Playnite"),
+            ("Microsoft Tools", "PowerShell", "Microsoft.PowerShell"),
+            ("Microsoft Tools", "PowerToys", "Microsoft.PowerToys"),
+            ("Microsoft Tools", "Windows Terminal", "Microsoft.WindowsTerminal"),
+            ("Microsoft Tools", ".NET Desktop Runtime 8", "Microsoft.DotNet.DesktopRuntime.8"),
+            ("Microsoft Tools", ".NET Desktop Runtime 9", "Microsoft.DotNet.DesktopRuntime.9"),
+            ("Microsoft Tools", "Visual C++ 2015-2022 x64", "Microsoft.VCRedist.2015+.x64"),
+            ("Multimedia Tools", "VLC", "VideoLAN.VLC"),
+            ("Multimedia Tools", "OBS Studio", "OBSProject.OBSStudio"),
+            ("Multimedia Tools", "ShareX", "ShareX.ShareX"),
+            ("Multimedia Tools", "HandBrake", "HandBrake.HandBrake"),
+            ("Multimedia Tools", "Audacity", "Audacity.Audacity"),
+            ("Multimedia Tools", "GIMP", "GIMP.GIMP.3"),
+            ("Multimedia Tools", "yt-dlp", "yt-dlp.yt-dlp"),
+            ("Utilities", "7-Zip", "7zip.7zip"),
+            ("Utilities", "BleachBit", "BleachBit.BleachBit"),
+            ("Utilities", "Rufus", "Rufus.Rufus"),
+            ("Utilities", "WinSCP", "WinSCP.WinSCP"),
+            ("Utilities", "Wireshark", "WiresharkFoundation.Wireshark"),
+            ("Utilities", "Sandboxie Plus", "Sandboxie.Plus"),
+            ("Utilities", "Wise Program Uninstaller", "WiseCleaner.WiseProgramUninstaller"),
+            ("Utilities", "SpaceSniffer", "UderzoSoftware.SpaceSniffer")
+        };
+
+        var categories = appsData.Select(x => x.Cat).Distinct().OrderBy(x => x).ToList();
+        foreach (var c in categories) InstallerCategories.Add(c);
+        foreach (var item in appsData)
+            AllAppItems.Add(new AppItem { Category = item.Cat, Name = item.Name, WingetId = item.Id });
+
+        FilterApps();
+    }
+
+    // ─────────────────────────────────────────────
+    //  COMANDOS PÚBLICOS
+    // ─────────────────────────────────────────────
+
+    [RelayCommand]
+    public async Task DetectInstalledAppsAsync()
+    {
+        SetBusy(true, "Detectando aplicaciones instaladas...");
+        LogUI("Detectando aplicaciones instaladas mediante Winget...");
+
+        try
+        {
+            // list NO necesita elevación → modo normal sin runas
+            string output = await RunWingetReadAsync("list --accept-source-agreements");
+
+            if (!string.IsNullOrEmpty(output) && output != "error")
+            {
+                foreach (var app in AllAppItems)
+                    app.IsInstalled = output.Contains(app.WingetId, StringComparison.OrdinalIgnoreCase);
+
+                LogUI("✅ Detección completada.");
+            }
+            else
+            {
+                LogUI("⚠️ No se pudo obtener la lista de aplicaciones. ¿Winget está instalado?");
+            }
+        }
+        catch (Exception ex)
+        {
+            LogUI($"❌ Error detección: {ex.Message}");
+        }
+        finally
+        {
+            SetBusy(false, "Sistema listo");
+        }
+    }
+
+    [RelayCommand]
+    public async Task InstallSelectedAppsAsync()
+    {
+        var selected = AllAppItems.Where(a => a.IsSelected).ToList();
+        if (!selected.Any()) return;
+
+        SetBusy(true, "Iniciando instalación de lote...");
+        LogUI("Comenzando instalación de lote...");
+
+        try
+        {
+            // Construir script que instala todos en secuencia y escribe log a archivo
+            string logFile = System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), $"winget_install_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+
+            var lines = new System.Text.StringBuilder();
+            lines.AppendLine("[Console]::OutputEncoding = [System.Text.Encoding]::UTF8");
+            lines.AppendLine($"$log = '{logFile}'");
+            lines.AppendLine("function WLog($m) { $ts = Get-Date -Format 'HH:mm:ss'; \"[$ts] $m\" | Tee-Object -FilePath $log -Append | Write-Host }");
+
+            foreach (var app in selected)
+            {
+                lines.AppendLine($"WLog 'INICIO: {app.Name}'");
+                lines.AppendLine($"winget install --id {app.WingetId} --silent --accept-package-agreements --accept-source-agreements --force");
+                lines.AppendLine($"if ($LASTEXITCODE -eq 0) {{ WLog 'OK: {app.Name}' }} else {{ WLog \"ERROR: {app.Name} (exit $LASTEXITCODE)\" }}");
+            }
+
+            lines.AppendLine("WLog 'BATCH_DONE'");
+
+            await RunElevatedScriptWithLogTailAsync(lines.ToString(), logFile, selected.Count);
+        }
+        finally
+        {
+            SetBusy(false, "Instalación finalizada");
+            await DetectInstalledAppsAsync();
+        }
+    }
+
+    [RelayCommand]
+    public async Task UninstallSelectedAppsAsync()
+    {
+        var selected = AllAppItems.Where(a => a.IsSelected).ToList();
+        if (!selected.Any()) return;
+
+        SetBusy(true, "Comenzando desinstalación...");
+        LogUI("Comenzando desinstalación...");
+
+        try
+        {
+            string logFile = System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), $"winget_uninstall_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+
+            var lines = new System.Text.StringBuilder();
+            lines.AppendLine("[Console]::OutputEncoding = [System.Text.Encoding]::UTF8");
+            lines.AppendLine($"$log = '{logFile}'");
+            lines.AppendLine("function WLog($m) { $ts = Get-Date -Format 'HH:mm:ss'; \"[$ts] $m\" | Tee-Object -FilePath $log -Append | Write-Host }");
+
+            foreach (var app in selected)
+            {
+                lines.AppendLine($"WLog 'INICIO_DESINST: {app.Name}'");
+                lines.AppendLine($"winget uninstall --id {app.WingetId} --silent --accept-source-agreements --force");
+                lines.AppendLine($"if ($LASTEXITCODE -eq 0) {{ WLog 'OK_DESINST: {app.Name}' }} else {{ WLog \"ERROR_DESINST: {app.Name} (exit $LASTEXITCODE)\" }}");
+            }
+
+            lines.AppendLine("WLog 'BATCH_DONE'");
+
+            await RunElevatedScriptWithLogTailAsync(lines.ToString(), logFile, selected.Count);
+        }
+        finally
+        {
+            SetBusy(false, "Desinstalación finalizada");
+            await DetectInstalledAppsAsync();
+        }
+    }
+
+    [RelayCommand]
+    public async Task UpdateAllAppsAsync()
+    {
+        SetBusy(true, "Buscando actualizaciones...");
+        LogUI("Buscando actualizaciones disponibles...");
+
+        try
+        {
+            string logFile = System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), $"winget_upgrade_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+
+            string script = $@"
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$log = '{logFile}'
+function WLog($m) {{ $ts = Get-Date -Format 'HH:mm:ss'; ""[$ts] $m"" | Tee-Object -FilePath $log -Append | Write-Host }}
+WLog 'Actualizando todos los paquetes...'
+winget upgrade --all --silent --accept-package-agreements --accept-source-agreements
+if ($LASTEXITCODE -eq 0) {{ WLog 'OK: Actualización completada' }} else {{ WLog ""WARN: winget upgrade terminó con código $LASTEXITCODE"" }}
+WLog 'BATCH_DONE'
+";
+            await RunElevatedScriptWithLogTailAsync(script, logFile, 1);
+        }
+        finally
+        {
+            SetBusy(false, "Actualización finalizada");
+            await DetectInstalledAppsAsync();
+        }
+    }
+
+    [RelayCommand]
+    public void SelectAllInstallApps(bool select)
+    {
+        foreach (var app in FilteredAppItems)
+            app.IsSelected = select;
+    }
+
+    // ─────────────────────────────────────────────
+    //  MOTOR PRINCIPAL — script elevado + tail de log
+    // ─────────────────────────────────────────────
+
+    /// <summary>
+    /// Escribe el script a un .ps1 temporal, lo lanza con -Verb runas (UAC)
+    /// y mientras corre va leyendo el archivo de log para mostrar progreso en UI.
+    /// </summary>
+    private async Task RunElevatedScriptWithLogTailAsync(string scriptContent, string logFile, int appCount)
+    {
+        // 1. Escribir script temporal
+        string scriptPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(),
+            $"vo_winget_{Guid.NewGuid():N}.ps1");
+
+        await System.IO.File.WriteAllTextAsync(scriptPath, scriptContent, System.Text.Encoding.UTF8);
+
+        // 2. Lanzar PowerShell elevado (UAC) — NO redirigir stdout, eso bloquea runas
+        var psi = new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = "powershell.exe",
+            Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\"",
+            UseShellExecute = true,   // REQUERIDO para Verb runas
+            Verb = "runas",           // Pide elevación UAC
+            WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+            CreateNoWindow = false    // Con runas no funciona CreateNoWindow=true
+        };
+
+        System.Diagnostics.Process? process;
+        try
+        {
+            process = System.Diagnostics.Process.Start(psi);
+        }
+        catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
+        {
+            // Usuario canceló el UAC
+            LogUI("⚠️ Operación cancelada: el usuario rechazó la elevación UAC.");
+            return;
+        }
+
+        if (process == null)
+        {
+            LogUI("❌ No se pudo iniciar el proceso de instalación.");
+            return;
+        }
+
+        // 3. Tail del log mientras el proceso corre
+        long lastPos = 0;
+        int doneCount = 0;
+
+        while (!process.HasExited)
+        {
+            await Task.Delay(300);
+            (lastPos, doneCount) = ReadNewLogLines(logFile, lastPos, doneCount, appCount);
+        }
+
+        // Leer líneas finales tras el exit
+        await Task.Delay(500);
+        ReadNewLogLines(logFile, lastPos, doneCount, appCount);
+
+        // 4. Limpiar script temporal
+        try { System.IO.File.Delete(scriptPath); } catch { /* no crítico */ }
+    }
+
+    /// <summary>
+    /// Lee líneas nuevas del archivo de log y las muestra en UI.
+    /// Devuelve la nueva posición y contador de apps completadas.
+    /// </summary>
+    private (long newPos, int newDone) ReadNewLogLines(string logFile, long pos, int done, int total)
+    {
+        if (!System.IO.File.Exists(logFile)) return (pos, done);
+
+        try
+        {
+            using var fs = new System.IO.FileStream(logFile,
+                System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite);
+            fs.Seek(pos, System.IO.SeekOrigin.Begin);
+
+            using var sr = new System.IO.StreamReader(fs, System.Text.Encoding.UTF8);
+            string? line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                string trimmed = line.Trim();
+                if (string.IsNullOrEmpty(trimmed)) { pos = fs.Position; continue; }
+
+                if (trimmed.Contains("OK:") || trimmed.Contains("OK_DESINST:"))
+                {
+                    done++;
+                    LogUI($"✅ {trimmed}");
+                    SetBusy(true, $"Completadas {done}/{total}");
+                }
+                else if (trimmed.Contains("ERROR:") || trimmed.Contains("ERROR_DESINST:"))
+                {
+                    LogUI($"❌ {trimmed}");
+                }
+                else if (trimmed.Contains("BATCH_DONE"))
+                {
+                    LogUI("🎉 Todas las operaciones completadas.");
+                }
+                else
+                {
+                    LogUI(trimmed);
+                    SetBusy(true, trimmed.Length > 80 ? trimmed[..80] + "…" : trimmed);
+                }
+
+                pos = fs.Position;
+            }
+        }
+        catch { /* archivo puede estar bloqueado momentáneamente */ }
+
+        return (pos, done);
+    }
+
+    // ─────────────────────────────────────────────
+    //  LECTURA SIN ELEVACIÓN (para winget list)
+    // ─────────────────────────────────────────────
+
+    private async Task<string> RunWingetReadAsync(string arguments)
+    {
+        // Resolución robusta de winget.exe
+        string wingetPath = FindWinget();
+        if (string.IsNullOrEmpty(wingetPath))
+        {
+            LogUI("❌ winget.exe no encontrado. Instala App Installer desde la Microsoft Store.");
+            return "error";
+        }
+
+        var psi = new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = wingetPath,
+            Arguments = arguments,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            StandardOutputEncoding = System.Text.Encoding.UTF8,
+            StandardErrorEncoding = System.Text.Encoding.UTF8
+        };
+
+        try
+        {
+            using var process = System.Diagnostics.Process.Start(psi);
+            if (process == null) return "error";
+
+            string stdout = await process.StandardOutput.ReadToEndAsync();
+            string stderr = await process.StandardError.ReadToEndAsync();
+            await process.WaitForExitAsync();
+
+            return stdout + stderr;
+        }
+        catch (Exception ex)
+        {
+            LogUI($"❌ Error ejecutando winget: {ex.Message}");
+            return "error";
+        }
+    }
+
+    private static string FindWinget()
+    {
+        // 1. En PATH
+        try
+        {
+            var r = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "where.exe",
+                Arguments = "winget.exe",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            });
+            if (r != null)
+            {
+                string path = r.StandardOutput.ReadLine()?.Trim() ?? "";
+                r.WaitForExit();
+                if (System.IO.File.Exists(path)) return path;
+            }
+        }
+        catch { }
+
+        // 2. WindowsApps del usuario actual
+        string localApp = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            @"Microsoft\WindowsApps\winget.exe");
+        if (System.IO.File.Exists(localApp)) return localApp;
+
+        // 3. Buscar en WindowsApps (puede haber múltiples versiones)
+        string windowsApps = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+            "WindowsApps");
+        if (System.IO.Directory.Exists(windowsApps))
+        {
+            try
+            {
+                var candidates = System.IO.Directory.GetFiles(
+                    windowsApps, "winget.exe", System.IO.SearchOption.AllDirectories);
+                if (candidates.Length > 0) return candidates[^1]; // última versión
+            }
+            catch { }
+        }
+
+        return string.Empty;
+    }
+
+    // ─────────────────────────────────────────────
+    //  HELPERS UI-THREAD SAFE
+    // ─────────────────────────────────────────────
+
+    private void LogUI(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message)) return;
+        string entry = $"[{DateTime.Now:HH:mm:ss}] {message}\n";
+
+        _dispatcher.TryEnqueue(() => InstallLogs += entry);
+    }
+
+    private void SetBusy(bool isBusy, string message)
+    {
+        _dispatcher.TryEnqueue(() => _setBusyStatus(isBusy, message));
+    }
+}

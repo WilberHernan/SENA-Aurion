@@ -1,0 +1,143 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.UI.Xaml.Media;
+using System.Text.Json;
+
+namespace VisionaryOptimizer.ViewModels;
+
+public partial class TweakItemViewModel : ObservableObject
+{
+    [ObservableProperty]
+    private bool _isSelected;
+
+    [ObservableProperty]
+    private string _displayName = string.Empty;
+
+    [ObservableProperty]
+    private string _description = string.Empty;
+
+    [ObservableProperty]
+    private string _currentStateText = string.Empty;
+
+    [ObservableProperty]
+    private bool _isOptimized;
+
+    public virtual void RefreshState() { }
+}
+
+public partial class RegistryTweakViewModel : TweakItemViewModel
+{
+    public Models.RegistryTweakDefinition Definition { get; }
+
+    public RegistryTweakViewModel(Models.RegistryTweakDefinition def)
+    {
+        Definition = def;
+        DisplayName = def.DisplayName;
+        Description = def.Rationale;
+        RefreshState();
+    }
+
+    public override void RefreshState()
+    {
+        try
+        {
+            using var root = Services.RegistryService.GetRootKey(Definition.Hive);
+            if (root == null)
+            {
+                CurrentStateText = "Formato de clave inválido";
+                return;
+            }
+
+            if (Definition.SubKey.EndsWith(@"Tcpip\Parameters\Interfaces", System.StringComparison.OrdinalIgnoreCase))
+            {
+                // Especial TCP 
+                using var interfaceKey = root.OpenSubKey(Definition.SubKey, false);
+                if (interfaceKey != null)
+                {
+                    bool anyOptimized = false;
+                    string val = "Original";
+                    foreach (var name in interfaceKey.GetSubKeyNames())
+                    {
+                        using var sub = interfaceKey.OpenSubKey(name, false);
+                        var v = sub?.GetValue(Definition.ValueName);
+                        if (v != null)
+                        {
+                            val = v.ToString() ?? "";
+                            if (val == Definition.ValueData?.ToString()) anyOptimized = true;
+                        }
+                    }
+                    IsOptimized = anyOptimized;
+                    CurrentStateText = $"[ACTUAL: {(IsOptimized ? val + " ✓ optimizado" : val + " ⚠️ original")}]";
+                }
+                else
+                {
+                    CurrentStateText = "[ACTUAL: No existe]";
+                }
+                return;
+            }
+
+            using var probe = root.OpenSubKey(Definition.SubKey, false);
+            var currentVal = probe?.GetValue(Definition.ValueName);
+            if (currentVal == null)
+            {
+                CurrentStateText = "[ACTUAL: No aplicado ⚠️ original]";
+                IsOptimized = false;
+            }
+            else
+            {
+                var currentStr = currentVal.ToString();
+                var targetStr = Definition.ValueData?.ToString() ?? "";
+                IsOptimized = currentStr == targetStr;
+                CurrentStateText = $"[ACTUAL: {currentStr} {(IsOptimized ? "✓ optimizado" : "⚠️ original")}]";
+            }
+        }
+        catch
+        {
+            CurrentStateText = "[ACTUAL: Error de lectura]";
+        }
+    }
+}
+
+public partial class ServiceTweakModel : TweakItemViewModel
+{
+    public Models.ServiceDefinition Definition { get; }
+    public bool IsWifiLocked { get; }
+    public bool IsToggleEnabled => !IsWifiLocked;
+    public Microsoft.UI.Xaml.Visibility IsWifiLockedVisibility => IsWifiLocked ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    public ServiceTweakModel(Models.ServiceDefinition def, bool locked)
+    {
+        Definition = def;
+        IsWifiLocked = locked;
+        DisplayName = def.DisplayLabel;
+        Description = def.UserDescription;
+        RefreshState();
+    }
+
+    public override void RefreshState()
+    {
+        CurrentStateText = $"[ACTUAL: {Services.SystemStateMonitor.GetServiceStatus(Definition.ServiceName)}]";
+        IsOptimized = CurrentStateText.Contains("Detenido") && CurrentStateText.Contains("Deshabilitado");
+        if (IsOptimized) CurrentStateText += " ✓ optimizado";
+        else CurrentStateText += " ⚠️ no optimizado";
+    }
+}
+
+public partial class PowerTweakModel : TweakItemViewModel
+{
+    public Models.PowerPlanVisionaryDefinition Definition { get; }
+
+    public PowerTweakModel(Models.PowerPlanVisionaryDefinition def)
+    {
+        Definition = def;
+        DisplayName = $"Plan de Energía: {def.Name}";
+        Description = def.Description;
+        RefreshState();
+    }
+
+    public override void RefreshState()
+    {
+        var status = Services.SystemStateMonitor.GetPowerState();
+        CurrentStateText = $"[ACTUAL: {status}]";
+        IsOptimized = status.Contains("🟢");
+    }
+}

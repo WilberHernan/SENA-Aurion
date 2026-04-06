@@ -1,0 +1,212 @@
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using VisionaryOptimizer.Models;
+using VisionaryOptimizer.Services;
+
+namespace VisionaryOptimizer.ViewModels;
+
+/// <summary>Shell MVVM: navegación lateral, datos offline y motor de optimización async.</summary>
+public sealed partial class MainViewModel : ViewModelBase
+{
+    private readonly IOptimizationDataProvider _dataProvider;
+    private readonly IOptimizationEngine _engine;
+
+    public MainViewModel(IOptimizationDataProvider dataProvider, IOptimizationEngine engine)
+    {
+        _dataProvider = dataProvider;
+        _engine = engine;
+        _ = LoadDataAsync();
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(RegistryTweakCount))]
+    [NotifyPropertyChangedFor(nameof(ServiceCount))]
+    [NotifyPropertyChangedFor(nameof(InputTweaks))]
+    [NotifyPropertyChangedFor(nameof(NetworkTcpTweaks))]
+    [NotifyPropertyChangedFor(nameof(WifiCriticalServices))]
+    [NotifyPropertyChangedFor(nameof(ServiceItems))]
+    [NotifyPropertyChangedFor(nameof(PowerPlanDescription))]
+    [NotifyPropertyChangedFor(nameof(PowerPlanBaseTemplate))]
+    [NotifyPropertyChangedFor(nameof(PowerPlanSettings))]
+    private OptimizationDataDocument? _data;
+
+    public int RegistryTweakCount => Data?.RegistryTweaks?.Count ?? 0;
+
+    public int ServiceCount => Data?.Services?.Count ?? 0;
+
+    public IReadOnlyList<RegistryTweakDefinition> InputTweaks =>
+        Data?.InputLatency?.Tweaks?.ToArray() ?? Array.Empty<RegistryTweakDefinition>();
+
+    public IReadOnlyList<RegistryTweakDefinition> NetworkTcpTweaks =>
+        Data?.NetworkTcp?.Tweaks?.ToArray() ?? Array.Empty<RegistryTweakDefinition>();
+
+    public IReadOnlyList<string> WifiCriticalServices =>
+        Data?.NetworkTcp?.WifiCriticalServices?.ToArray() ?? Array.Empty<string>();
+
+    public IReadOnlyList<ServiceDefinition> ServiceItems =>
+        Data?.Services?.ToArray() ?? Array.Empty<ServiceDefinition>();
+
+    public string PowerPlanDescription => Data?.PowerPlanVisionary?.Description ?? string.Empty;
+
+    public string PowerPlanBaseTemplate => Data?.PowerPlanVisionary?.BaseTemplate ?? string.Empty;
+
+    public IReadOnlyList<PowerPlanSettingEntry> PowerPlanSettings =>
+        Data?.PowerPlanVisionary?.Settings?.ToArray() ?? Array.Empty<PowerPlanSettingEntry>();
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsSectionHome))]
+    [NotifyPropertyChangedFor(nameof(IsSectionInput))]
+    [NotifyPropertyChangedFor(nameof(IsSectionNetwork))]
+    [NotifyPropertyChangedFor(nameof(IsSectionServices))]
+    [NotifyPropertyChangedFor(nameof(IsSectionPower))]
+    private string _selectedTag = "home";
+
+    public bool IsSectionHome => SelectedTag == "home";
+
+    public bool IsSectionInput => SelectedTag == "input";
+
+    public bool IsSectionNetwork => SelectedTag == "network";
+
+    public bool IsSectionServices => SelectedTag == "services";
+
+    public bool IsSectionPower => SelectedTag == "power";
+
+    [ObservableProperty]
+    private string _statusMessage = "Listo · modo offline";
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(WifiStatusText))]
+    private bool _isWifiPrimary;
+
+    public string WifiStatusText => IsWifiPrimary ? "sí" : "no";
+
+    [ObservableProperty]
+    private bool _includeInputRegistry = true;
+
+    [ObservableProperty]
+    private bool _includeNetworkTcp = true;
+
+    [ObservableProperty]
+    private bool _includeRegistryMisc = true;
+
+    [ObservableProperty]
+    private bool _includeServices = true;
+
+    [ObservableProperty]
+    private bool _includePower = true;
+
+    [ObservableProperty]
+    private bool _isBusy;
+
+    public ObservableCollection<ServiceToggleViewModel> ServiceToggles { get; } = new();
+
+    public IReadOnlyList<NavItem> NavItems { get; } =
+    [
+        new("home", "Inicio", "\uE80F"),
+        new("input", "Input Response", "\uE144"),
+        new("network", "Red inteligente", "\uE701"),
+        new("services", "Servicios y telemetría", "\uE9D9"),
+        new("power", "Power Strategy", "\uE945"),
+    ];
+
+    partial void OnSelectedTagChanged(string value)
+    {
+        StatusMessage = value switch
+        {
+            "home" => "Visión general · Visionary Optimizer",
+            "input" => "Teclado, ratón y menús · baja latencia",
+            "network" => "TCP/IP · detección Wi-Fi activa",
+            "services" => "Control granular de servicios",
+            "power" => "Plan Visionary · sin overclock",
+            _ => StatusMessage,
+        };
+    }
+
+    [RelayCommand]
+    private async Task LoadDataAsync()
+    {
+        try
+        {
+            Data = await _dataProvider.LoadAsync().ConfigureAwait(true);
+            StatusMessage = Data is null ? "No se pudo cargar OptimizationData.json" : "Datos cargados (offline)";
+            RefreshNetworkAndToggles();
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error al cargar datos: {ex.Message}";
+        }
+    }
+
+    public void RefreshNetworkAndToggles()
+    {
+        IsWifiPrimary = NetworkHardwareDetector.IsWirelessAdapterActive();
+        RebuildServiceToggles();
+    }
+
+    private void RebuildServiceToggles()
+    {
+        ServiceToggles.Clear();
+        if (Data is null)
+            return;
+
+        var wifi = NetworkHardwareDetector.IsWirelessAdapterActive();
+        var critical = new HashSet<string>(
+            Data.NetworkTcp.WifiCriticalServices.Select(s => s.Trim()),
+            StringComparer.OrdinalIgnoreCase);
+
+        foreach (var s in Data.Services)
+        {
+            var locked = wifi && (critical.Contains(s.ServiceName) || s.NeverDisableWhenWifi);
+            ServiceToggles.Add(new ServiceToggleViewModel(s, s.DefaultRecommended, locked));
+        }
+    }
+
+    [RelayCommand]
+    private async Task RunOptimizationAsync(CancellationToken cancellationToken)
+    {
+        if (Data is null)
+        {
+            StatusMessage = "Sin datos · no se ejecuta";
+            return;
+        }
+
+        IsBusy = true;
+        StatusMessage = "Aplicando optimización…";
+        try
+        {
+            var selections = ServiceToggles.ToDictionary(
+                t => t.ServiceId,
+                t => t.IsDisableRequested,
+                StringComparer.OrdinalIgnoreCase);
+
+            var options = new OptimizationRunOptions
+            {
+                ApplyInput = IncludeInputRegistry,
+                ApplyNetworkTcp = IncludeNetworkTcp,
+                ApplyRegistryMisc = IncludeRegistryMisc,
+                ApplyServices = IncludeServices,
+                ApplyPower = IncludePower,
+                ServiceDisableSelections = selections,
+            };
+
+            await _engine.RunAsync(Data, options, cancellationToken).ConfigureAwait(true);
+            StatusMessage = "Optimización completada · ver VisionaryOptimizer.log";
+        }
+        catch (OperationCanceledException)
+        {
+            StatusMessage = "Cancelado";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+}
+
+public readonly record struct NavItem(string Tag, string Label, string Glyph);

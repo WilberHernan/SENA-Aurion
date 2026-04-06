@@ -1,0 +1,186 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Management;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
+using Microsoft.Win32;
+
+namespace VisionaryOptimizer.Services;
+
+public class SystemInfoModel
+{
+    public string MachineName { get; set; } = "Cargando...";
+    public string SerialNumber { get; set; } = "Cargando...";
+    public string OsName { get; set; } = "Cargando...";
+    public string OsVersion { get; set; } = "Cargando...";
+    public string Domain { get; set; } = "Cargando...";
+
+    public string CpuModel { get; set; } = "Cargando...";
+    public string CpuCoresText { get; set; } = "Cargando...";
+
+    public string GpuModel { get; set; } = "Cargando...";
+    public string GpuVramText { get; set; } = "Cargando...";
+
+    public string RamTotalText { get; set; } = "Cargando...";
+    public string RamSpeedText { get; set; } = "Cargando...";
+
+    public List<DiskInfoModel> Disks { get; set; } = new();
+    public List<NetworkMacModel> MacAddresses { get; set; } = new();
+}
+
+public class DiskInfoModel
+{
+    public string DisplayText { get; set; } = string.Empty;
+}
+
+public class NetworkMacModel
+{
+    public string DisplayText { get; set; } = string.Empty;
+}
+
+public static class SystemInfoService
+{
+    public static async Task<SystemInfoModel> GetSystemInfoAsync()
+    {
+        return await Task.Run(() =>
+        {
+            var info = new SystemInfoModel();
+
+            try 
+            {
+                info.MachineName = Environment.MachineName;
+                info.Domain = Environment.UserDomainName;
+
+                // OS Version from Registry
+                try 
+                {
+                    using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+                    if (key != null)
+                    {
+                        var productName = key.GetValue("ProductName")?.ToString() ?? "Windows";
+                        var currentBuild = key.GetValue("CurrentBuild")?.ToString() ?? "";
+                        var displayVersion = key.GetValue("DisplayVersion")?.ToString() ?? "";
+                        info.OsName = productName;
+                        info.OsVersion = $"{currentBuild} ({displayVersion})";
+                    }
+                }
+                catch { info.OsName = "Windows"; info.OsVersion = Environment.OSVersion.Version.ToString(); }
+
+                // BIOS Serial
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
+                    foreach (var obj in searcher.Get())
+                    {
+                        info.SerialNumber = obj["SerialNumber"]?.ToString() ?? "Desconocido";
+                        break;
+                    }
+                }
+                catch { info.SerialNumber = "No disponible"; }
+
+                // CPU
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Name, NumberOfCores, NumberOfLogicalProcessors FROM Win32_Processor");
+                    foreach (var obj in searcher.Get())
+                    {
+                        info.CpuModel = obj["Name"]?.ToString()?.Trim() ?? "Desconocido";
+                        info.CpuCoresText = $"{obj["NumberOfCores"]} físicos / {obj["NumberOfLogicalProcessors"]} lógicos";
+                        break;
+                    }
+                }
+                catch { info.CpuModel = "No disponible"; info.CpuCoresText = "No disponible"; }
+
+                // GPU
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Name, AdapterRAM FROM Win32_VideoController");
+                    foreach (var obj in searcher.Get())
+                    {
+                        info.GpuModel = obj["Name"]?.ToString() ?? "Desconocido";
+                        long adapterRam = Convert.ToInt64(obj["AdapterRAM"] ?? 0);
+                        if (adapterRam > 0)
+                            info.GpuVramText = $"{Math.Round(adapterRam / (1024.0 * 1024.0 * 1024.0), 1)} GB";
+                        else 
+                            info.GpuVramText = "Desconocida";
+                        break;
+                    }
+                }
+                catch { info.GpuModel = "No disponible"; info.GpuVramText = "No disponible"; }
+
+                // RAM
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Capacity, Speed FROM Win32_PhysicalMemory");
+                    long totalCapacity = 0;
+                    uint speed = 0;
+
+                    foreach (var obj in searcher.Get())
+                    {
+                        totalCapacity += Convert.ToInt64(obj["Capacity"] ?? 0);
+                        if (speed == 0) speed = Convert.ToUInt32(obj["Speed"] ?? 0);
+                    }
+
+                    info.RamTotalText = totalCapacity > 0 ? $"{Math.Round(totalCapacity / (1024.0 * 1024.0 * 1024.0))} GB" : "Desconocida";
+                    info.RamSpeedText = speed > 0 ? $"{speed} MHz" : "Desconocida";
+                }
+                catch { info.RamTotalText = "No disponible"; info.RamSpeedText = "No disponible"; }
+
+                // Disks
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Model, Size, MediaType FROM Win32_DiskDrive");
+                    foreach (var obj in searcher.Get())
+                    {
+                        long size = Convert.ToInt64(obj["Size"] ?? 0);
+                        string mediaType = obj["MediaType"]?.ToString() ?? "";
+                        string model = obj["Model"]?.ToString() ?? "Disk";
+
+                        bool isSsd = mediaType.Contains("SSD", StringComparison.OrdinalIgnoreCase) || model.Contains("SSD", StringComparison.OrdinalIgnoreCase);
+                        string shortMedia = isSsd ? "SSD" : (mediaType.Contains("Fixed") ? "HDD" : "Disco");
+                        string emoji = isSsd ? "📀" : "💿";
+                        string sizeText = size > 0 ? $"{Math.Round(size / (1024.0 * 1024.0 * 1024.0), 2)} GB" : "Desconocido";
+
+                        info.Disks.Add(new DiskInfoModel
+                        {
+                            DisplayText = $"{emoji} {model} {shortMedia} - {sizeText}"
+                        });
+                    }
+                }
+                catch { info.Disks.Add(new DiskInfoModel { DisplayText = "No disponible" }); }
+
+                // Network MACs
+                try 
+                {
+                    foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
+                    {
+                        if (nic.OperationalStatus == OperationalStatus.Up && 
+                           (nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet || nic.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
+                        {
+                            string mac = nic.GetPhysicalAddress().ToString();
+                            if (!string.IsNullOrEmpty(mac))
+                            {
+                                // Format MAC as XX:XX:XX
+                                mac = string.Join(":", System.Text.RegularExpressions.Regex.Split(mac, "(?<=\\G.{2})"));
+                                string type = nic.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 ? "Wi-Fi" : "Ethernet";
+                                string emoji = type == "Wi-Fi" ? "📡" : "🔌";
+
+                                info.MacAddresses.Add(new NetworkMacModel
+                                {
+                                    DisplayText = $"{emoji} {type}: {mac}"
+                                });
+                            }
+                        }
+                    }
+                }
+                catch { info.MacAddresses.Add(new NetworkMacModel { DisplayText = "No disponible" }); }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"SystemInfoService error: {ex.Message}");
+            }
+
+            return info;
+        });
+    }
+}

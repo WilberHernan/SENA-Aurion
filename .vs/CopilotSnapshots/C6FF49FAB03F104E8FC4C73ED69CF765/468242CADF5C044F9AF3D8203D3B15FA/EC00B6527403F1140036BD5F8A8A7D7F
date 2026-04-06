@@ -1,0 +1,270 @@
+﻿<Window
+    x:Class="VisionaryOptimizer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VisionaryOptimizer"
+    xmlns:viewmodels="using:VisionaryOptimizer.ViewModels"
+    xmlns:models="using:VisionaryOptimizer.Models"
+    Title="Visionary Optimizer">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop /> 
+    </Window.SystemBackdrop>
+
+    <Grid Background="Transparent" x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- 1. Barra de Título Exclusiva y Transparente (Integrada al entorno) -->
+        <Grid x:Name="AppCustomTitleBar" Height="32" Background="Transparent">
+            <!-- Icono y Nombre Aplicación -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0" Spacing="8">
+                <FontIcon Glyph="&#xE90C;" FontSize="14" Foreground="{ThemeResource SystemAccentColor}" />
+                <TextBlock Text="Visionary Optimizer" FontSize="12" FontFamily="Segoe UI Variable" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+            </StackPanel>
+        </Grid>
+
+        <!-- 2. Contenedor de Navegación -->
+        <NavigationView Grid.Row="1" x:Name="NavView" PaneDisplayMode="LeftCompact" IsBackButtonVisible="Collapsed" SelectionChanged="NavView_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Inicio" Tag="home" ToolTipService.ToolTip="Panel Central">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE80F;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Input Response" Tag="input">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE144;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Red Inteligente" Tag="network">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE701;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Servicios" Tag="services">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9D9;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Power Strategy" Tag="power">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE945;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Grid>
+                <!-- CONTENIDO PRINCIPAL -->
+                <ScrollViewer Padding="40" Background="Transparent">
+                    <StackPanel Spacing="32" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="900">
+                        
+                        <!-- Encabezado de Página Principal -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Visionary Optimizer 2026" FontSize="32" FontFamily="Segoe UI Variable Display" FontWeight="Bold"/>
+                                <TextBlock Text="Sistema integral de ajuste de rendimiento." FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            </StackPanel>
+                            <!-- Panel de Estado Informativo en Vivo -->
+                            <InfoBar Grid.Column="1" IsOpen="True" Severity="Informational" Title="Estado" Message="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" IsClosable="False" CornerRadius="8" />
+                        </Grid>
+
+                        <!-- INICIO / DASHBOARD -->
+                        <StackPanel Spacing="32" Visibility="{Binding ViewModel.IsSectionHome, Converter={StaticResource BoolToVis}}">
+                            
+                            <!-- Tarjetas de Información Numérica -->
+                            <Grid ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Tarjeta Registro -->
+                                <Border Grid.Column="0" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
+                                    <StackPanel Spacing="16">
+                                        <FontIcon Glyph="&#xE74C;" HorizontalAlignment="Left" FontSize="28" Foreground="{ThemeResource SystemAccentColor}" />
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="Registros Listos" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                            <TextBlock Text="{x:Bind ViewModel.RegistryTweakCount, Mode=OneWay}" FontSize="36" FontFamily="Segoe UI Variable Display" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Tarjeta Servicios -->
+                                <Border Grid.Column="1" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
+                                    <StackPanel Spacing="16">
+                                        <FontIcon Glyph="&#xE9D9;" HorizontalAlignment="Left" FontSize="28" Foreground="{ThemeResource SystemAccentColor}" />
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="Servicios Filtrados" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                            <TextBlock Text="{x:Bind ViewModel.ServiceCount, Mode=OneWay}" FontSize="36" FontFamily="Segoe UI Variable Display" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Tarjeta Wi-Fi -->
+                                <Border Grid.Column="2" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
+                                    <StackPanel Spacing="16">
+                                        <FontIcon Glyph="&#xE701;" HorizontalAlignment="Left" FontSize="28" Foreground="{ThemeResource SystemAccentColor}" />
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="Protección Wi-Fi" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                            <TextBlock Text="{x:Bind ViewModel.WifiStatusText, Mode=OneWay}" FontSize="36" FontFamily="Segoe UI Variable Display" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Panel de Configuración e Inicio -->
+                            <StackPanel Spacing="16">
+                                <TextBlock Text="Módulos a optimizar" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                
+                                <Grid Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" Padding="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <!-- Columna Izquierda -->
+                                    <StackPanel Grid.Column="0" Spacing="20" Margin="0,0,20,0">
+                                        <ToggleSwitch Header="Tweaks Varios de Registro" IsOn="{x:Bind ViewModel.IncludeRegistryMisc, Mode=TwoWay}" />
+                                        <ToggleSwitch Header="Tweaks Input y Latencia" IsOn="{x:Bind ViewModel.IncludeInputRegistry, Mode=TwoWay}" />
+                                        <ToggleSwitch Header="Ajustes TCP y de Red" IsOn="{x:Bind ViewModel.IncludeNetworkTcp, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <!-- Columna Derecha -->
+                                    <StackPanel Grid.Column="1" Spacing="20" Margin="20,0,0,0">
+                                        <ToggleSwitch Header="Limpieza de Servicios" IsOn="{x:Bind ViewModel.IncludeServices, Mode=TwoWay}" />
+                                        <ToggleSwitch Header="Perfil de Energía Avanzado" IsOn="{x:Bind ViewModel.IncludePower, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                                
+                                <!-- Botón Principal de Acción -->
+                                <Button Content="Inyectar y Optimizar Sistema (2026)"
+                                        Command="{x:Bind ViewModel.RunOptimizationCommand, Mode=OneWay}"
+                                        Height="56" FontSize="16" FontWeight="SemiBold" CornerRadius="8" Margin="0,16,0,0" HorizontalAlignment="Stretch" Style="{ThemeResource AccentButtonStyle}">
+                                    <Button.ContentTransitions>
+                                        <TransitionCollection>
+                                            <ContentThemeTransition />
+                                        </TransitionCollection>
+                                    </Button.ContentTransitions>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- SECCIÓN INPUT (RATÓN/TECLADO) -->
+                        <StackPanel Spacing="16" Visibility="{Binding ViewModel.IsSectionInput, Converter={StaticResource BoolToVis}}">
+                            <TextBlock Text="Input Response" FontSize="24" FontWeight="SemiBold"/>
+                            <TextBlock Text="Reducción extrema de latencia en periféricos. Los siguientes cambios se escribirán en el registro:" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.InputTweaks, Mode=OneWay}" Margin="0,8,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:RegistryTweakDefinition">
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,8">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock Text="{x:Bind DisplayName}" FontWeight="SemiBold" FontSize="14"/>
+                                                <TextBlock Text="{x:Bind SubKey}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontFamily="Consolas"/>
+                                                <TextBlock Text="{x:Bind Rationale}" FontSize="12" Foreground="{ThemeResource TextFillColorTertiaryBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- SECCIÓN RED Y TCP -->
+                        <StackPanel Spacing="16" Visibility="{Binding ViewModel.IsSectionNetwork, Converter={StaticResource BoolToVis}}">
+                            <TextBlock Text="Red Inteligente y TCP" FontSize="24" FontWeight="SemiBold"/>
+                            <TextBlock Text="Se eliminará la sobrecarga de TCP para priorizar el ping en aplicaciones en tiempo real." Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.NetworkTcpTweaks, Mode=OneWay}" Margin="0,8,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:RegistryTweakDefinition">
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,8">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock Text="{x:Bind DisplayName}" FontWeight="SemiBold" FontSize="14"/>
+                                                <TextBlock Text="{x:Bind SubKey}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontFamily="Consolas"/>
+                                                <TextBlock Text="{x:Bind Rationale}" FontSize="12" Foreground="{ThemeResource TextFillColorTertiaryBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- SECCIÓN SERVICIOS -->
+                        <StackPanel Spacing="16" Visibility="{Binding ViewModel.IsSectionServices, Converter={StaticResource BoolToVis}}">
+                            <TextBlock Text="Servicios" FontSize="24" FontWeight="SemiBold"/>
+                            <TextBlock Text="Desactiva los procesos en segundo plano innecesarios (los críticos están bloqueados si usas Wi-Fi)." Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.ServiceToggles, Mode=OneWay}" Margin="0,8,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="viewmodels:ServiceToggleViewModel">
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,0,12">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <StackPanel Spacing="6" VerticalAlignment="Center" Margin="0,0,24,0">
+                                                    <TextBlock Text="{x:Bind Definition.DisplayLabel}" FontWeight="SemiBold" FontSize="15" />
+                                                    <TextBlock Text="{x:Bind Definition.UserDescription}" FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                                    
+                                                    <!-- Alerta visual si está bloqueado por el Wi-Fi -->
+                                                    <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,4,0,0" Visibility="{Binding IsWifiLocked, Converter={StaticResource BoolToVis}}">
+                                                        <FontIcon Glyph="&#xE7BA;" Foreground="#FF9900" FontSize="14"/>
+                                                        <TextBlock Text="Requerido por tu conexión Wi-Fi actual." FontSize="12" Foreground="#FF9900" FontWeight="Medium"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                
+                                                <ToggleSwitch Grid.Column="1" VerticalAlignment="Center" IsOn="{x:Bind IsDisableRequested, Mode=TwoWay}" IsEnabled="{x:Bind IsToggleEnabled, Mode=OneWay}"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- SECCIÓN ENERGÍA (POWER STRATEGY) -->
+                        <StackPanel Spacing="16" Visibility="{Binding ViewModel.IsSectionPower, Converter={StaticResource BoolToVis}}">
+                            <TextBlock Text="Power Strategy (Energía)" FontSize="24" FontWeight="SemiBold"/>
+                            <TextBlock Text="{x:Bind ViewModel.PowerPlanDescription, Mode=OneWay}" TextWrapping="Wrap" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Text="Opciones técnicas a inyectar (AC y Batería):" FontWeight="SemiBold" Margin="0,16,0,0"/>
+
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.PowerPlanSettings, Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:PowerPlanSettingEntry">
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="6" Padding="16" Margin="0,0,0,8">
+                                            <StackPanel Spacing="6">
+                                                <TextBlock Text="{x:Bind Comment}" FontWeight="SemiBold" FontSize="14"/>
+                                                <TextBlock Text="{x:Bind SettingGuid}" FontSize="12" FontFamily="Consolas" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- CAPA FLOTANTE MIENTRAS OPTIMIZA (IS BUSY) -->
+                <Grid Background="{ThemeResource SolidBackgroundFillColorBaseBrush}" 
+                      Opacity="0.9" 
+                      Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BoolToVis}}" 
+                      Canvas.ZIndex="100">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
+                        <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" Width="80" Height="80" />
+                        <TextBlock Text="Inyectando optimizaciones en el sistema..." FontSize="20" FontWeight="SemiBold" FontFamily="Segoe UI Variable Display" />
+                        <TextBlock Text="Por favor no cierres la ventana" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+
+            </Grid>
+        </NavigationView>
+    </Grid>
+</Window>

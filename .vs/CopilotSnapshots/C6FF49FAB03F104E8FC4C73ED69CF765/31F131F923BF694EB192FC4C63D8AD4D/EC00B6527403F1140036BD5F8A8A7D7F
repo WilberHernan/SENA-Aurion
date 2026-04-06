@@ -1,0 +1,163 @@
+﻿<Window
+    x:Class="VisionaryOptimizer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewmodels="using:VisionaryOptimizer.ViewModels"
+    xmlns:models="using:VisionaryOptimizer.Models"
+    Title="Visionary Optimizer">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <NavigationView x:Name="NavView" PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" SelectionChanged="NavView_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Inicio" Tag="home">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE80F;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Input Response" Tag="input">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE144;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Red inteligente" Tag="network">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE701;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Servicios" Tag="services">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9D9;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Power Strategy" Tag="power">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE945;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Grid Padding="32">
+                <StackPanel Spacing="16" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <TextBlock Text="Visionary Optimizer" FontSize="36" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" FontSize="16" Foreground="{ThemeResource SystemAccentColor}" HorizontalAlignment="Center"/>
+
+                    <!-- HOME SECTION -->
+                    <StackPanel Spacing="24" Visibility="{x:Bind BoolToVis(ViewModel.IsSectionHome), Mode=OneWay}">
+                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                                BorderThickness="1" CornerRadius="8" Padding="20">
+                            <StackPanel Spacing="16">
+                                <TextBlock Text="Panorámica del Sistema" FontWeight="SemiBold" FontSize="18" />
+                                <StackPanel Orientation="Horizontal" Spacing="40">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Tweaks Registro" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind ViewModel.RegistryTweakCount, Mode=OneWay}" FontSize="24" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Servicios" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind ViewModel.ServiceCount, Mode=OneWay}" FontSize="24" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Wi-Fi Primario" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind ViewModel.WifiStatusText, Mode=OneWay}" FontSize="24" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        
+                        <ToggleSwitch Header="Aplicar Tweaks Varios de Registro" IsOn="{x:Bind ViewModel.IncludeRegistryMisc, Mode=TwoWay}" />
+                        <ToggleSwitch Header="Aplicar Tweaks Input/Latencia" IsOn="{x:Bind ViewModel.IncludeInputRegistry, Mode=TwoWay}" />
+                        <ToggleSwitch Header="Aplicar Ajustes TCP/Red" IsOn="{x:Bind ViewModel.IncludeNetworkTcp, Mode=TwoWay}" />
+                        <ToggleSwitch Header="Aplicar Servicios" IsOn="{x:Bind ViewModel.IncludeServices, Mode=TwoWay}" />
+                        <ToggleSwitch Header="Aplicar Plan de Energía" IsOn="{x:Bind ViewModel.IncludePower, Mode=TwoWay}" />
+                        
+                        <Button Content="Aceptar y Ejecutar Optimización"
+                                Command="{x:Bind ViewModel.RunOptimizationCommand, Mode=OneWay}"
+                                Height="44" Margin="0,16,0,0" HorizontalAlignment="Stretch" Style="{ThemeResource AccentButtonStyle}" />
+                        <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsBusy, Mode=OneWay}" Visibility="{x:Bind BoolToVis(ViewModel.IsBusy), Mode=OneWay}" Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <!-- INPUT SECTION -->
+                    <StackPanel Spacing="16" Visibility="{x:Bind BoolToVis(ViewModel.IsSectionInput), Mode=OneWay}">
+                        <TextBlock Text="Input Response - Tweaks de Ratón y Teclado" FontSize="20" FontWeight="SemiBold"/>
+                        <TextBlock Text="Lista de modificaciones de registro que se aplicarán:" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <ListView ItemsSource="{x:Bind ViewModel.InputTweaks, Mode=OneWay}" SelectionMode="None" MaxHeight="400">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:RegistryTweakDefinition">
+                                    <StackPanel Padding="8">
+                                        <TextBlock Text="{x:Bind DisplayName}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{x:Bind SubKey}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind Rationale}" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <!-- NETWORK SECTION -->
+                    <StackPanel Spacing="16" Visibility="{x:Bind BoolToVis(ViewModel.IsSectionNetwork), Mode=OneWay}">
+                        <TextBlock Text="Red Inteligente - Ajustes TCP y Wi-Fi" FontSize="20" FontWeight="SemiBold"/>
+                        <TextBlock Text="Módulo que protege los servicios de red crítica y ajusta latencia TCP." Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <ListView ItemsSource="{x:Bind ViewModel.NetworkTcpTweaks, Mode=OneWay}" SelectionMode="None" MaxHeight="400">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:RegistryTweakDefinition">
+                                    <StackPanel Padding="8">
+                                        <TextBlock Text="{x:Bind DisplayName}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{x:Bind SubKey}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind Rationale}" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <!-- SERVICES SECTION -->
+                    <StackPanel Spacing="16" Visibility="{x:Bind BoolToVis(ViewModel.IsSectionServices), Mode=OneWay}">
+                        <TextBlock Text="Control Granular de Servicios" FontSize="20" FontWeight="SemiBold"/>
+                        <TextBlock Text="Selecciona qué servicios deshabilitar. Los bloqueados protegen Wi-Fi o red." Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <ListView ItemsSource="{x:Bind ViewModel.ServiceToggles, Mode=OneWay}" SelectionMode="None" MaxHeight="450">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="viewmodels:ServiceToggleViewModel">
+                                    <Grid Padding="8,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Spacing="4" VerticalAlignment="Center">
+                                            <TextBlock Text="{x:Bind Definition.DisplayLabel}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{x:Bind Definition.UserDescription}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="¡Este servicio no se puede apagar si usas Wi-Fi!" Foreground="Orange" FontSize="12" 
+                                                       Visibility="{x:Bind IsWifiLocked, Mode=OneWay}" />
+                                        </StackPanel>
+                                        <ToggleSwitch Grid.Column="1" VerticalAlignment="Center" OnContent="Deshabilitar" OffContent="Mantener"
+                                                      IsOn="{x:Bind IsDisableRequested, Mode=TwoWay}" IsEnabled="{x:Bind IsToggleEnabled, Mode=OneWay}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <!-- POWER SECTION -->
+                    <StackPanel Spacing="16" Visibility="{x:Bind BoolToVis(ViewModel.IsSectionPower), Mode=OneWay}">
+                        <TextBlock Text="Power Strategy" FontSize="20" FontWeight="SemiBold"/>
+                        <TextBlock Text="{x:Bind ViewModel.PowerPlanDescription, Mode=OneWay}" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="Lista de configuraciones de energía a aplicar:" FontWeight="SemiBold" Margin="0,16,0,0"/>
+
+                        <ListView ItemsSource="{x:Bind ViewModel.PowerPlanSettings, Mode=OneWay}" SelectionMode="None" MaxHeight="400">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:PowerPlanSettingEntry">
+                                    <StackPanel Padding="8">
+                                        <TextBlock Text="{x:Bind Subgroup}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{x:Bind SettingGuid}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        <TextBlock Text="{x:Bind Comment}" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+        </NavigationView>
+    </Grid>
+</Window>

@@ -1,0 +1,716 @@
+﻿{
+  "schemaVersion": 1,
+  "metadata": {
+    "product": "Visionary Optimizer",
+    "targetOs": "Windows 11 23H2 (x64)",
+    "alignmentNotes": [
+      "Dataset alineado con políticas y rutas habituales en Chris Titus Tech Windows Utility, Sophia Script, guías tipo Fr33thy (latencia) y enfoques de privacidad/rendimiento estilo AtlasOS / scripts de comunidad (solo valores documentados en código abierto o documentación Microsoft).",
+      "El motor comprueba existencia de clave antes de escribir; si falta la rama, registra y continúa.",
+      "Servicios neverDisableWhenWifi / lista wifiCriticalServices: el motor no deshabilita esos servicios con Wi‑Fi activo.",
+      "NetworkThrottlingIndex usa -1 en JSON (DWORD 0xFFFFFFFF) para desactivar limitación de red en segundo plano; es un patrón habitual en perfiles multimedia/juego."
+    ]
+  },
+  "inputLatency": {
+    "description": "Respuesta de teclado/ratón y menús: valores típicos en scripts de baja latencia y utilidades de optimización.",
+    "tweaks": [
+      {
+        "id": "kbd-delay",
+        "displayName": "KeyboardDelay",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Keyboard",
+        "valueName": "KeyboardDelay",
+        "valueKind": "String",
+        "valueData": "0",
+        "requiresAdmin": false,
+        "rationale": "Mínimo retraso antes de repetición de tecla (panel clásico).",
+        "sourceAlignment": "CTT / Sophia / guías de latencia"
+      },
+      {
+        "id": "kbd-speed",
+        "displayName": "KeyboardSpeed",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Keyboard",
+        "valueName": "KeyboardSpeed",
+        "valueKind": "String",
+        "valueData": "31",
+        "requiresAdmin": false,
+        "rationale": "Repetición de teclas al máximo de la escala 0–31.",
+        "sourceAlignment": "Productividad estándar"
+      },
+      {
+        "id": "mouse-speed",
+        "displayName": "MouseSpeed",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Mouse",
+        "valueName": "MouseSpeed",
+        "valueKind": "String",
+        "valueData": "20",
+        "requiresAdmin": false,
+        "rationale": "Velocidad del puntero elevada (1–20); ajuste común en perfiles rápidos.",
+        "sourceAlignment": "Scripts de escritorio / CTT"
+      },
+      {
+        "id": "mouse-hover",
+        "displayName": "MouseHoverTime",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Mouse",
+        "valueName": "MouseHoverTime",
+        "valueKind": "String",
+        "valueData": "100",
+        "requiresAdmin": false,
+        "rationale": "Hover más rápido que el valor por defecto (400 ms).",
+        "sourceAlignment": "Fr33thy-style / comunidad latencia"
+      },
+      {
+        "id": "mouse-hover-height",
+        "displayName": "MouseHoverHeight",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Mouse",
+        "valueName": "MouseHoverHeight",
+        "valueKind": "String",
+        "valueData": "4",
+        "requiresAdmin": false,
+        "rationale": "Rectángulo de hover coherente con ajustes de hover.",
+        "sourceAlignment": "Complemento MouseHoverTime"
+      },
+      {
+        "id": "mouse-hover-width",
+        "displayName": "MouseHoverWidth",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Mouse",
+        "valueName": "MouseHoverWidth",
+        "valueKind": "String",
+        "valueData": "4",
+        "requiresAdmin": false,
+        "rationale": "Rectángulo de hover coherente con ajustes de hover.",
+        "sourceAlignment": "Complemento MouseHoverTime"
+      },
+      {
+        "id": "menu-show-delay",
+        "displayName": "MenuShowDelay",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Desktop",
+        "valueName": "MenuShowDelay",
+        "valueKind": "String",
+        "valueData": "0",
+        "requiresAdmin": false,
+        "rationale": "Sin retardo artificial en menús en cascada.",
+        "sourceAlignment": "CTT / Sophia / optimizadores clásicos"
+      },
+      {
+        "id": "mouclass-queue",
+        "displayName": "MouseDataQueueSize (mouclass)",
+        "category": "Input",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters",
+        "valueName": "MouseDataQueueSize",
+        "valueKind": "DWord",
+        "valueData": 16,
+        "requiresAdmin": true,
+        "rationale": "Cola de eventos de ratón; 16 es un valor citado en guías de latencia (efecto pleno puede requerir reinicio).",
+        "sourceAlignment": "Comunidad mouclass / guías gaming"
+      },
+      {
+        "id": "kbdclass-queue",
+        "displayName": "KeyboardDataQueueSize (kbdclass)",
+        "category": "Input",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters",
+        "valueName": "KeyboardDataQueueSize",
+        "valueKind": "DWord",
+        "valueData": 20,
+        "requiresAdmin": true,
+        "rationale": "Cola de teclado; 20 es un valor habitual en scripts de latencia (si la clave no existe, el motor omite).",
+        "sourceAlignment": "Paridad con ajustes kbdclass en scripts públicos"
+      }
+    ]
+  },
+  "networkTcp": {
+    "description": "TCP/IP global (HKLM). Aplicar solo elevado; revisar en portátiles con Wi‑Fi si hay efectos en batería.",
+    "wifiCriticalServices": [
+      "WlanSvc",
+      "NlaSvc",
+      "Dhcp",
+      "Dnscache",
+      "BFE",
+      "mpssvc"
+    ],
+    "tweaks": [
+      {
+        "id": "tcp-ack-frequency",
+        "displayName": "TcpAckFrequency",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces",
+        "valueName": "TcpAckFrequency",
+        "valueKind": "DWord",
+        "valueData": 1,
+        "requiresAdmin": true,
+        "rationale": "ACKs más frecuentes inyectados en TODAS las interfaces activas de red (Leatrix-style).",
+        "sourceAlignment": "Scripts de red / guías gaming"
+      },
+      {
+        "id": "tcp-no-delay",
+        "displayName": "TCPNoDelay",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces",
+        "valueName": "TCPNoDelay",
+        "valueKind": "DWord",
+        "valueData": 1,
+        "requiresAdmin": true,
+        "rationale": "Desactiva Nagle (Nagle's Algorithm) bloqueando delay en colas de envío real.",
+        "sourceAlignment": "Guías de baja latencia / Esports"
+      },
+      {
+        "id": "tcp-del-ack-ticks",
+        "displayName": "TcpDelAckTicks",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+        "valueName": "TcpDelAckTicks",
+        "valueKind": "DWord",
+        "valueData": 0,
+        "requiresAdmin": true,
+        "rationale": "Retraso diferido de ACK en 0 donde aplica.",
+        "sourceAlignment": "Tuning TCP común en scripts"
+      },
+      {
+        "id": "tcp-1323opts",
+        "displayName": "Tcp1323Opts",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+        "valueName": "Tcp1323Opts",
+        "valueKind": "DWord",
+        "valueData": 1,
+        "requiresAdmin": true,
+        "rationale": "RFC 1323 (timestamps / ventana escalada).",
+        "sourceAlignment": "Documentación TCP/IP"
+      },
+      {
+        "id": "tcp-default-ttl",
+        "displayName": "DefaultTTL",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+        "valueName": "DefaultTTL",
+        "valueKind": "DWord",
+        "valueData": 64,
+        "requiresAdmin": true,
+        "rationale": "TTL IPv4 conservador frecuente en scripts.",
+        "sourceAlignment": "Referencias de tuning"
+      },
+      {
+        "id": "tcp-max-user-port",
+        "displayName": "MaxUserPort",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+        "valueName": "MaxUserPort",
+        "valueKind": "DWord",
+        "valueData": 65534,
+        "requiresAdmin": true,
+        "rationale": "Rango efímero amplio; usado en algunos scripts de servidor/workstation.",
+        "sourceAlignment": "Microsoft KB / scripts de rendimiento"
+      },
+      {
+        "id": "tcp-timed-wait-delay",
+        "displayName": "TcpTimedWaitDelay",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+        "valueName": "TcpTimedWaitDelay",
+        "valueKind": "DWord",
+        "valueData": 30,
+        "requiresAdmin": true,
+        "rationale": "Tiempo TIME_WAIT (segundos) reducido en algunos entornos de muchas conexiones.",
+        "sourceAlignment": "Scripts avanzados (uso con precaución)"
+      }
+    ]
+  },
+  "registryTweaks": [
+    {
+      "id": "policy-allow-telemetry",
+      "displayName": "AllowTelemetry (política)",
+      "category": "Policy",
+      "hive": "LocalMachine",
+      "subKey": "SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+      "valueName": "AllowTelemetry",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": true,
+      "rationale": "Telemetría mínima según política; en Home/Pro el efecto depende de edición y actualizaciones.",
+      "sourceAlignment": "Sophia Script / CTT (privacidad)"
+    },
+    {
+      "id": "policy-diag-track",
+      "displayName": "DoNotShowFeedbackNotifications",
+      "category": "Policy",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+      "valueName": "DoNotShowFeedbackNotifications",
+      "valueKind": "DWord",
+      "valueData": 1,
+      "requiresAdmin": false,
+      "rationale": "Reduce solicitudes de comentarios (feedback).",
+      "sourceAlignment": "Sophia / CTT"
+    },
+    {
+      "id": "privacy-advertising",
+      "displayName": "AdvertisingInfo Enabled",
+      "category": "Privacy",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+      "valueName": "Enabled",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": false,
+      "rationale": "ID de publicidad desactivado.",
+      "sourceAlignment": "Privacidad estándar"
+    },
+    {
+      "id": "cdm-silent-apps",
+      "displayName": "ContentDelivery SilentInstalledAppsEnabled",
+      "category": "Privacy",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "valueName": "SilentInstalledAppsEnabled",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": false,
+      "rationale": "Evita instalación silenciosa de sugerencias de Store.",
+      "sourceAlignment": "CTT / debloat scripts"
+    },
+    {
+      "id": "cdm-suggestions-338387",
+      "displayName": "ContentDelivery SubscribedContent-338387Enabled",
+      "category": "Privacy",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "valueName": "SubscribedContent-338387Enabled",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": false,
+      "rationale": "Sugerencias y experiencias de Microsoft (según build).",
+      "sourceAlignment": "Sophia / CTT"
+    },
+    {
+      "id": "cdm-suggestions-353698",
+      "displayName": "ContentDelivery SubscribedContent-353698Enabled",
+      "category": "Privacy",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "valueName": "SubscribedContent-353698Enabled",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": false,
+      "rationale": "Contenido sugerido / tips en Inicio (según build).",
+      "sourceAlignment": "Debloat típico"
+    },
+    {
+      "id": "explorer-people-band",
+      "displayName": "Explorer People Band",
+      "category": "Explorer",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People",
+      "valueName": "PeopleBand",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": false,
+      "rationale": "Oculta barra de personas en barra de tareas.",
+      "sourceAlignment": "CTT / personalización"
+    },
+    {
+      "id": "game-dvr-app-capture",
+      "displayName": "GameDVR AppCaptureEnabled",
+      "category": "Gaming",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR",
+      "valueName": "AppCaptureEnabled",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": false,
+      "rationale": "Menos captura en segundo plano.",
+      "sourceAlignment": "Atlas-style / guías gaming"
+    },
+    {
+      "id": "game-dvr-gamebar",
+      "displayName": "GameDVR GamebarEnabled",
+      "category": "Gaming",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR",
+      "valueName": "GamebarEnabled",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": false,
+      "rationale": "Barra de juego desactivada en muchos escenarios.",
+      "sourceAlignment": "Guías de latencia"
+    },
+    {
+      "id": "game-mode-policy",
+      "displayName": "AllowAutoGameMode (política)",
+      "category": "Gaming",
+      "hive": "CurrentUser",
+      "subKey": "SOFTWARE\\Microsoft\\GameBar",
+      "valueName": "AllowAutoGameMode",
+      "valueKind": "DWord",
+      "valueData": 0,
+      "requiresAdmin": false,
+      "rationale": "Algunos usuarios desactivan modo juego automático para control manual.",
+      "sourceAlignment": "Scripts mixtos (probar según preferencia)"
+    },
+    {
+      "id": "mmcs-network-throttling",
+      "displayName": "NetworkThrottlingIndex (multimedia)",
+      "category": "Performance",
+      "hive": "LocalMachine",
+      "subKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+      "valueName": "NetworkThrottlingIndex",
+      "valueKind": "DWord",
+      "valueData": -1,
+      "requiresAdmin": true,
+      "rationale": "0xFFFFFFFF desactiva limitación de ancho de banda de red en segundo plano (perfil multimedia).",
+      "sourceAlignment": "Guías gaming / MSDN perfil multimedia"
+    },
+    {
+      "id": "mmcs-system-responsiveness",
+      "displayName": "SystemResponsiveness (multimedia)",
+      "category": "Performance",
+      "hive": "LocalMachine",
+      "subKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+      "valueName": "SystemResponsiveness",
+      "valueKind": "DWord",
+      "valueData": 10,
+      "requiresAdmin": true,
+      "rationale": "Valor bajo prioriza aplicaciones en primer plano (típico 10–20 en perfiles gaming).",
+      "sourceAlignment": "Documentación Multimedia System Profile"
+    },
+    {
+      "id": "mmcs-games-bcdedit-style",
+      "displayName": "Games SystemResponsiveness",
+      "category": "Performance",
+      "hive": "LocalMachine",
+      "subKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+      "valueName": "SystemResponsiveness",
+      "valueKind": "String",
+      "valueData": "1",
+      "requiresAdmin": true,
+      "rationale": "Prioridad del perfil Games (cadena según esquema del sistema).",
+      "sourceAlignment": "Scripts gaming / Fr33thy-style"
+    },
+    {
+      "id": "mmcs-games-gpu-priority",
+      "displayName": "Games GPU Priority",
+      "category": "Performance",
+      "hive": "LocalMachine",
+      "subKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+      "valueName": "GPU Priority",
+      "valueKind": "String",
+      "valueData": "8",
+      "requiresAdmin": true,
+      "rationale": "Prioridad GPU alta en perfil Games.",
+      "sourceAlignment": "Perfil Games estándar"
+    },
+    {
+      "id": "mmcs-games-priority",
+      "displayName": "Games Priority",
+      "category": "Performance",
+      "hive": "LocalMachine",
+      "subKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+      "valueName": "Priority",
+      "valueKind": "String",
+      "valueData": "6",
+      "requiresAdmin": true,
+      "rationale": "Prioridad de planificación en perfil Games.",
+      "sourceAlignment": "Perfil Games estándar"
+    },
+    {
+      "id": "mmcs-games-scheduling",
+      "displayName": "Games Scheduling Category",
+      "category": "Performance",
+      "hive": "LocalMachine",
+      "subKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+      "valueName": "Scheduling Category",
+      "valueKind": "String",
+      "valueData": "High",
+      "requiresAdmin": true,
+      "rationale": "Categoría de planificación alta para juegos.",
+      "sourceAlignment": "Perfil Games estándar"
+    },
+    {
+      "id": "desktop-minanimate",
+      "displayName": "MinAnimate (animaciones)",
+      "category": "Performance",
+      "hive": "CurrentUser",
+      "subKey": "Control Panel\\Desktop\\WindowMetrics",
+      "valueName": "MinAnimate",
+      "valueKind": "String",
+      "valueData": "0",
+      "requiresAdmin": false,
+      "rationale": "Reduce animación al minimizar (sensación más seca / rápida).",
+      "sourceAlignment": "Optimizadores clásicos"
+    }
+  ],
+  "services": [
+    {
+      "id": "diagtrack",
+      "serviceName": "DiagTrack",
+      "displayLabel": "Telemetría conectada (DiagTrack)",
+      "group": "Telemetría",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Experiencias conectadas y telemetría. Deshabilitar reduce datos enviados a Microsoft."
+    },
+    {
+      "id": "dmwappushservice",
+      "serviceName": "dmwappushservice",
+      "displayLabel": "WAP Push",
+      "group": "Telemetría",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Mensajería push WAP; poco útil en sobremesa."
+    },
+    {
+      "id": "diagsvc",
+      "serviceName": "DiagSvc",
+      "displayLabel": "Servicio de diagnóstico (DiagSvc)",
+      "group": "Telemetría",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Diagnóstico automatizado; deshabilitar puede afectar solución de problemas (CTT a veces lo marca opcional)."
+    },
+    {
+      "id": "wsearch",
+      "serviceName": "WSearch",
+      "displayLabel": "Windows Search (indexación)",
+      "group": "Productividad",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Indexación; desactivar mejora I/O en algunos discos pero degrada búsqueda."
+    },
+    {
+      "id": "sysmain",
+      "serviceName": "SysMain",
+      "displayLabel": "SysMain (Superfetch)",
+      "group": "Rendimiento",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Prefetch/Superfetch; muchos scripts gaming lo desactivan en SSD; en HDD puede ayudar dejarlo."
+    },
+    {
+      "id": "spooler",
+      "serviceName": "Spooler",
+      "displayLabel": "Cola de impresión",
+      "group": "Impresión",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Impresión y PDF virtual; solo deshabilitar si no imprime."
+    },
+    {
+      "id": "sensrsvc",
+      "serviceName": "SensrSvc",
+      "displayLabel": "Servicio de sensores",
+      "group": "Sensores",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Sensores de luz/orientación; innecesario en muchos PCs fijos."
+    },
+    {
+      "id": "wlansvc",
+      "serviceName": "WlanSvc",
+      "displayLabel": "WLAN AutoConfig",
+      "group": "Red",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": true,
+      "requiresAdmin": true,
+      "userDescription": "Imprescindible para Wi‑Fi; el motor lo bloquea si hay adaptador inalámbrico activo."
+    },
+    {
+      "id": "fax",
+      "serviceName": "Fax",
+      "displayLabel": "Fax",
+      "group": "Impresión",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Fax; seguro deshabilitar si no se usa."
+    },
+    {
+      "id": "wisvc",
+      "serviceName": "WISvc",
+      "displayLabel": "Windows Insider",
+      "group": "Telemetría",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Insider; innecesario en builds estables."
+    },
+    {
+      "id": "mapsbroker",
+      "serviceName": "MapsBroker",
+      "displayLabel": "Descargas de mapas en segundo plano",
+      "group": "Telemetría",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Actualización de mapas offline; deshabilitar si no usa Mapas."
+    },
+    {
+      "id": "lfsvc",
+      "serviceName": "lfsvc",
+      "displayLabel": "Servicio de geolocalización",
+      "group": "Privacidad",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Ubicación del sistema; deshabilitar rompe apps que dependen de GPS/ubicación."
+    },
+    {
+      "id": "remoteregistry",
+      "serviceName": "RemoteRegistry",
+      "displayLabel": "Registro remoto",
+      "group": "Seguridad",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Acceso remoto al registro; CTT/Sophia suelen deshabilitarlo en estaciones."
+    },
+    {
+      "id": "remoteaccess",
+      "serviceName": "RemoteAccess",
+      "displayLabel": "Enrutamiento y acceso remoto (RAS)",
+      "group": "Red",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "RAS; deshabilitar si no usa VPN entrante / enrutamiento heredado."
+    },
+    {
+      "id": "trkwks",
+      "serviceName": "TrkWks",
+      "displayLabel": "Seguimiento de vínculos distribuidos",
+      "group": "Sistema",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Distributed Link Tracking; poco necesario en hogar."
+    },
+    {
+      "id": "nettcpportsharing",
+      "serviceName": "NetTcpPortSharing",
+      "displayLabel": "Net.Tcp Port Sharing",
+      "group": "Red",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Compartir puertos WCF; deshabilitar si no desarrolla con WCF."
+    },
+    {
+      "id": "xblauthmanager",
+      "serviceName": "XblAuthManager",
+      "displayLabel": "Xbox Live Auth Manager",
+      "group": "Gaming",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Xbox Live en PC; deshabilitar si no usa juegos Microsoft Store/Xbox."
+    },
+    {
+      "id": "xblgamesave",
+      "serviceName": "XblGameSave",
+      "displayLabel": "Xbox Live Game Save",
+      "group": "Gaming",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Guardado en nube Xbox; deshabilitar si no usa ecosistema Xbox."
+    },
+    {
+      "id": "wersvc",
+      "serviceName": "WerSvc",
+      "displayLabel": "Informes de errores de Windows",
+      "group": "Telemetría",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "WER; deshabilitar reduce telemetría de fallos pero dificulta diagnósticos automáticos."
+    },
+    {
+      "id": "wmpnetworksvc",
+      "serviceName": "WMPNetworkSvc",
+      "displayLabel": "Servicio de red del Reproductor multimedia",
+      "group": "Multimedia",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Uso compartido de medios legacy; deshabilitar si no transmite por red."
+    },
+    {
+      "id": "tabletinputservice",
+      "serviceName": "TabletInputService",
+      "displayLabel": "Servicio de entrada con lápiz y táctil",
+      "group": "Entrada",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Tableta/táctil; no deshabilitar en Surface o equipos táctiles."
+    }
+  ],
+  "powerPlanVisionary": {
+    "name": "Visionary",
+    "description": "Alto rendimiento de CPU y periféricos sin overclock; GUIDs aplicados vía PowerService.",
+    "baseTemplate": "SCHEME_MIN",
+    "settings": [
+      {
+        "subgroup": "SUB_PROCESSOR",
+        "settingGuid": "PROCTHROTTLEMIN",
+        "acValue": "100",
+        "dcValue": "100",
+        "comment": "Estado mínimo del procesador 100% (respuesta inmediata)."
+      },
+      {
+        "subgroup": "SUB_PROCESSOR",
+        "settingGuid": "PROCTHROTTLEMAX",
+        "acValue": "100",
+        "dcValue": "100",
+        "comment": "Estado máximo del procesador 100%."
+      },
+      {
+        "subgroup": "SUB_SLEEP",
+        "settingGuid": "STANDBYIDLE",
+        "acValue": "0",
+        "dcValue": "0",
+        "comment": "Suspensión por inactividad 0 (AC/DC según motor)."
+      },
+      {
+        "subgroup": "SUB_USB",
+        "settingGuid": "USBCASEH",
+        "acValue": "0",
+        "dcValue": "0",
+        "comment": "Suspensión selectiva USB desactivada (menor latencia de periféricos)."
+      },
+      {
+        "subgroup": "SUB_PCIEXPRESS",
+        "settingGuid": "ASPM",
+        "acValue": "0",
+        "dcValue": "0",
+        "comment": "ASPM PCIe desactivado (latencia más estable en GPU/SSD)."
+      }
+    ]
+  }
+}
