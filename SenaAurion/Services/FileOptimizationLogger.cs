@@ -33,7 +33,7 @@ public sealed class FileOptimizationLogger : IOptimizationLogger, IDisposable
             if (fi.Length == 0)
             {
                 _writer.WriteLine($"# Visionary Optimizer Â· inicio {DateTime.Now.ToString("u", CultureInfo.InvariantCulture)}");
-                _writer.WriteLine("# Formato: [HORA] [MÃ“DULO] [ACCIÃ“N] [RESULTADO]");
+                _writer.WriteLine("# Formato: [HORA] [MODULO] [ACCION] [RESULTADO]");
             }
         }
         catch

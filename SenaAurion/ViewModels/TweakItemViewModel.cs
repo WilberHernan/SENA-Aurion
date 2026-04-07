@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Media;
 using System.Text.Json;
 
@@ -43,7 +43,7 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
             using var root = Services.RegistryService.GetRootKey(Definition.Hive);
             if (root == null)
             {
-                CurrentStateText = "Formato de clave invÃ¡lido";
+                CurrentStateText = "Formato de clave invalido";
                 return;
             }
 
@@ -76,7 +76,7 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
                         }
                     }
                     IsOptimized = anyOptimized;
-                    CurrentStateText = $"[ACTUAL: {displayVal} {(IsOptimized ? "âœ“ optimizado" : "âš ï¸ original")}]";
+                    CurrentStateText = $"[ACTUAL: {displayVal} {(IsOptimized ? "optimizado" : "original")}]";
                 }
                 else
                 {
@@ -89,7 +89,7 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
             var currentVal = probe?.GetValue(Definition.ValueName);
             if (currentVal == null)
             {
-                CurrentStateText = "[ACTUAL: No aplicado âš ï¸ original]";
+                CurrentStateText = "[ACTUAL: No aplicado ¸ original]";
                 IsOptimized = false;
             }
             else
@@ -110,7 +110,7 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
                     IsOptimized = currentStr.Equals(expectedStr, System.StringComparison.OrdinalIgnoreCase);
                 }
 
-                CurrentStateText = $"[ACTUAL: {currentStr} {(IsOptimized ? "âœ“ optimizado" : "âš ï¸ original")}]";
+                CurrentStateText = $"[ACTUAL: {currentStr} {(IsOptimized ? "optimizado" : "original")}]";
             }
         }
         catch
@@ -141,7 +141,7 @@ public partial class ServiceTweakModel : TweakItemViewModel
         var rawStatus = Services.SystemStateMonitor.GetServiceStatus(Definition.ServiceName);
         IsOptimized = rawStatus.Contains("Detenido") && rawStatus.Contains("Deshabilitado");
         
-        CurrentStateText = $"[ESTADO: {rawStatus} {(IsOptimized ? "âœ“ optimizado" : "")}]";
+        CurrentStateText = $"[ESTADO: {rawStatus} {(IsOptimized ? "optimizado" : "")}]";
     }
 }
 
@@ -182,5 +182,18 @@ public partial class CleanerTweakModel : TweakItemViewModel
         }
 
         IsOptimized = status.Contains("vacÃ­a", System.StringComparison.OrdinalIgnoreCase) || status.Contains("limpio", System.StringComparison.OrdinalIgnoreCase) || status.Contains("optimizados", System.StringComparison.OrdinalIgnoreCase) || status.Contains("VacÃ­as", System.StringComparison.OrdinalIgnoreCase);
+    }
+}
+
+public partial class ProgramPackageViewModel : TweakItemViewModel
+{
+    public string PackageId { get; }
+
+    public ProgramPackageViewModel(string displayName, string packageId, string description)
+    {
+        DisplayName = displayName;
+        PackageId = packageId;
+        Description = description;
+        CurrentStateText = $"Id winget: {packageId}";
     }
 }

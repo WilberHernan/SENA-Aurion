@@ -7,11 +7,12 @@ using SenaAurion.Services;
 
 namespace SenaAurion.ViewModels;
 
-/// <summary>Shell MVVM: navegaciÃ³n lateral, datos offline y motor de optimizaciÃ³n async.</summary>
+/// <summary>Shell MVVM: navegación lateral, datos sin conexión y motor de optimización asíncrono.</summary>
 public sealed partial class MainViewModel : ViewModelBase
 {
     private readonly IOptimizationDataProvider _dataProvider;
     private readonly IOptimizationEngine _engine;
+    private readonly WingetProgramService _wingetService;
     private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcher;
 
     public MainViewModel(IOptimizationDataProvider dataProvider, IOptimizationEngine engine)
@@ -19,6 +20,7 @@ public sealed partial class MainViewModel : ViewModelBase
         _dispatcher = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
         _dataProvider = dataProvider;
         _engine = engine;
+        _wingetService = new WingetProgramService();
         _ = LoadDataAsync();
 
         SystemStateMonitor.StateChanged += (s, e) => 
@@ -90,13 +92,13 @@ public sealed partial class MainViewModel : ViewModelBase
 
     // SECCIÃ“N DE ESTADO GENERAL Y OPCIONES
     [ObservableProperty]
-    private string _statusMessage = "Listo Â· modo offline";
+    private string _statusMessage = "Listo  modo sin conexion";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(WifiStatusText))]
     private bool _isWifiPrimary;
 
-    public string WifiStatusText => IsWifiPrimary ? "sÃ­" : "no";
+    public string WifiStatusText => IsWifiPrimary ? "si­" : "no";
 
     [ObservableProperty]
     private bool _isBusy;
@@ -149,6 +151,13 @@ public sealed partial class MainViewModel : ViewModelBase
         }
     }
 
+    [ObservableProperty]
+    private bool _selectAllPrograms;
+    partial void OnSelectAllProgramsChanged(bool value)
+    {
+        foreach (var item in ProgramPackageItems) item.IsSelected = value;
+    }
+
     // ESTADOS EN TIEMPO REAL
     [ObservableProperty]
     private string _inputStateText = "Cargando...";
@@ -165,6 +174,7 @@ public sealed partial class MainViewModel : ViewModelBase
     public ObservableCollection<RegistryTweakViewModel> NetworkTweakItems { get; } = new();
     public ObservableCollection<ServiceTweakModel> ServiceTweakItems { get; } = new();
     public ObservableCollection<CleanerTweakModel> CleanerTweakItems { get; } = new();
+    public ObservableCollection<ProgramPackageViewModel> ProgramPackageItems { get; } = new();
     public ObservableCollection<TweakItemViewModel> CurrentModuleItems { get; } = new();
 
     [ObservableProperty]
@@ -180,21 +190,23 @@ public sealed partial class MainViewModel : ViewModelBase
     public IReadOnlyList<NavItem> NavItems { get; } =
     [
         new("home", "Inicio", "\uE80F"),
-        new("input", "Input Response", "\uE144"),
+        new("input", "Respuesta de entrada", "\uE144"),
         new("network", "Red inteligente", "\uE701"),
-        new("services", "Servicios y telemetrÃ­a", "\uE9D9"),
-        new("cleaner", "Limpieza Profunda", "\uE7FC")
+        new("services", "Servicios y telemetría", "\uE9D9"),
+        new("cleaner", "Limpieza profunda", "\uE7FC"),
+        new("programs", "Gestión de programas", "\uEA37")
     ];
 
     partial void OnSelectedTagChanged(string value)
     {
         StatusMessage = value switch
         {
-            "home" => "VisiÃ³n general Â· Visionary Optimizer",
-            "input" => "Teclado, ratÃ³n y menÃºs Â· baja latencia",
-            "network" => "TCP/IP Â· detecciÃ³n Wi-Fi activa",
+            "home" => "Visión general · Optimizador SENA Aurion",
+            "input" => "Teclado, ratón y menús · baja latencia",
+            "network" => "Red · detección de Wi‑Fi activa",
             "services" => "Control granular de servicios",
-            "cleaner" => "Mantenimiento y recuperaciÃ³n de espacio",
+            "cleaner" => "Mantenimiento y recuperación de espacio",
+            "programs" => "Instalación, actualización y desinstalación con winget",
             _ => StatusMessage,
         };
         OnPropertyChanged(nameof(IsSectionHome));
@@ -202,6 +214,8 @@ public sealed partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsSectionNetwork));
         OnPropertyChanged(nameof(IsSectionServices));
         OnPropertyChanged(nameof(IsSectionCleaner));
+        OnPropertyChanged(nameof(IsCleanerModule));
+        OnPropertyChanged(nameof(IsProgramsModule));
 
         if (value == "home")
         {
@@ -213,30 +227,35 @@ public sealed partial class MainViewModel : ViewModelBase
 
     public string CurrentModuleTitle => SelectedTag switch
     {
-        "input" => "Input",
-        "network" => "Network",
-        "services" => "Services",
-        "cleaner" => "Cleaner",
+        "input" => "Entrada",
+        "network" => "Red",
+        "services" => "Servicios",
+        "cleaner" => "Limpieza",
+        "programs" => "Programas",
         _ => "Inicio"
     };
 
     public string CurrentModuleActionName => SelectedTag switch
     {
-        "input" => "Input",
-        "network" => "Network",
-        "services" => "Services",
-        "cleaner" => "Cleaner",
-        _ => "Input"
+        "input" => "input",
+        "network" => "network",
+        "services" => "services",
+        "cleaner" => "cleaner",
+        "programs" => "programs",
+        _ => "input"
     };
 
     public string CurrentModuleDescription => SelectedTag switch
     {
-        "input" => "Ajustes de latencia para periféricos y respuesta del sistema.",
-        "network" => "Tweaks TCP/IP enfocados en estabilidad y menor latencia.",
-        "services" => "Gestión de servicios para reducir carga sin dañar el sistema.",
-        "cleaner" => "Tareas de limpieza y mantenimiento de archivos temporales.",
-        _ => "Panel principal de estado y resumen del equipo."
+        "input" => "Ajusta el registro para mejorar la respuesta del teclado, el ratón y los menús (latencia más baja). Los cambios son reversibles desde la propia aplicación.",
+        "network" => "Aplica ajustes TCP/IP para mayor estabilidad y menor latencia en el tráfico de red. El motor respeta servicios críticos cuando hay Wi‑Fi activa.",
+        "services" => "Permite deshabilitar servicios no esenciales para aligerar el sistema. Los elementos bloqueados por Wi‑Fi no se modifican para no cortar la conectividad.",
+        "cleaner" => "Libera espacio eliminando temporales, cachés y datos prescindibles. Algunas acciones borran archivos de forma permanente; revísalas antes de ejecutar.",
+        "programs" => "Instala, actualiza o desinstala programas usando winget (identificadores de paquete). Útil para despliegue y mantenimiento desde soporte técnico.",
+        _ => "Resumen del equipo y punto de partida. Desde aquí navega a cada módulo para aplicar optimizaciones concretas con reglas claras y registro de actividad."
     };
+    public bool IsCleanerModule => SelectedTag == "cleaner";
+    public bool IsProgramsModule => SelectedTag == "programs";
 
     public string SelectedModuleDisplayName => SelectedModuleItem?.DisplayName ?? "Selecciona una función";
     public string SelectedModuleDetail => SelectedModuleItem?.Description ?? CurrentModuleDescription;
@@ -250,6 +269,7 @@ public sealed partial class MainViewModel : ViewModelBase
             "network" => NetworkTweakItems,
             "services" => ServiceTweakItems,
             "cleaner" => CleanerTweakItems,
+            "programs" => ProgramPackageItems,
             _ => Array.Empty<TweakItemViewModel>()
         };
 
@@ -274,7 +294,7 @@ public sealed partial class MainViewModel : ViewModelBase
         try
         {
             Data = await _dataProvider.LoadAsync().ConfigureAwait(true);
-            StatusMessage = Data is null ? "No se pudo cargar OptimizationData.json" : "Datos cargados (offline)";
+            StatusMessage = Data is null ? "No se pudo cargar OptimizationData.json" : "Datos cargados (sin conexion)";
             RefreshNetworkAndToggles();
             _ = LoadSystemInfoAsync();
         }
@@ -298,6 +318,7 @@ public sealed partial class MainViewModel : ViewModelBase
         InputTweakItems.Clear();
         NetworkTweakItems.Clear();
         CleanerTweakItems.Clear();
+        ProgramPackageItems.Clear();
 
         if (Data is null)
             return;
@@ -330,9 +351,18 @@ public sealed partial class MainViewModel : ViewModelBase
             }
         }
 
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Google Chrome", "Google.Chrome", "Navegador web"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Mozilla Firefox", "Mozilla.Firefox", "Navegador web"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("7-Zip", "7zip.7zip", "CompresiÃ³n de archivos"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Notepad++", "Notepad++.Notepad++", "Editor de texto"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("VLC", "VideoLAN.VLC", "Reproductor multimedia"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Git", "Git.Git", "Control de versiones"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Microsoft PowerToys", "Microsoft.PowerToys", "Utilidades del sistema"));
+
         SelectAllInput = false;
         SelectAllNetwork = false;
         SelectAllCleaner = false;
+        SelectAllPrograms = false;
         // ... Check if we want to default false? Yes.
         RefreshCurrentModuleView();
     }
@@ -342,12 +372,12 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         if (Data is null)
         {
-            StatusMessage = "Sin datos Â· no se ejecuta";
+            StatusMessage = "Sin datos · no se puede ejecutar";
             return;
         }
 
         IsBusy = true;
-        StatusMessage = "Aplicando optimizaciÃ³nâ€¦";
+        StatusMessage = "Aplicando optimización…";
         try
         {
             var selections = ServiceToggles.ToDictionary(
@@ -365,7 +395,7 @@ public sealed partial class MainViewModel : ViewModelBase
             };
 
             await _engine.RunAsync(Data, options, cancellationToken).ConfigureAwait(true);
-            StatusMessage = "OptimizaciÃ³n completada Â· ver SenaAurion.log";
+            StatusMessage = "Optimización completada · ver SenaAurion.log";
         }
         catch (OperationCanceledException)
         {
@@ -396,9 +426,9 @@ public sealed partial class MainViewModel : ViewModelBase
 
             var options = new OptimizationRunOptions
             {
-                ApplyInput = moduleName == "Input",
-                ApplyNetworkTcp = moduleName == "Network",
-                ApplyServices = moduleName == "Services",
+                ApplyInput = moduleName == "input",
+                ApplyNetworkTcp = moduleName == "network",
+                ApplyServices = moduleName == "services",
                 ApplyRegistryMisc = false,
                 ServiceDisableSelections = selections
             };
@@ -421,19 +451,19 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         if (Data is null) return;
         IsBusy = true;
-        StatusMessage = $"Aplicando seleccionados en {moduleName}â€¦";
+        StatusMessage = $"Aplicando selección en {CurrentModuleTitle}…";
         try
         {
-            if (moduleName == "Input")
+            if (moduleName == "input")
                 await _engine.ApplyTweaksAsync(InputTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
-            else if (moduleName == "Network")
+            else if (moduleName == "network")
                 await _engine.ApplyTweaksAsync(NetworkTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
-            else if (moduleName == "Services")
+            else if (moduleName == "services")
                 await _engine.ApplyServicesAsync(ServiceTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
-            else if (moduleName == "Cleaner")
+            else if (moduleName == "cleaner")
                 await _engine.ApplyCleanerAsync(CleanerTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
 
-            StatusMessage = $"{moduleName} optimizado (selecciÃ³n).";
+            StatusMessage = $"Módulo {CurrentModuleTitle} aplicado correctamente.";
         }
         catch (Exception ex) { StatusMessage = $"Error: {ex.Message}"; }
         finally { IsBusy = false; }
@@ -444,19 +474,24 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         if (Data is null) return;
         IsBusy = true;
-        StatusMessage = $"Revirtiendo seleccionados en {moduleName}â€¦";
+        StatusMessage = $"Revirtiendo selección en {CurrentModuleTitle}…";
         try
         {
-            if (moduleName == "Input")
+            if (moduleName == "input")
                 await _engine.RevertInputTweaksAsync(InputTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
-            else if (moduleName == "Network")
+            else if (moduleName == "network")
                 await _engine.RevertNetworkTweaksAsync(NetworkTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
-            else if (moduleName == "Services")
+            else if (moduleName == "services")
                 await _engine.RevertServicesAsync(ServiceTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
-            else if (moduleName == "Cleaner")
-                await _engine.RevertCleanerAsync(CleanerTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
+            else if (moduleName == "cleaner")
+                StatusMessage = "El módulo de limpieza no admite reversión.";
+            else if (moduleName == "programs")
+                await UninstallSelectedProgramsAsync(cancellationToken);
 
-            StatusMessage = $"{moduleName} revertido (selecciÃ³n).";
+            if (moduleName != "cleaner")
+            {
+                StatusMessage = $"Módulo {CurrentModuleTitle} revertido correctamente.";
+            }
         }
         catch (Exception ex) { StatusMessage = $"Error: {ex.Message}"; }
         finally { IsBusy = false; }
@@ -467,16 +502,144 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         if (Data is null) return;
         IsBusy = true;
-        StatusMessage = $"Revirtiendo todo en {moduleName}â€¦";
+        StatusMessage = $"Restaurando configuración en {CurrentModuleTitle}…";
         try
         {
-            await _engine.RevertModuleAsync(moduleName, Data, cancellationToken);
-            StatusMessage = $"{moduleName} revertido a original.";
+            if (moduleName == "cleaner")
+            {
+                StatusMessage = "La limpieza no tiene restauración de fábrica.";
+            }
+            else if (moduleName == "programs")
+            {
+                await UpdateSelectedProgramsAsync(cancellationToken);
+                StatusMessage = "Programas seleccionados actualizados a su versión más reciente.";
+            }
+            else
+            {
+                await _engine.RevertModuleAsync(moduleName, Data, cancellationToken);
+                StatusMessage = $"{CurrentModuleTitle} restaurado a su configuración original.";
+            }
         }
         catch (Exception ex) { StatusMessage = $"Error: {ex.Message}"; }
         finally { IsBusy = false; }
     }
 
+    [RelayCommand]
+    private async Task InstallSelectedProgramsAsync(CancellationToken cancellationToken)
+    {
+        var selected = ProgramPackageItems.Where(p => p.IsSelected).ToArray();
+        if (selected.Length == 0)
+        {
+            StatusMessage = "Selecciona al menos un programa.";
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            foreach (var program in selected)
+            {
+                var result = await _wingetService.InstallAsync(program.PackageId, cancellationToken);
+                program.CurrentStateText = result;
+            }
+            StatusMessage = "Instalación finalizada.";
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task UpdateSelectedProgramsAsync(CancellationToken cancellationToken)
+    {
+        var selected = ProgramPackageItems.Where(p => p.IsSelected).ToArray();
+        if (selected.Length == 0)
+        {
+            StatusMessage = "Selecciona al menos un programa.";
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            foreach (var program in selected)
+            {
+                var result = await _wingetService.UpgradeAsync(program.PackageId, cancellationToken);
+                program.CurrentStateText = result;
+            }
+            StatusMessage = "Actualización finalizada.";
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task UninstallSelectedProgramsAsync(CancellationToken cancellationToken)
+    {
+        var selected = ProgramPackageItems.Where(p => p.IsSelected).ToArray();
+        if (selected.Length == 0)
+        {
+            StatusMessage = "Selecciona al menos un programa.";
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            foreach (var program in selected)
+            {
+                var result = await _wingetService.UninstallAsync(program.PackageId, cancellationToken);
+                program.CurrentStateText = result;
+            }
+            StatusMessage = "Desinstalación finalizada.";
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
     public readonly record struct NavItem(string Tag, string Label, string Glyph);
+
+    [RelayCommand]
+    private void ToggleSelectAllCurrentModule()
+    {
+        switch (SelectedTag)
+        {
+            case "input":
+                SelectAllInput = !AreAllSelected(InputTweakItems);
+                break;
+            case "network":
+                SelectAllNetwork = !AreAllSelected(NetworkTweakItems);
+                break;
+            case "services":
+                SelectAllServices = !AreAllSelectableServicesSelected();
+                break;
+            case "cleaner":
+                SelectAllCleaner = !AreAllSafeCleanerSelected();
+                break;
+            case "programs":
+                SelectAllPrograms = !AreAllSelected(ProgramPackageItems);
+                break;
+        }
+    }
+
+    private static bool AreAllSelected<T>(IEnumerable<T> items) where T : TweakItemViewModel =>
+        items.Any() && items.All(i => i.IsSelected);
+
+    private bool AreAllSelectableServicesSelected()
+    {
+        var selectable = ServiceTweakItems.Where(s => !s.IsWifiLocked).ToArray();
+        return selectable.Length > 0 && selectable.All(s => s.IsSelected);
+    }
+
+    private bool AreAllSafeCleanerSelected()
+    {
+        var safe = CleanerTweakItems.Where(c => !c.IsDanger).ToArray();
+        return safe.Length > 0 && safe.All(c => c.IsSelected);
+    }
 }
 

@@ -1,4 +1,4 @@
-<Window
+﻿<Window
     x:Class="SenaAurion.Shell.MainShellWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -107,25 +107,10 @@
 
                         <Grid Margin="76,54,76,30">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Grid Grid.Row="0" Margin="0,0,0,10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Text="{x:Bind ViewModel.CurrentModuleTitle, Mode=OneWay}" Style="{StaticResource PageTitleStyle}" VerticalAlignment="Center"/>
-
-                                <Button Grid.Column="1" Style="{StaticResource NeoActionButtonStyle}" Width="40" Height="34" Padding="0"
-                                        Command="{x:Bind ViewModel.ToggleSelectAllCurrentModuleCommand}" ToolTipService.ToolTip="Seleccionar todo / deseleccionar todo">
-                                    <FontIcon Glyph="&#xE8FD;" FontSize="14" Foreground="#E6FFFFFF" />
-                                </Button>
-                            </Grid>
-
-                            <Grid Grid.Row="1">
+                            <Grid Grid.Row="0">
                                 <ListView ItemsSource="{x:Bind ViewModel.CurrentModuleItems, Mode=OneWay}"
                                          SelectedItem="{x:Bind ViewModel.SelectedModuleItem, Mode=TwoWay}"
                                          Background="Transparent"
@@ -134,10 +119,12 @@
                                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                                          ScrollViewer.VerticalScrollMode="Enabled">
                                     <ListView.Resources>
-                                        <!-- Personalización de la ScrollBar (WinUI 3 Lightweight Styling) -->
-                                        <SolidColorBrush x:Key="ScrollBarPanningThumbBackground" Color="#2AFFFFFF"/>
-                                        <SolidColorBrush x:Key="ScrollBarThumbBackground" Color="#4DFFFFFF"/>
-                                        <SolidColorBrush x:Key="ScrollBarThumbBorderBrush" Color="Transparent"/>
+                                        <!-- Transparencia y grosor al hacer hover/press en la barra -->
+                                        <SolidColorBrush x:Key="ScrollBarThumbFill" Color="#1AFFFFFF"/>
+                                        <SolidColorBrush x:Key="ScrollBarThumbPointerOverFill" Color="#33FFFFFF"/>
+                                        <SolidColorBrush x:Key="ScrollBarThumbPressedFill" Color="#55FFFFFF"/>
+                                        <SolidColorBrush x:Key="ScrollBarTrackFill" Color="Transparent"/>
+                                        <SolidColorBrush x:Key="ScrollBarTrackPointerOverFill" Color="Transparent"/>
                                     </ListView.Resources>
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="ListViewItem">
@@ -191,32 +178,43 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- CARD SUPERIOR: qué hace el módulo seleccionado -->
+            <!-- CARD SUPERIOR -->
             <Border Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel>
-                    <TextBlock FontSize="11" Foreground="#8CFFFFFF" Margin="0,0,0,4" Text="Módulo activo" />
-                    <TextBlock Text="{x:Bind ViewModel.CurrentModuleTitle, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" TextWrapping="Wrap" />
-                    <TextBlock Text="{x:Bind ViewModel.CurrentModuleDescription, Mode=OneWay}" FontSize="11" Foreground="#B3FFFFFF" LineHeight="17" Margin="0,8,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="NETWORK STATS" FontSize="13" FontWeight="Bold" Foreground="#D9FFFFFF" />
+                    <TextBlock Text="SENA AURION optimiza rendimiento con reglas seguras y reversibles. Los cambios buscan estabilidad y fluidez sin comprometer la integridad del dispositivo." FontSize="10" Foreground="#9AFFFFFF" LineHeight="15" Margin="0,6,0,10" TextWrapping="Wrap" />
+                    
+                    <ItemsControl>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="4" Height="40" VerticalAlignment="Bottom" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <!-- Barras minificadas de ejemplo -->
+                        <Border Width="8" Height="10" Background="#26FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
+                        <Border Width="8" Height="25" Background="#80FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
+                        <Border Width="8" Height="15" Background="#26FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
+                        <Border Width="8" Height="35" Background="#80FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
+                        <Border Width="8" Height="20" Background="#26FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
+                        <Border Width="8" Height="12" Background="#26FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
+                        <Border Width="8" Height="28" Background="#80FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
+                    </ItemsControl>
+
+                    <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,16,0,0">
+                        <Ellipse Width="6" Height="6" Fill="#CCFFFFFF" />
+                        <Ellipse Width="6" Height="6" Fill="#33FFFFFF" />
+                        <Ellipse Width="6" Height="6" Fill="#33FFFFFF" />
+                        <Ellipse Width="6" Height="6" Fill="#33FFFFFF" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
             <!-- CARD INFERIOR -->
             <Border Grid.Row="1" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock x:Name="CleanerWarningText" Text="El módulo de limpieza elimina archivos de forma permanente." Foreground="#FF4D4D" FontSize="11" Margin="0,0,0,8" TextWrapping="Wrap"
-                               Visibility="Collapsed"/>
-
-                    <StackPanel x:Name="DefaultActionsPanel">
-                        <Button x:Name="PrimaryActionButton" Content="Aplicar" Click="PrimaryActionButton_Click" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:Name="SecondaryActionButton" Content="Revertir" Click="SecondaryActionButton_Click" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:Name="TertiaryActionButton" Content="Restaurar de fabrica" Click="TertiaryActionButton_Click" Style="{StaticResource NeoActionButtonStyle}"/>
-                    </StackPanel>
-
-                    <StackPanel x:Name="ProgramsActionsPanel" Visibility="Collapsed">
-                        <Button Content="Instalar" Click="InstallProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button Content="Actualizar" Click="UpdateProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button Content="Desinstalar" Click="UninstallProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}"/>
-                    </StackPanel>
+                    <Button Content="Aplicar" Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="{x:Bind ViewModel.CurrentModuleActionName, Mode=OneWay}" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                    <Button Content="Revertir" Command="{x:Bind ViewModel.RevertSelectedModuleCommand}" CommandParameter="{x:Bind ViewModel.CurrentModuleActionName, Mode=OneWay}" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                    <Button Content="Restaurar fábrica" Command="{x:Bind ViewModel.RevertAllModuleCommand}" CommandParameter="{x:Bind ViewModel.CurrentModuleActionName, Mode=OneWay}" Style="{StaticResource NeoActionButtonStyle}"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -227,49 +225,45 @@
                 <!-- Ãconos de NavegaciÃ³n Verticalmente Centrados -->
                 <StackPanel x:Name="NavBarStack" VerticalAlignment="Center" Spacing="16" HorizontalAlignment="Center">
                     <!-- Home -->
-                    <Button Click="TabButton_Click" CommandParameter="home" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Inicio">
+                    <Button Click="TabButton_Click" CommandParameter="home" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Inicio">
                         <Grid>
-                            <Border Width="38" Height="38" CornerRadius="19" Background="#2C2C2C" />
+                            <Ellipse Width="36" Height="36" Fill="#2A2A2A" />
                             <FontIcon Glyph="&#xE80F;" FontSize="16" Foreground="#B3FFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Input -->
-                    <Button Click="TabButton_Click" CommandParameter="input" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Entrada">
+                    <Button Click="TabButton_Click" CommandParameter="input" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Input">
                         <Grid>
-                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
                             <FontIcon Glyph="&#xE144;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Network -->
-                    <Button Click="TabButton_Click" CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Red">
+                    <Button Click="TabButton_Click" CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Network">
                         <Grid>
-                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
                             <FontIcon Glyph="&#xE701;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
                     
-                    <!-- Servicios -->
-                    <Button Click="TabButton_Click" CommandParameter="services" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Servicios">
+                    <!-- TCP -->
+                    <Button Click="TabButton_Click" CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="TCP">
                         <Grid>
-                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
+                            <FontIcon Glyph="&#xE968;" FontSize="16" Foreground="#4DFFFFFF" />
+                        </Grid>
+                    </Button>
+
+                    <!-- Servicios -->
+                    <Button Click="TabButton_Click" CommandParameter="services" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Servicios">
+                        <Grid>
                             <FontIcon Glyph="&#xE9D9;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Cleaner -->
-                    <Button Click="TabButton_Click" CommandParameter="cleaner" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Limpieza">
+                    <Button Click="TabButton_Click" CommandParameter="cleaner" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Limpieza">
                         <Grid>
-                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
                             <FontIcon Glyph="&#xE7FC;" FontSize="16" Foreground="#4DFFFFFF" />
-                        </Grid>
-                    </Button>
-
-                    <Button Click="TabButton_Click" CommandParameter="programs" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Programas">
-                        <Grid>
-                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
-                            <FontIcon Glyph="&#xEA37;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
                 </StackPanel>
@@ -300,15 +294,15 @@
                               Width="36" Height="36" Stretch="Uniform"
                               HorizontalAlignment="Left" VerticalAlignment="Center" />
                         <StackPanel Orientation="Horizontal" Spacing="28" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="Inicio" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
-                            <TextBlock Text="Version 17" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
-                            <TextBlock Text="Compilado" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
-                            <TextBlock Text="Creado" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
+                            <TextBlock Text="Home" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
+                            <TextBlock Text="About" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
+                            <TextBlock Text="Services" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
+                            <TextBlock Text="Contact" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
                         </StackPanel>
                         <Button Background="Transparent" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="20" Padding="8,7,8,7"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" Click="TopButton_Click" Height="42">
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <TextBlock Text="Abrir panel" FontSize="12" Foreground="#FFFFFF" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                <TextBlock Text="Start Page" FontSize="12" Foreground="#FFFFFF" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 <Grid Width="26" Height="26">
                                     <Path Data="M 4,10 L 16,10 M 10,4 L 16,10 L 10,16" Stroke="#FFFFFF" StrokeThickness="1.5" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Width="12" Height="12" />
                                 </Grid>
@@ -318,7 +312,7 @@
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="32,60,0,0">
                         <TextBlock Text="SENA&#x0a;AURION" FontFamily="Segoe UI" FontWeight="ExtraBold" FontSize="72" Foreground="#FFFFFF"
                                    CharacterSpacing="-120" LineStackingStrategy="BlockLineHeight" LineHeight="72" />
-                        <TextBlock Text="Where innovation knows no bounds" FontFamily="Segoe UI" FontSize="14"
+                        <TextBlock Text="Where Innovation Knows No Bounds" FontFamily="Segoe UI" FontSize="14"
                                    Foreground="#FFFFFF" Opacity="0.45" Margin="0,10,0,0" CharacterSpacing="30" />
                     </StackPanel>
                     <Button Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,28" Click="SpecsButton_Click">

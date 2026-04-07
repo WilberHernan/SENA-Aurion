@@ -94,8 +94,8 @@ public sealed class CleanerOptimization
         long dl = GetDirectorySize(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"));
 
         long total = doc + mus + vid + dl;
-        if (total == 0) return "0 GB total (Docs: 0 MB, Descargas: 0 MB, MÃºsica: 0 MB, Videos: 0 MB)";
-        return $"{FormatBytes(total)} total (Docs: {FormatBytes(doc)}, Descargas: {FormatBytes(dl)}, MÃºsica: {FormatBytes(mus)}, Videos: {FormatBytes(vid)})";
+        if (total == 0) return "0 GB total (Docs: 0 MB, Descargas: 0 MB, Musica: 0 MB, Videos: 0 MB)";
+        return $"{FormatBytes(total)} total (Docs: {FormatBytes(doc)}, Descargas: {FormatBytes(dl)}, Musica: {FormatBytes(mus)}, Videos: {FormatBytes(vid)})";
     }
 
     private static string FormatBytes(long bytes)

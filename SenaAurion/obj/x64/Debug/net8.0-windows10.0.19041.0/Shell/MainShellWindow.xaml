@@ -95,29 +95,50 @@
 
         <Grid Grid.Column="0">
             <!-- BARRA SUPERIOR OCULTA (Usada solo para arrastrar la ventana) -->
-            <Grid x:ConnectionId='27' x:Name="AppCustomTitleBar" VerticalAlignment="Top" Background="Transparent" Height="46" Margin="64,0,0,0" Canvas.ZIndex="20" />
+            <Grid x:ConnectionId='35' x:Name="AppCustomTitleBar" VerticalAlignment="Top" Background="Transparent" Height="46" Margin="64,0,0,0" Canvas.ZIndex="20" />
 
             <!-- AREA DE CONTENIDO (Expandida al máximo) -->
             <Grid Margin="0,0,0,0">
                 <Border Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Grid x:ConnectionId='28' x:Name="MainContainerContent">
-                        <Button x:ConnectionId='29' Width="36" Height="36" Style="{StaticResource NeoActionButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Canvas.ZIndex="30"                            ToolTipService.ToolTip="Volver al Splash">
+                    <Grid x:ConnectionId='36' x:Name="MainContainerContent">
+                        <Button x:ConnectionId='37' Width="36" Height="36" Style="{StaticResource NeoActionButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Canvas.ZIndex="30"                            ToolTipService.ToolTip="Volver al Splash">
                              <FontIcon Glyph="&#xE72B;" FontSize="14" Foreground="#E6FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Button>
 
                         <Grid Margin="76,54,76,30">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Grid Grid.Row="0">
-                                <ListView x:ConnectionId='30'                                                                 
+                            <Grid Grid.Row="0" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock x:ConnectionId='46'                                                           Style="{StaticResource PageTitleStyle}" VerticalAlignment="Center"/>
+
+                                <Button x:ConnectionId='47' Grid.Column="1" Style="{StaticResource NeoActionButtonStyle}" Width="40" Height="34" Padding="0"
+                                                                                                         ToolTipService.ToolTip="Seleccionar todo / deseleccionar todo">
+                                    <FontIcon Glyph="&#xE8FD;" FontSize="14" Foreground="#E6FFFFFF" />
+                                </Button>
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <ListView x:ConnectionId='38'                                                                 
                                                                                                           
                                          Background="Transparent"
                                          BorderThickness="0"
                                          SelectionMode="Single"
                                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                                          ScrollViewer.VerticalScrollMode="Enabled">
+                                    <ListView.Resources>
+                                        <!-- Personalización de la ScrollBar (WinUI 3 Lightweight Styling) -->
+                                        <SolidColorBrush x:Key="ScrollBarPanningThumbBackground" Color="#2AFFFFFF"/>
+                                        <SolidColorBrush x:Key="ScrollBarThumbBackground" Color="#4DFFFFFF"/>
+                                        <SolidColorBrush x:Key="ScrollBarThumbBorderBrush" Color="Transparent"/>
+                                    </ListView.Resources>
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="ListViewItem">
                                             <Setter Property="Margin" Value="0,2"/>
@@ -142,15 +163,15 @@
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemTemplate>
                                         <DataTemplate                                           >
-                                            <Grid x:ConnectionId='34'>
+                                            <Grid x:ConnectionId='42'>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox x:ConnectionId='35'                                              VerticalAlignment="Center"/>
+                                                <CheckBox x:ConnectionId='43'                                              VerticalAlignment="Center"/>
                                                 <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                                    <TextBlock x:ConnectionId='36'                             FontSize="14" Foreground="#F2FFFFFF" FontWeight="SemiBold"/>
-                                                    <TextBlock x:ConnectionId='37'                                               FontSize="11" Foreground="#8CFFFFFF" Margin="0,2,0,0"/>
+                                                    <TextBlock x:ConnectionId='44'                             FontSize="14" Foreground="#F2FFFFFF" FontWeight="SemiBold"/>
+                                                    <TextBlock x:ConnectionId='45'                                               FontSize="11" Foreground="#8CFFFFFF" Margin="0,2,0,0"/>
                                                 </StackPanel>
                                             </Grid>
                                         </DataTemplate>
@@ -170,43 +191,32 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- CARD SUPERIOR -->
+            <!-- CARD SUPERIOR: qué hace el módulo seleccionado -->
             <Border Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel>
-                    <TextBlock Text="NETWORK STATS" FontSize="13" FontWeight="Bold" Foreground="#D9FFFFFF" />
-                    <TextBlock Text="SENA AURION optimiza rendimiento con reglas seguras y reversibles. Los cambios buscan estabilidad y fluidez sin comprometer la integridad del dispositivo." FontSize="10" Foreground="#9AFFFFFF" LineHeight="15" Margin="0,6,0,10" TextWrapping="Wrap" />
-                    
-                    <ItemsControl>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="4" Height="40" VerticalAlignment="Bottom" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <!-- Barras minificadas de ejemplo -->
-                        <Border Width="8" Height="10" Background="#26FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
-                        <Border Width="8" Height="25" Background="#80FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
-                        <Border Width="8" Height="15" Background="#26FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
-                        <Border Width="8" Height="35" Background="#80FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
-                        <Border Width="8" Height="20" Background="#26FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
-                        <Border Width="8" Height="12" Background="#26FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
-                        <Border Width="8" Height="28" Background="#80FFFFFF" CornerRadius="4" VerticalAlignment="Bottom"/>
-                    </ItemsControl>
-
-                    <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,16,0,0">
-                        <Ellipse Width="6" Height="6" Fill="#CCFFFFFF" />
-                        <Ellipse Width="6" Height="6" Fill="#33FFFFFF" />
-                        <Ellipse Width="6" Height="6" Fill="#33FFFFFF" />
-                        <Ellipse Width="6" Height="6" Fill="#33FFFFFF" />
-                    </StackPanel>
+                    <TextBlock FontSize="11" Foreground="#8CFFFFFF" Margin="0,0,0,4" Text="Módulo activo" />
+                    <TextBlock x:ConnectionId='33'                                                           FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" TextWrapping="Wrap" />
+                    <TextBlock x:ConnectionId='34'                                                                 FontSize="11" Foreground="#B3FFFFFF" LineHeight="17" Margin="0,8,0,0" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
 
             <!-- CARD INFERIOR -->
             <Border Grid.Row="1" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel VerticalAlignment="Center">
-                    <Button x:ConnectionId='24' Content="Aplicar"                                                                                                                                    Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                    <Button x:ConnectionId='25' Content="Revertir"                                                                                                                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                    <Button x:ConnectionId='26' Content="Restaurar fábrica"                                                                                                                                Style="{StaticResource NeoActionButtonStyle}"/>
+                    <TextBlock x:ConnectionId='24' x:Name="CleanerWarningText" Text="El módulo de limpieza elimina archivos de forma permanente." Foreground="#FF4D4D" FontSize="11" Margin="0,0,0,8" TextWrapping="Wrap"
+                               Visibility="Collapsed"/>
+
+                    <StackPanel x:ConnectionId='25' x:Name="DefaultActionsPanel">
+                        <Button x:ConnectionId='30' x:Name="PrimaryActionButton" Content="Aplicar"                                   Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='31' x:Name="SecondaryActionButton" Content="Revertir"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='32' x:Name="TertiaryActionButton" Content="Restaurar de fabrica"                                    Style="{StaticResource NeoActionButtonStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel x:ConnectionId='26' x:Name="ProgramsActionsPanel" Visibility="Collapsed">
+                        <Button x:ConnectionId='27' Content="Instalar"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='28' Content="Actualizar"                                    Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='29' Content="Desinstalar"                                       Style="{StaticResource NeoActionButtonStyle}"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
         </Grid>
@@ -217,45 +227,49 @@
                 <!-- Ãconos de NavegaciÃ³n Verticalmente Centrados -->
                 <StackPanel x:ConnectionId='17' x:Name="NavBarStack" VerticalAlignment="Center" Spacing="16" HorizontalAlignment="Center">
                     <!-- Home -->
-                    <Button x:ConnectionId='18'                         CommandParameter="home" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Inicio">
+                    <Button x:ConnectionId='18'                         CommandParameter="home" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Inicio">
                         <Grid>
-                            <Ellipse Width="36" Height="36" Fill="#2A2A2A" />
+                            <Border Width="38" Height="38" CornerRadius="19" Background="#2C2C2C" />
                             <FontIcon Glyph="&#xE80F;" FontSize="16" Foreground="#B3FFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Input -->
-                    <Button x:ConnectionId='19'                         CommandParameter="input" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Input">
+                    <Button x:ConnectionId='19'                         CommandParameter="input" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Entrada">
                         <Grid>
+                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
                             <FontIcon Glyph="&#xE144;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Network -->
-                    <Button x:ConnectionId='20'                         CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Network">
+                    <Button x:ConnectionId='20'                         CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Red">
                         <Grid>
+                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
                             <FontIcon Glyph="&#xE701;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
                     
-                    <!-- TCP -->
-                    <Button x:ConnectionId='21'                         CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="TCP">
-                        <Grid>
-                            <FontIcon Glyph="&#xE968;" FontSize="16" Foreground="#4DFFFFFF" />
-                        </Grid>
-                    </Button>
-
                     <!-- Servicios -->
-                    <Button x:ConnectionId='22'                         CommandParameter="services" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Servicios">
+                    <Button x:ConnectionId='21'                         CommandParameter="services" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Servicios">
                         <Grid>
+                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
                             <FontIcon Glyph="&#xE9D9;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Cleaner -->
-                    <Button x:ConnectionId='23'                         CommandParameter="cleaner" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Limpieza">
+                    <Button x:ConnectionId='22'                         CommandParameter="cleaner" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Limpieza">
                         <Grid>
+                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
                             <FontIcon Glyph="&#xE7FC;" FontSize="16" Foreground="#4DFFFFFF" />
+                        </Grid>
+                    </Button>
+
+                    <Button x:ConnectionId='23'                         CommandParameter="programs" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Programas">
+                        <Grid>
+                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
+                            <FontIcon Glyph="&#xEA37;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
                 </StackPanel>
@@ -286,15 +300,15 @@
                               Width="36" Height="36" Stretch="Uniform"
                               HorizontalAlignment="Left" VerticalAlignment="Center" />
                         <StackPanel Orientation="Horizontal" Spacing="28" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="Home" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
-                            <TextBlock Text="About" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
-                            <TextBlock Text="Services" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
-                            <TextBlock Text="Contact" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
+                            <TextBlock Text="Inicio" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
+                            <TextBlock Text="Version 17" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
+                            <TextBlock Text="Compilado" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
+                            <TextBlock Text="Creado" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="#FFFFFF" Opacity="0.6" />
                         </StackPanel>
                         <Button x:ConnectionId='16' Background="Transparent" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="20" Padding="8,7,8,7"
                                 HorizontalAlignment="Right" VerticalAlignment="Center"                         Height="42">
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <TextBlock Text="Start Page" FontSize="12" Foreground="#FFFFFF" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                <TextBlock Text="Abrir panel" FontSize="12" Foreground="#FFFFFF" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 <Grid Width="26" Height="26">
                                     <Path Data="M 4,10 L 16,10 M 10,4 L 16,10 L 10,16" Stroke="#FFFFFF" StrokeThickness="1.5" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Width="12" Height="12" />
                                 </Grid>
@@ -304,7 +318,7 @@
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="32,60,0,0">
                         <TextBlock Text="SENA&#x0a;AURION" FontFamily="Segoe UI" FontWeight="ExtraBold" FontSize="72" Foreground="#FFFFFF"
                                    CharacterSpacing="-120" LineStackingStrategy="BlockLineHeight" LineHeight="72" />
-                        <TextBlock Text="Where Innovation Knows No Bounds" FontFamily="Segoe UI" FontSize="14"
+                        <TextBlock Text="Where innovation knows no bounds" FontFamily="Segoe UI" FontSize="14"
                                    Foreground="#FFFFFF" Opacity="0.45" Margin="0,10,0,0" CharacterSpacing="30" />
                     </StackPanel>
                     <Button x:ConnectionId='13' Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,28"                          >

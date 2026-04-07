@@ -67,6 +67,7 @@ public sealed partial class MainShellWindow : Window
 
         ViewModel.SelectedTag = "home";
         UpdateNavBarHighlight("home");
+        UpdateActionButtonsForTag("home");
 
         this.Activated += MainWindow_Activated;
         this.SizeChanged += MainWindow_SizeChanged;
@@ -636,6 +637,7 @@ public sealed partial class MainShellWindow : Window
         {
             ViewModel.SelectedTag = tag;
             UpdateNavBarHighlight(tag);
+            UpdateActionButtonsForTag(tag);
         }
     }
 
@@ -647,29 +649,106 @@ public sealed partial class MainShellWindow : Window
             {
                 if (b.Content is Grid btnGrid)
                 {
-                    if (btnGrid.Children.Count == 1 && btnGrid.Children[0] is FontIcon)
-                    {
-                        var icon = (FontIcon)btnGrid.Children[0];
-                        btnGrid.Children.Clear();
-                        btnGrid.Children.Add(new Microsoft.UI.Xaml.Shapes.Ellipse { Width = 36, Height = 36, Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent) });
-                        btnGrid.Children.Add(icon);
-                    }
-                    
-                    if (btnGrid.Children.Count >= 2 && btnGrid.Children[0] is Microsoft.UI.Xaml.Shapes.Ellipse ellipse && btnGrid.Children[1] is FontIcon fIcon)
+                    if (btnGrid.Children.Count >= 2 && btnGrid.Children[0] is Border surface && btnGrid.Children[1] is FontIcon fIcon)
                     {
                         if (tag == selectedTag)
                         {
-                            ellipse.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 200, 110));
+                            surface.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 39, 39, 39));
                             fIcon.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.White);
                         }
                         else
                         {
-                            ellipse.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                            surface.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
                             fIcon.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(77, 255, 255, 255));
                         }
                     }
                 }
             }
+        }
+    }
+
+    private void UpdateActionButtonsForTag(string tag)
+    {
+        var isCleaner = string.Equals(tag, "cleaner", StringComparison.OrdinalIgnoreCase);
+        var isPrograms = string.Equals(tag, "programs", StringComparison.OrdinalIgnoreCase);
+
+        CleanerWarningText.Visibility = isCleaner ? Visibility.Visible : Visibility.Collapsed;
+        DefaultActionsPanel.Visibility = isPrograms ? Visibility.Collapsed : Visibility.Visible;
+        ProgramsActionsPanel.Visibility = isPrograms ? Visibility.Visible : Visibility.Collapsed;
+
+        PrimaryActionButton.Content = isCleaner ? "Eliminar" : "Aplicar";
+        SecondaryActionButton.Visibility = isCleaner ? Visibility.Collapsed : Visibility.Visible;
+        TertiaryActionButton.Visibility = isCleaner ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    private async Task ExecuteAsyncCommandAsync(object? command, object? parameter = null)
+    {
+        if (command is CommunityToolkit.Mvvm.Input.IAsyncRelayCommand asyncCommand)
+        {
+            await asyncCommand.ExecuteAsync(parameter);
+        }
+    }
+
+    private async void PrimaryActionButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.CurrentModuleActionName == "cleaner")
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Confirmación requerida",
+                Content = "Se eliminarán archivos seleccionados y no se podrán recuperar desde esta herramienta. ¿Deseas continuar?",
+                PrimaryButtonText = "Sí, eliminar",
+                CloseButtonText = "Cancelar",
+                DefaultButton = ContentDialogButton.Close,
+                XamlRoot = Content.XamlRoot
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result != ContentDialogResult.Primary)
+            {
+                return;
+            }
+        }
+
+        await ExecuteAsyncCommandAsync(ViewModel.ApplySelectedModuleCommand, ViewModel.CurrentModuleActionName);
+    }
+
+    private async void SecondaryActionButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ExecuteAsyncCommandAsync(ViewModel.RevertSelectedModuleCommand, ViewModel.CurrentModuleActionName);
+    }
+
+    private async void TertiaryActionButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ExecuteAsyncCommandAsync(ViewModel.RevertAllModuleCommand, ViewModel.CurrentModuleActionName);
+    }
+
+    private async void InstallProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ExecuteAsyncCommandAsync(ViewModel.InstallSelectedProgramsCommand);
+    }
+
+    private async void UpdateProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ExecuteAsyncCommandAsync(ViewModel.UpdateSelectedProgramsCommand);
+    }
+
+    private async void UninstallProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Desinstalación de programas",
+            Content = "Esta acción puede remover software necesario. Verifica tu selección antes de continuar.",
+            PrimaryButtonText = "Continuar",
+            CloseButtonText = "Cancelar",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = Content.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            await ExecuteAsyncCommandAsync(ViewModel.UninstallSelectedProgramsCommand);
         }
     }
 

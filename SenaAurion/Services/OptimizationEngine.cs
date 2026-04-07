@@ -30,7 +30,7 @@ public sealed class OptimizationEngine : IOptimizationEngine
 
         var wifiActive = NetworkHardwareDetector.IsWirelessAdapterActive();
         await _log.LogAsync("Motor", "Red",
-            wifiActive ? "Wiâ€‘Fi activo Â· protecciÃ³n estricta" : "Sin Wiâ€‘Fi activo Â· polÃ­tica estÃ¡ndar",
+            wifiActive ? "WiFi activo proteccion estricta" : "Sin WiFi activo politica estandar",
             cancellationToken).ConfigureAwait(false);
 
         var critical = new HashSet<string>(
@@ -78,7 +78,7 @@ public sealed class OptimizationEngine : IOptimizationEngine
                 if (wifiActive && inCriticalList && userWants)
                 {
                     await _log.LogAsync("Motor", $"BloqueoWiFi:{svc.ServiceName}",
-                        "Lista wifiCriticalServices Â· intento bloqueado aunque el usuario lo marcÃ³", cancellationToken)
+                        "Lista wifiCriticalServices intento bloqueado aunque el usuario lo marca", cancellationToken)
                         .ConfigureAwait(false);
                 }
 
@@ -104,12 +104,15 @@ public sealed class OptimizationEngine : IOptimizationEngine
         switch (moduleName)
         {
             case "Input":
+            case "input":
                 await _registry.RevertInputTweaksAsync(data.InputLatency.Tweaks, cancellationToken).ConfigureAwait(false);
                 break;
             case "Network":
+            case "network":
                 await _registry.RevertTcpTweaksAsync(data.NetworkTcp.Tweaks, cancellationToken).ConfigureAwait(false);
                 break;
             case "Services":
+            case "services":
                 await _services.RevertServicesAsync(data.Services, cancellationToken).ConfigureAwait(false);
                 break;
         }
@@ -165,7 +168,7 @@ public sealed class OptimizationEngine : IOptimizationEngine
     {
         // Los elementos limpiados no se pueden recuperar sin shadow copies o software forense.
         // Hacemos log simulado de imposibilidad de reversiÃ³n para mantener el estÃ¡ndar.
-        await _log.LogAsync("Limpieza", "ReversiÃ³n", "Archivos eliminados no pueden revertirse mediante esta utilidad. Omitiendo...", token).ConfigureAwait(false);
+        await _log.LogAsync("Limpieza", "Reversion", "Archivos eliminados no pueden revertirse mediante esta utilidad. Omitiendo...", token).ConfigureAwait(false);
         SystemStateMonitor.NotifyStateChanged();
     }
 }

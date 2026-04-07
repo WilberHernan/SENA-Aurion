@@ -170,7 +170,7 @@ public static class SystemInfoService
                     foreach (var obj in searcher.Get())
                     {
                         info.CpuModel = obj["Name"]?.ToString()?.Trim() ?? "Desconocido";
-                        info.CpuCoresText = $"{obj["NumberOfCores"]} fÃ­sicos / {obj["NumberOfLogicalProcessors"]} lÃ³gicos";
+                        info.CpuCoresText = $"{obj["NumberOfCores"]} fisicos / {obj["NumberOfLogicalProcessors"]} logicos";
                         break;
                     }
                 }
