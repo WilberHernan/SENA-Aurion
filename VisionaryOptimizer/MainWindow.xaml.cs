@@ -27,34 +27,43 @@ public sealed partial class MainWindow : Window
         }
         catch (System.Exception ex)
         {
-            // Escribir el fallo en pantalla
             System.Diagnostics.Debug.WriteLine(ex.ToString());
             throw;
         }
 
-        // 1. Integración de la Barra de Título moderna (Windows 11+)
         try 
         {
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(AppCustomTitleBar);
-        } catch { /* Fail quiet under unsupported shells */ }
+        } catch { }
 
-        // Removemos seleccion en NavView que ya no existe (reemplazado por Clic en Tabs si estuvieran atados en VM,
-        // Por ahora lo atamos a "home" forzado para carga inicial).
         ViewModel.SelectedTag = "home";
 
-        // Fijar el estilo inicial de la pestaña de Home de forma manual para sortear dependencias vacías.
         TabHome.Opacity = 1.0;
-        TabHome.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 29, 184, 112));
-        TabHome.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(20, 29, 184, 112));
-        TabHome.BorderThickness = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 1);
+        TabHome.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(230, 255, 255, 255));
+        TabHome.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(76, 255, 255, 255));
 
-        // Suscribirse a los eventos nativos de Hover especificamente para las pestañas de navegación
-        AttachTabHoverEvents(TabHome);
-        AttachTabHoverEvents(TabInput);
-        AttachTabHoverEvents(TabNetwork);
-        AttachTabHoverEvents(TabServices);
-        AttachTabHoverEvents(TabCleaner);
+        this.Activated += MainWindow_Activated;
+    }
+
+    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+    {
+        this.Activated -= MainWindow_Activated;
+        var visual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(RootGrid);
+        var comp = visual.Compositor;
+
+        var slideIn = comp.CreateVector3KeyFrameAnimation();
+        slideIn.InsertKeyFrame(0.0f, new System.Numerics.Vector3(100f, 0, 0));
+        slideIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(0, 0, 0), comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+        slideIn.Duration = TimeSpan.FromMilliseconds(350);
+
+        var fadeIn = comp.CreateScalarKeyFrameAnimation();
+        fadeIn.InsertKeyFrame(0.0f, 0.0f);
+        fadeIn.InsertKeyFrame(1.0f, 1.0f, comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+        fadeIn.Duration = TimeSpan.FromMilliseconds(350);
+
+        visual.StartAnimation("Offset", slideIn);
+        visual.StartAnimation("Opacity", fadeIn);
     }
 
     private void AttachTabHoverEvents(Button tb)
@@ -63,17 +72,15 @@ public sealed partial class MainWindow : Window
         {
             if (tb.Opacity < 1.0)
             {
-                tb.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(12, 255, 255, 255));
-                tb.Opacity = 0.9;
+                tb.Opacity = 0.8;
             }
         };
 
         tb.PointerExited += (s, e) =>
         {
-            if (tb.BorderThickness.Bottom == 0)
+            if (tb.Foreground is Microsoft.UI.Xaml.Media.SolidColorBrush b && b.Color.A < 160) // Not active (153 represents 60% approx)
             {
-                tb.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
-                tb.Opacity = 0.6;
+                tb.Opacity = 1.0;
             }
         };
     }
@@ -82,7 +89,41 @@ public sealed partial class MainWindow : Window
     {
         if (sender is Button btn && btn.CommandParameter is string tag)
         {
-            ViewModel.SelectedTag = tag;
+            // Animacion: Cambio de modulo
+            var comp = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(MainContainerContent).Compositor;
+            var outVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(MainContainerContent);
+            
+            var slideOut = comp.CreateVector3KeyFrameAnimation();
+            slideOut.InsertKeyFrame(1.0f, new System.Numerics.Vector3(-40, 0, 0), comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.25f, 1f), new System.Numerics.Vector2(0.25f, 1f)));
+            slideOut.Duration = TimeSpan.FromMilliseconds(180);
+            
+            var fadeOut = comp.CreateScalarKeyFrameAnimation();
+            fadeOut.InsertKeyFrame(1.0f, 0.0f, comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.25f, 1f), new System.Numerics.Vector2(0.25f, 1f)));
+            fadeOut.Duration = TimeSpan.FromMilliseconds(180);
+
+            var batch = comp.CreateScopedBatch(Microsoft.UI.Composition.CompositionBatchTypes.Animation);
+            outVisual.StartAnimation("Offset", slideOut);
+            outVisual.StartAnimation("Opacity", fadeOut);
+            
+            batch.Completed += (s2, e2) =>
+            {
+                ViewModel.SelectedTag = tag;
+                
+                var inVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(MainContainerContent);
+                var slideIn = comp.CreateVector3KeyFrameAnimation();
+                slideIn.InsertKeyFrame(0f, new System.Numerics.Vector3(40, 0, 0));
+                slideIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(0, 0, 0), comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.25f, 1f), new System.Numerics.Vector2(0.25f, 1f)));
+                slideIn.Duration = TimeSpan.FromMilliseconds(220);
+                
+                var fadeIn = comp.CreateScalarKeyFrameAnimation();
+                fadeIn.InsertKeyFrame(0f, 0.0f);
+                fadeIn.InsertKeyFrame(1.0f, 1.0f, comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.25f, 1f), new System.Numerics.Vector2(0.25f, 1f)));
+                fadeIn.Duration = TimeSpan.FromMilliseconds(220);
+                
+                inVisual.StartAnimation("Offset", slideIn);
+                inVisual.StartAnimation("Opacity", fadeIn);
+            };
+            batch.End();
             
             // Restablecer estilos base en todos los botones hermanos
             if (btn.Parent is StackPanel panel)
@@ -91,18 +132,15 @@ public sealed partial class MainWindow : Window
                 {
                     if (child is Button b)
                     {
-                        b.Opacity = 0.5;
-                        b.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
-                        b.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                        b.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(153, 255, 255, 255)); // 60%
+                        b.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(30, 255, 255, 255)); // 12%
                     }
                 }
             }
 
-            // Resaltar el seleccionado con opacidad completa y estilo tab active Themed Glass
-            btn.Opacity = 1.0;
-            btn.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(20, 29, 184, 112));
-            btn.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 29, 184, 112));
-            btn.BorderThickness = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 1);
+            // Aplicar estado activo
+            btn.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(230, 255, 255, 255)); // 90%
+            btn.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(76, 255, 255, 255)); // 30%
         }
     }
 

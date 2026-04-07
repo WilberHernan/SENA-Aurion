@@ -1,0 +1,161 @@
+﻿<Application
+    x:Class="VisionaryOptimizer.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VisionaryOptimizer">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- SENA BRAND COLOURS & THEMES -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <Color x:Key="SystemAccentColor">#1DB870</Color>
+                    <Color x:Key="SystemAccentColorDark1">#16A060</Color>
+                    <Color x:Key="SystemAccentColorDark2">#2A5C45</Color>
+                    <Color x:Key="SystemAccentColorDark3">#0A0F0D</Color>
+                    <Color x:Key="SystemAccentColorLight1">#4DEBA0</Color>
+                    <Color x:Key="SystemAccentColorLight2">#1DB870</Color>
+                    <Color x:Key="SystemAccentColorLight3">#1DB870</Color>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="SystemAccentColor">#1DB870</Color>
+                    <Color x:Key="SystemAccentColorLight1">#4DEBA0</Color>
+                    <Color x:Key="SystemAccentColorLight2">#1DB870</Color>
+                    <Color x:Key="SystemAccentColorLight3">#1DB870</Color>
+                    <Color x:Key="SystemAccentColorDark1">#1DB870</Color>
+                    <Color x:Key="SystemAccentColorDark2">#16A060</Color>
+                    <Color x:Key="SystemAccentColorDark3">#2A5C45</Color>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <!-- CUSTOM PREMIUM BRUSHES & FONTS -->
+            <!-- Local Custom Fonts mapping -->
+            <FontFamily x:Key="InterFont">ms-appx:///Assets/Fonts/Inter/Inter-VariableFont_slnt,wght.ttf#Inter</FontFamily>
+            <FontFamily x:Key="MontserratFont">ms-appx:///Assets/Fonts/Montserrat/Montserrat-VariableFont_wght.ttf#Montserrat</FontFamily>
+            <!-- JetBrains fallback for tech data -->
+            <FontFamily x:Key="MonoFont">Consolas</FontFamily>
+
+            <SolidColorBrush x:Key="SenaPrimaryBrush" Color="#1DB870" />
+            <SolidColorBrush x:Key="SenaTextAccentBrush" Color="#4DEBA0" />
+            <SolidColorBrush x:Key="SenaWarningBrush" Color="#E05555" />
+            <SolidColorBrush x:Key="SenaMainBackgroundBrush" Color="#0A0F0D" />
+            
+            <SolidColorBrush x:Key="GlassCardBackground" Color="#0AFFFFFF" />
+            <SolidColorBrush x:Key="GlassCardHoverBackground" Color="#12FFFFFF" />
+            
+            <!-- STYLES -->
+            
+            <!-- Base Premium Card -->
+            <Style x:Key="PremiumCardStyle" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource GlassCardBackground}" />
+                <Setter Property="BorderBrush" Value="#14FFFFFF" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="Padding" Value="24" />
+                <!-- Transitions animadas en XAML para hover nativo -->
+                <Setter Property="Transitions">
+                    <Setter.Value>
+                        <TransitionCollection>
+                            <ContentThemeTransition />
+                        </TransitionCollection>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Home Dashboard Cards -->
+            <Style x:Key="HomeCardStyle" TargetType="Border" BasedOn="{StaticResource PremiumCardStyle}">
+                <Setter Property="BorderThickness" Value="4,1,1,1" />
+                <Setter Property="BorderBrush" Value="#0AFFFFFF" />   
+            </Style>
+
+            <!-- Primary Gradient Button -->
+            <Style x:Key="PrimaryPremiumButton" TargetType="Button">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#1DB870" Offset="0.0"/>
+                            <GradientStop Color="#16A060" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="#0A0F0D" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="14,10" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
+                <Setter Property="Transitions">
+                    <Setter.Value>
+                        <TransitionCollection>
+                            <ContentThemeTransition />
+                        </TransitionCollection>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="100" CenterY="20" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Secondary Outline Button -->
+            <Style x:Key="SecondaryPremiumButton" TargetType="Button">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="#4DEBA0" />
+                <Setter Property="BorderBrush" Value="#2A5C45" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="14,10" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
+                <Setter Property="Transitions">
+                    <Setter.Value>
+                        <TransitionCollection>
+                            <ContentThemeTransition />
+                        </TransitionCollection>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="100" CenterY="20" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Checkbox Redefined Style base mapping WinUI -->
+            <Style TargetType="CheckBox">
+                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+
+            <!-- Text Formatting -->
+            <Style x:Key="CategoryHeaderStyle" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
+                <Setter Property="Foreground" Value="#8A9E94" />
+                <Setter Property="CharacterSpacing" Value="80" />
+            </Style>
+
+            <!-- Page Title Formatting -->
+            <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="ExtraBold" />
+                <Setter Property="FontSize" Value="28" />
+                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
+                <Setter Property="Foreground" Value="#F0F4F2" />
+                <Setter Property="CharacterSpacing" Value="60" />
+            </Style>
+
+            <!-- Muted Text Subtext -->
+            <Style x:Key="BodyMutedStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
+                <Setter Property="Foreground" Value="#8A9E94" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

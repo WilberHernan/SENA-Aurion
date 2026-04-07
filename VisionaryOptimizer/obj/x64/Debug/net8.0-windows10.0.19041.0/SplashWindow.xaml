@@ -7,9 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#050C07">
+    <Grid x:ConnectionId='2' x:Name="SplashRoot" Background="#111111">
         <Grid.Resources>
-            <Storyboard x:ConnectionId='2' x:Name="ScrollAnimation" RepeatBehavior="Forever">
+            <Storyboard x:ConnectionId='3' x:Name="ScrollAnimation" RepeatBehavior="Forever">
                 <DoubleAnimation Storyboard.TargetName="ScrollTransform"
                                  Storyboard.TargetProperty="Y"
                                  From="0" To="14" Duration="0:0:0.9" AutoReverse="True">
@@ -40,7 +40,7 @@
         <!-- CAPA 3 Contenido Principal -->
         <Grid>
             <!-- TitleBar Transparent Area -->
-            <Rectangle x:ConnectionId='3' x:Name="AppTitleBar" Height="32" VerticalAlignment="Top" Fill="Transparent"/>
+            <Rectangle x:ConnectionId='4' x:Name="AppTitleBar" Height="32" VerticalAlignment="Top" Fill="Transparent"/>
 
             <!-- [A] NAVBAR SUPERIOR -->
             <Grid VerticalAlignment="Top" Padding="32,24,32,0" Margin="0,10,0,0">
@@ -59,7 +59,7 @@
                 </StackPanel>
 
                 <!-- DERECHA: Botón "Start Page" -->
-                <Button x:ConnectionId='7' Background="Transparent" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="20" Padding="8,7,8,7" 
+                <Button x:ConnectionId='8' Background="Transparent" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="20" Padding="8,7,8,7" 
                         HorizontalAlignment="Right" VerticalAlignment="Center"                         Height="42">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <TextBlock Text="Start Page" FontSize="12" Foreground="#FFFFFF" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -79,14 +79,14 @@
             </StackPanel>
 
             <!-- [C] ÍCONO DE SCROLL -->
-            <Button x:ConnectionId='4' Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,28"                        >
+            <Button x:ConnectionId='5' Background="Transparent" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,28"                        >
                 <Grid Width="28" Height="44">
                     <!-- Borde exterior -->
                     <Border BorderBrush="#33FFFFFF" BorderThickness="1.5" CornerRadius="14" Background="Transparent" />
                     <!-- Elemento interno animado -->
-                    <Rectangle x:ConnectionId='5' x:Name="ScrollIndicator" Width="4" Height="10" Fill="#80FFFFFF" RadiusX="2" RadiusY="2" VerticalAlignment="Top" Margin="0,6,0,0">
+                    <Rectangle x:ConnectionId='6' x:Name="ScrollIndicator" Width="4" Height="10" Fill="#80FFFFFF" RadiusX="2" RadiusY="2" VerticalAlignment="Top" Margin="0,6,0,0">
                         <Rectangle.RenderTransform>
-                            <TranslateTransform x:ConnectionId='6' x:Name="ScrollTransform" Y="0"/>
+                            <TranslateTransform x:ConnectionId='7' x:Name="ScrollTransform" Y="0"/>
                         </Rectangle.RenderTransform>
                     </Rectangle>
                 </Grid>

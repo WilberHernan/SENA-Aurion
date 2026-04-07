@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VisionaryOptimizer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6878dfea23c7de21786c5f8ae32f3ec436fb91f4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8c1fbea2560579729c7aa8d2b75690cf7c54a750")]
 [assembly: System.Reflection.AssemblyProductAttribute("VisionaryOptimizer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VisionaryOptimizer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

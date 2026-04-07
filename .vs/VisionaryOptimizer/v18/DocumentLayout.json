@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "D:\\SENA-Aurion\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\visionaryoptimizer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\visionaryoptimizer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\splashwindow.xaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
@@ -17,74 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\services\\systeminfoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\services\\systeminfoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\models\\optimizationdatadocument.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\models\\optimizationdatadocument.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\services\\systemstatemonitor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\services\\systemstatemonitor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\viewmodels\\tweakitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\viewmodels\\tweakitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\services\\windowsserviceoptimizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\services\\windowsserviceoptimizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1638127759\\AppItem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\102106012\\InstallerViewModel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\services\\ioptimizationengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\services\\ioptimizationengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\services\\optimizationengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\services\\optimizationengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\services\\registryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\services\\registryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\services\\cleaneroptimization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\services\\cleaneroptimization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\data\\optimizationdata.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\data\\optimizationdata.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1964182311\\PowerService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1964182311\\PowerSchemeGuids.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -94,24 +34,63 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
+              "Title": "SplashWindow.xaml.cs",
+              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml.cs",
+              "RelativeDocumentMoniker": "VisionaryOptimizer\\SplashWindow.xaml.cs",
+              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml.cs",
+              "RelativeToolTip": "VisionaryOptimizer\\SplashWindow.xaml.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-07T13:38:20.749Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "App.xaml",
+              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\App.xaml",
+              "RelativeDocumentMoniker": "VisionaryOptimizer\\App.xaml",
+              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\App.xaml",
+              "RelativeToolTip": "VisionaryOptimizer\\App.xaml",
+              "ViewState": "AgIAAIYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-04-07T13:35:16.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "VisionaryOptimizer\\MainWindow.xaml",
+              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\MainWindow.xaml",
+              "RelativeToolTip": "VisionaryOptimizer\\MainWindow.xaml",
+              "ViewState": "AgIAACcAAAAAAAAAAAAwwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-04-07T13:31:45.725Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "SplashWindow.xaml",
               "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml",
               "RelativeDocumentMoniker": "VisionaryOptimizer\\SplashWindow.xaml",
               "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml",
               "RelativeToolTip": "VisionaryOptimizer\\SplashWindow.xaml",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAswAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2026-04-06T23:23:14.722Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "App.xaml.cs",
               "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\App.xaml.cs",
               "RelativeDocumentMoniker": "VisionaryOptimizer\\App.xaml.cs",
@@ -123,237 +102,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SplashWindow.xaml.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\SplashWindow.xaml.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\SplashWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T22:13:41.033Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\MainWindow.xaml",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\MainWindow.xaml",
-              "RelativeToolTip": "VisionaryOptimizer\\MainWindow.xaml",
-              "ViewState": "AgIAAIUAAAAAAAAAAAAlwMYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-06T17:27:32.365Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "App.xaml",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\App.xaml",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\App.xaml",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\App.xaml",
-              "RelativeToolTip": "VisionaryOptimizer\\App.xaml",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-06T21:03:40.78Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "VisionaryOptimizer\\MainWindow.xaml.cs",
               "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\MainWindow.xaml.cs",
               "RelativeToolTip": "VisionaryOptimizer\\MainWindow.xaml.cs",
-              "ViewState": "AgIAALwAAAAAAAAAAAAuwCcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAwwCgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T17:33:22.759Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "VisionaryOptimizer.csproj",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\VisionaryOptimizer.csproj",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\VisionaryOptimizer.csproj",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\VisionaryOptimizer.csproj",
-              "RelativeToolTip": "VisionaryOptimizer\\VisionaryOptimizer.csproj",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAvwBQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-04-06T15:28:01.01Z",
+              "WhenOpened": "2026-04-06T17:33:22.759Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "SystemStateMonitor.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\SystemStateMonitor.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Services\\SystemStateMonitor.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\SystemStateMonitor.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\Services\\SystemStateMonitor.cs",
-              "ViewState": "AgIAAEcAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T13:03:31.589Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "AppItem.cs",
-              "DocumentMoniker": "C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1638127759\\AppItem.cs",
-              "ToolTip": "C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1638127759\\AppItem.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T21:50:56.498Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "OptimizationDataDocument.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Models\\OptimizationDataDocument.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Models\\OptimizationDataDocument.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Models\\OptimizationDataDocument.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\Models\\OptimizationDataDocument.cs",
-              "ViewState": "AgIAAJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T23:07:26.889Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "SystemInfoService.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\SystemInfoService.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Services\\SystemInfoService.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\SystemInfoService.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\Services\\SystemInfoService.cs",
-              "ViewState": "AgIAAEIBAAAAAAAAAAAAAEIBAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T13:19:10.815Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "TweakItemViewModel.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\ViewModels\\TweakItemViewModel.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\ViewModels\\TweakItemViewModel.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\ViewModels\\TweakItemViewModel.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\ViewModels\\TweakItemViewModel.cs",
-              "ViewState": "AgIAAKAAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T23:06:59.096Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "WindowsServiceOptimizer.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\WindowsServiceOptimizer.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Services\\WindowsServiceOptimizer.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\WindowsServiceOptimizer.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\Services\\WindowsServiceOptimizer.cs",
-              "ViewState": "AgIAAIcAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T22:13:15.981Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "PowerService.cs",
-              "DocumentMoniker": "C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1964182311\\PowerService.cs",
-              "ToolTip": "C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1964182311\\PowerService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T22:27:48.363Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "PowerSchemeGuids.cs",
-              "DocumentMoniker": "C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1964182311\\PowerSchemeGuids.cs",
-              "ToolTip": "C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1964182311\\PowerSchemeGuids.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T22:28:06.173Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "InstallerViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\102106012\\InstallerViewModel.cs",
-              "ToolTip": "C:\\Users\\Will\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\102106012\\InstallerViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T21:50:41.888Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "IOptimizationEngine.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\IOptimizationEngine.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Services\\IOptimizationEngine.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\IOptimizationEngine.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\Services\\IOptimizationEngine.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T23:06:58.52Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "MainViewModel.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\ViewModels\\MainViewModel.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\ViewModels\\MainViewModel.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\ViewModels\\MainViewModel.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\ViewModels\\MainViewModel.cs",
-              "ViewState": "AgIAAIoBAAAAAAAAAAAYwKMBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T23:07:30Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "OptimizationEngine.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\OptimizationEngine.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Services\\OptimizationEngine.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\OptimizationEngine.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\Services\\OptimizationEngine.cs",
-              "ViewState": "AgIAAJMAAAAAAAAAAAAuwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T23:06:58.055Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "RegistryService.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\RegistryService.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Services\\RegistryService.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\RegistryService.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\Services\\RegistryService.cs",
-              "ViewState": "AgIAALwAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-03T22:00:50.651Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "CleanerOptimization.cs",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\CleanerOptimization.cs",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Services\\CleanerOptimization.cs",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Services\\CleanerOptimization.cs",
-              "RelativeToolTip": "VisionaryOptimizer\\Services\\CleanerOptimization.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAswAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T23:07:05.808Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "OptimizationData.json",
-              "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\Data\\OptimizationData.json",
-              "RelativeDocumentMoniker": "VisionaryOptimizer\\Data\\OptimizationData.json",
-              "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\Data\\OptimizationData.json",
-              "RelativeToolTip": "VisionaryOptimizer\\Data\\OptimizationData.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-04-02T23:07:26.424Z"
             }
           ]
         }

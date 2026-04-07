@@ -44,8 +44,30 @@ namespace VisionaryOptimizer
         private void TopButton_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = new MainWindow();
+            
+            // Animación Splash (sale por la izquierda)
+            var compositor = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SplashRoot).Compositor;
+            var splashVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SplashRoot);
+            
+            var slideOutAnimation = compositor.CreateVector3KeyFrameAnimation();
+            slideOutAnimation.InsertKeyFrame(1.0f, new System.Numerics.Vector3(-(float)SplashRoot.ActualWidth, 0, 0), compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+            slideOutAnimation.Duration = TimeSpan.FromMilliseconds(350);
+            
+            var fadeOutAnimation = compositor.CreateScalarKeyFrameAnimation();
+            fadeOutAnimation.InsertKeyFrame(1.0f, 0.0f, compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+            fadeOutAnimation.Duration = TimeSpan.FromMilliseconds(350);
+
+            var batch = compositor.CreateScopedBatch(Microsoft.UI.Composition.CompositionBatchTypes.Animation);
+            splashVisual.StartAnimation("Offset", slideOutAnimation);
+            splashVisual.StartAnimation("Opacity", fadeOutAnimation);
+
+            batch.Completed += (s, ev) =>
+            {
+                this.Close();
+            };
+            batch.End();
+
             mainWindow.Activate();
-            this.Close();
         }
     }
 }

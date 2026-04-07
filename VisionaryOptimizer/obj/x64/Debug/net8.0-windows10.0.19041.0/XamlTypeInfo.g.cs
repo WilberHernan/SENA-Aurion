@@ -226,7 +226,7 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         
         private void InitTypeTables()
         {
-            _typeNameTable = new string[25];
+            _typeNameTable = new string[28];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -234,26 +234,29 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             _typeNameTable[4] = "Windows.UI.Color";
             _typeNameTable[5] = "System.ValueType";
             _typeNameTable[6] = "Byte";
-            _typeNameTable[7] = "Microsoft.UI.Xaml.Media.MicaBackdrop";
-            _typeNameTable[8] = "Microsoft.UI.Xaml.Media.SystemBackdrop";
-            _typeNameTable[9] = "Microsoft.UI.Composition.SystemBackdrops.MicaKind";
-            _typeNameTable[10] = "System.Enum";
-            _typeNameTable[11] = "Microsoft.UI.Xaml.Controls.ProgressRing";
-            _typeNameTable[12] = "Microsoft.UI.Xaml.Controls.Control";
-            _typeNameTable[13] = "Double";
-            _typeNameTable[14] = "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings";
-            _typeNameTable[15] = "Microsoft.UI.Xaml.DependencyObject";
-            _typeNameTable[16] = "VisionaryOptimizer.MainWindow";
-            _typeNameTable[17] = "Microsoft.UI.Xaml.Window";
-            _typeNameTable[18] = "VisionaryOptimizer.ViewModels.MainViewModel";
-            _typeNameTable[19] = "VisionaryOptimizer.ViewModels.ViewModelBase";
-            _typeNameTable[20] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
-            _typeNameTable[21] = "VisionaryOptimizer.SplashWindow";
-            _typeNameTable[22] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[23] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
-            _typeNameTable[24] = "Int32";
+            _typeNameTable[7] = "Microsoft.UI.Xaml.Controls.CheckBox";
+            _typeNameTable[8] = "Microsoft.UI.Xaml.Media.RadialGradientBrush";
+            _typeNameTable[9] = "Microsoft.UI.Xaml.Media.XamlCompositionBrushBase";
+            _typeNameTable[10] = "Windows.Foundation.Collections.IObservableVector`1<Microsoft.UI.Xaml.Media.GradientStop>";
+            _typeNameTable[11] = "Microsoft.UI.Xaml.Media.GradientStop";
+            _typeNameTable[12] = "Windows.Foundation.Point";
+            _typeNameTable[13] = "Microsoft.UI.Composition.CompositionColorSpace";
+            _typeNameTable[14] = "System.Enum";
+            _typeNameTable[15] = "Microsoft.UI.Xaml.Media.BrushMappingMode";
+            _typeNameTable[16] = "Double";
+            _typeNameTable[17] = "Microsoft.UI.Xaml.Media.GradientSpreadMethod";
+            _typeNameTable[18] = "VisionaryOptimizer.MainWindow";
+            _typeNameTable[19] = "Microsoft.UI.Xaml.Window";
+            _typeNameTable[20] = "VisionaryOptimizer.ViewModels.MainViewModel";
+            _typeNameTable[21] = "VisionaryOptimizer.ViewModels.ViewModelBase";
+            _typeNameTable[22] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
+            _typeNameTable[23] = "VisionaryOptimizer.SplashWindow";
+            _typeNameTable[24] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[25] = "Microsoft.UI.Xaml.DependencyObject";
+            _typeNameTable[26] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[27] = "Int32";
 
-            _typeTable = new global::System.Type[25];
+            _typeTable = new global::System.Type[28];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -261,24 +264,27 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             _typeTable[4] = typeof(global::Windows.UI.Color);
             _typeTable[5] = typeof(global::System.ValueType);
             _typeTable[6] = typeof(global::System.Byte);
-            _typeTable[7] = typeof(global::Microsoft.UI.Xaml.Media.MicaBackdrop);
-            _typeTable[8] = typeof(global::Microsoft.UI.Xaml.Media.SystemBackdrop);
-            _typeTable[9] = typeof(global::Microsoft.UI.Composition.SystemBackdrops.MicaKind);
-            _typeTable[10] = typeof(global::System.Enum);
-            _typeTable[11] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing);
-            _typeTable[12] = typeof(global::Microsoft.UI.Xaml.Controls.Control);
-            _typeTable[13] = typeof(global::System.Double);
-            _typeTable[14] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings);
-            _typeTable[15] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
-            _typeTable[16] = typeof(global::VisionaryOptimizer.MainWindow);
-            _typeTable[17] = typeof(global::Microsoft.UI.Xaml.Window);
-            _typeTable[18] = typeof(global::VisionaryOptimizer.ViewModels.MainViewModel);
-            _typeTable[19] = typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase);
-            _typeTable[20] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
-            _typeTable[21] = typeof(global::VisionaryOptimizer.SplashWindow);
-            _typeTable[22] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[23] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
-            _typeTable[24] = typeof(global::System.Int32);
+            _typeTable[7] = typeof(global::Microsoft.UI.Xaml.Controls.CheckBox);
+            _typeTable[8] = typeof(global::Microsoft.UI.Xaml.Media.RadialGradientBrush);
+            _typeTable[9] = typeof(global::Microsoft.UI.Xaml.Media.XamlCompositionBrushBase);
+            _typeTable[10] = typeof(global::Windows.Foundation.Collections.IObservableVector<global::Microsoft.UI.Xaml.Media.GradientStop>);
+            _typeTable[11] = typeof(global::Microsoft.UI.Xaml.Media.GradientStop);
+            _typeTable[12] = typeof(global::Windows.Foundation.Point);
+            _typeTable[13] = typeof(global::Microsoft.UI.Composition.CompositionColorSpace);
+            _typeTable[14] = typeof(global::System.Enum);
+            _typeTable[15] = typeof(global::Microsoft.UI.Xaml.Media.BrushMappingMode);
+            _typeTable[16] = typeof(global::System.Double);
+            _typeTable[17] = typeof(global::Microsoft.UI.Xaml.Media.GradientSpreadMethod);
+            _typeTable[18] = typeof(global::VisionaryOptimizer.MainWindow);
+            _typeTable[19] = typeof(global::Microsoft.UI.Xaml.Window);
+            _typeTable[20] = typeof(global::VisionaryOptimizer.ViewModels.MainViewModel);
+            _typeTable[21] = typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase);
+            _typeTable[22] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
+            _typeTable[23] = typeof(global::VisionaryOptimizer.SplashWindow);
+            _typeTable[24] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[25] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
+            _typeTable[26] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[27] = typeof(global::System.Int32);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -314,27 +320,25 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         }
 
         private object Activate_0_XamlControlsResources() { return new global::Microsoft.UI.Xaml.Controls.XamlControlsResources(); }
-        private object Activate_7_MicaBackdrop() { return new global::Microsoft.UI.Xaml.Media.MicaBackdrop(); }
-        private object Activate_11_ProgressRing() { return new global::Microsoft.UI.Xaml.Controls.ProgressRing(); }
-        private object Activate_16_MainWindow() { return new global::VisionaryOptimizer.MainWindow(); }
-        private object Activate_21_SplashWindow() { return new global::VisionaryOptimizer.SplashWindow(); }
-        private object Activate_22_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_8_RadialGradientBrush() { return new global::Microsoft.UI.Xaml.Media.RadialGradientBrush(); }
+        private object Activate_18_MainWindow() { return new global::VisionaryOptimizer.MainWindow(); }
+        private object Activate_23_SplashWindow() { return new global::VisionaryOptimizer.SplashWindow(); }
+        private object Activate_24_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void StaticInitializer_0_XamlControlsResources() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources).TypeHandle);
         private void StaticInitializer_4_Color() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Windows.UI.Color).TypeHandle);
         private void StaticInitializer_5_ValueType() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.ValueType).TypeHandle);
         private void StaticInitializer_6_Byte() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Byte).TypeHandle);
-        private void StaticInitializer_7_MicaBackdrop() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Media.MicaBackdrop).TypeHandle);
-        private void StaticInitializer_9_MicaKind() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Composition.SystemBackdrops.MicaKind).TypeHandle);
-        private void StaticInitializer_10_Enum() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Enum).TypeHandle);
-        private void StaticInitializer_11_ProgressRing() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing).TypeHandle);
-        private void StaticInitializer_14_ProgressRingTemplateSettings() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings).TypeHandle);
-        private void StaticInitializer_16_MainWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.MainWindow).TypeHandle);
-        private void StaticInitializer_18_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.MainViewModel).TypeHandle);
-        private void StaticInitializer_19_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase).TypeHandle);
-        private void StaticInitializer_20_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
-        private void StaticInitializer_21_SplashWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.SplashWindow).TypeHandle);
-        private void StaticInitializer_22_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
-        private void StaticInitializer_23_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
+        private void StaticInitializer_8_RadialGradientBrush() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Media.RadialGradientBrush).TypeHandle);
+        private void StaticInitializer_10_IObservableVector() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Windows.Foundation.Collections.IObservableVector<global::Microsoft.UI.Xaml.Media.GradientStop>).TypeHandle);
+        private void StaticInitializer_13_CompositionColorSpace() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Composition.CompositionColorSpace).TypeHandle);
+        private void StaticInitializer_14_Enum() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Enum).TypeHandle);
+        private void StaticInitializer_18_MainWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.MainWindow).TypeHandle);
+        private void StaticInitializer_20_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.MainViewModel).TypeHandle);
+        private void StaticInitializer_21_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase).TypeHandle);
+        private void StaticInitializer_22_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
+        private void StaticInitializer_23_SplashWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.SplashWindow).TypeHandle);
+        private void StaticInitializer_24_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
+        private void StaticInitializer_26_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -342,7 +346,13 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             var newItem = (global::System.Object)item;
             collection.Add(newKey, newItem);
         }
-        private void VectorAdd_23_IList(object instance, object item)
+        private void VectorAdd_10_IObservableVector(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Media.GradientStop>)instance;
+            var newItem = (global::Microsoft.UI.Xaml.Media.GradientStop)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_26_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -403,110 +413,121 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 7:   //  Microsoft.UI.Xaml.Media.MicaBackdrop
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Media.SystemBackdrop"));
-                userType.Activator = Activate_7_MicaBackdrop;
-                userType.StaticInitializer = StaticInitializer_7_MicaBackdrop;
-                userType.AddMemberName("Kind");
-                xamlType = userType;
-                break;
-
-            case 8:   //  Microsoft.UI.Xaml.Media.SystemBackdrop
+            case 7:   //  Microsoft.UI.Xaml.Controls.CheckBox
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 9:   //  Microsoft.UI.Composition.SystemBackdrops.MicaKind
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Enum"));
-                userType.StaticInitializer = StaticInitializer_9_MicaKind;
-                userType.AddEnumValue("Base", global::Microsoft.UI.Composition.SystemBackdrops.MicaKind.Base);
-                userType.AddEnumValue("BaseAlt", global::Microsoft.UI.Composition.SystemBackdrops.MicaKind.BaseAlt);
+            case 8:   //  Microsoft.UI.Xaml.Media.RadialGradientBrush
+                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Media.XamlCompositionBrushBase"));
+                userType.Activator = Activate_8_RadialGradientBrush;
+                userType.StaticInitializer = StaticInitializer_8_RadialGradientBrush;
+                userType.SetContentPropertyName("Microsoft.UI.Xaml.Media.RadialGradientBrush.GradientStops");
+                userType.AddMemberName("GradientStops");
+                userType.AddMemberName("Center");
+                userType.AddMemberName("GradientOrigin");
+                userType.AddMemberName("InterpolationSpace");
+                userType.AddMemberName("MappingMode");
+                userType.AddMemberName("RadiusX");
+                userType.AddMemberName("RadiusY");
+                userType.AddMemberName("SpreadMethod");
                 xamlType = userType;
                 break;
 
-            case 10:   //  System.Enum
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
-                userType.StaticInitializer = StaticInitializer_10_Enum;
-                xamlType = userType;
-                break;
-
-            case 11:   //  Microsoft.UI.Xaml.Controls.ProgressRing
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
-                userType.Activator = Activate_11_ProgressRing;
-                userType.StaticInitializer = StaticInitializer_11_ProgressRing;
-                userType.AddMemberName("IsActive");
-                userType.AddMemberName("IsIndeterminate");
-                userType.AddMemberName("Maximum");
-                userType.AddMemberName("Minimum");
-                userType.AddMemberName("TemplateSettings");
-                userType.AddMemberName("Value");
-                xamlType = userType;
-                break;
-
-            case 12:   //  Microsoft.UI.Xaml.Controls.Control
+            case 9:   //  Microsoft.UI.Xaml.Media.XamlCompositionBrushBase
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 13:   //  Double
-                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 14:   //  Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings
-                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.StaticInitializer = StaticInitializer_14_ProgressRingTemplateSettings;
+            case 10:   //  Windows.Foundation.Collections.IObservableVector`1<Microsoft.UI.Xaml.Media.GradientStop>
+                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, null);
+                userType.StaticInitializer = StaticInitializer_10_IObservableVector;
+                userType.CollectionAdd = VectorAdd_10_IObservableVector;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 15:   //  Microsoft.UI.Xaml.DependencyObject
+            case 11:   //  Microsoft.UI.Xaml.Media.GradientStop
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 16:   //  VisionaryOptimizer.MainWindow
+            case 12:   //  Windows.Foundation.Point
+                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 13:   //  Microsoft.UI.Composition.CompositionColorSpace
+                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Enum"));
+                userType.StaticInitializer = StaticInitializer_13_CompositionColorSpace;
+                userType.AddEnumValue("Auto", global::Microsoft.UI.Composition.CompositionColorSpace.Auto);
+                userType.AddEnumValue("Hsl", global::Microsoft.UI.Composition.CompositionColorSpace.Hsl);
+                userType.AddEnumValue("Rgb", global::Microsoft.UI.Composition.CompositionColorSpace.Rgb);
+                userType.AddEnumValue("HslLinear", global::Microsoft.UI.Composition.CompositionColorSpace.HslLinear);
+                userType.AddEnumValue("RgbLinear", global::Microsoft.UI.Composition.CompositionColorSpace.RgbLinear);
+                xamlType = userType;
+                break;
+
+            case 14:   //  System.Enum
+                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
+                userType.StaticInitializer = StaticInitializer_14_Enum;
+                xamlType = userType;
+                break;
+
+            case 15:   //  Microsoft.UI.Xaml.Media.BrushMappingMode
+                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 16:   //  Double
+                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 17:   //  Microsoft.UI.Xaml.Media.GradientSpreadMethod
+                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 18:   //  VisionaryOptimizer.MainWindow
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_16_MainWindow;
-                userType.StaticInitializer = StaticInitializer_16_MainWindow;
+                userType.Activator = Activate_18_MainWindow;
+                userType.StaticInitializer = StaticInitializer_18_MainWindow;
                 userType.AddMemberName("ViewModel");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 17:   //  Microsoft.UI.Xaml.Window
+            case 19:   //  Microsoft.UI.Xaml.Window
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 18:   //  VisionaryOptimizer.ViewModels.MainViewModel
+            case 20:   //  VisionaryOptimizer.ViewModels.MainViewModel
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("VisionaryOptimizer.ViewModels.ViewModelBase"));
-                userType.StaticInitializer = StaticInitializer_18_MainViewModel;
+                userType.StaticInitializer = StaticInitializer_20_MainViewModel;
                 userType.SetIsReturnTypeStub();
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 19:   //  VisionaryOptimizer.ViewModels.ViewModelBase
+            case 21:   //  VisionaryOptimizer.ViewModels.ViewModelBase
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("CommunityToolkit.Mvvm.ComponentModel.ObservableObject"));
-                userType.StaticInitializer = StaticInitializer_19_ViewModelBase;
+                userType.StaticInitializer = StaticInitializer_21_ViewModelBase;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 20:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
+            case 22:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.StaticInitializer = StaticInitializer_20_ObservableObject;
+                userType.StaticInitializer = StaticInitializer_22_ObservableObject;
                 xamlType = userType;
                 break;
 
-            case 21:   //  VisionaryOptimizer.SplashWindow
+            case 23:   //  VisionaryOptimizer.SplashWindow
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_21_SplashWindow;
-                userType.StaticInitializer = StaticInitializer_21_SplashWindow;
+                userType.Activator = Activate_23_SplashWindow;
+                userType.StaticInitializer = StaticInitializer_23_SplashWindow;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 22:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 24:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_22_TreeViewNode;
-                userType.StaticInitializer = StaticInitializer_22_TreeViewNode;
+                userType.Activator = Activate_24_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_24_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -518,15 +539,19 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 23:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 25:   //  Microsoft.UI.Xaml.DependencyObject
+                xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 26:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_23_IList;
-                userType.CollectionAdd = VectorAdd_23_IList;
+                userType.StaticInitializer = StaticInitializer_26_IList;
+                userType.CollectionAdd = VectorAdd_26_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 24:   //  Int32
+            case 27:   //  Int32
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
             }
@@ -638,122 +663,132 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             var that = (global::Windows.UI.Color)instance;
             that.B = (global::System.Byte)Value;
         }
-        private object get_5_MicaBackdrop_Kind(object instance)
+        private object get_5_RadialGradientBrush_GradientStops(object instance)
         {
-            var that = (global::Microsoft.UI.Xaml.Media.MicaBackdrop)instance;
-            return that.Kind;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            return that.GradientStops;
         }
-        private void set_5_MicaBackdrop_Kind(object instance, object Value)
+        private object get_6_RadialGradientBrush_Center(object instance)
         {
-            var that = (global::Microsoft.UI.Xaml.Media.MicaBackdrop)instance;
-            that.Kind = (global::Microsoft.UI.Composition.SystemBackdrops.MicaKind)Value;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            return that.Center;
         }
-        private object get_6_ProgressRing_IsActive(object instance)
+        private void set_6_RadialGradientBrush_Center(object instance, object Value)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            return that.IsActive;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            that.Center = (global::Windows.Foundation.Point)Value;
         }
-        private void set_6_ProgressRing_IsActive(object instance, object Value)
+        private object get_7_RadialGradientBrush_GradientOrigin(object instance)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            that.IsActive = (global::System.Boolean)Value;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            return that.GradientOrigin;
         }
-        private object get_7_ProgressRing_IsIndeterminate(object instance)
+        private void set_7_RadialGradientBrush_GradientOrigin(object instance, object Value)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            return that.IsIndeterminate;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            that.GradientOrigin = (global::Windows.Foundation.Point)Value;
         }
-        private void set_7_ProgressRing_IsIndeterminate(object instance, object Value)
+        private object get_8_RadialGradientBrush_InterpolationSpace(object instance)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            that.IsIndeterminate = (global::System.Boolean)Value;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            return that.InterpolationSpace;
         }
-        private object get_8_ProgressRing_Maximum(object instance)
+        private void set_8_RadialGradientBrush_InterpolationSpace(object instance, object Value)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            return that.Maximum;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            that.InterpolationSpace = (global::Microsoft.UI.Composition.CompositionColorSpace)Value;
         }
-        private void set_8_ProgressRing_Maximum(object instance, object Value)
+        private object get_9_RadialGradientBrush_MappingMode(object instance)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            that.Maximum = (global::System.Double)Value;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            return that.MappingMode;
         }
-        private object get_9_ProgressRing_Minimum(object instance)
+        private void set_9_RadialGradientBrush_MappingMode(object instance, object Value)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            return that.Minimum;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            that.MappingMode = (global::Microsoft.UI.Xaml.Media.BrushMappingMode)Value;
         }
-        private void set_9_ProgressRing_Minimum(object instance, object Value)
+        private object get_10_RadialGradientBrush_RadiusX(object instance)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            that.Minimum = (global::System.Double)Value;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            return that.RadiusX;
         }
-        private object get_10_ProgressRing_TemplateSettings(object instance)
+        private void set_10_RadialGradientBrush_RadiusX(object instance, object Value)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            return that.TemplateSettings;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            that.RadiusX = (global::System.Double)Value;
         }
-        private object get_11_ProgressRing_Value(object instance)
+        private object get_11_RadialGradientBrush_RadiusY(object instance)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            return that.Value;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            return that.RadiusY;
         }
-        private void set_11_ProgressRing_Value(object instance, object Value)
+        private void set_11_RadialGradientBrush_RadiusY(object instance, object Value)
         {
-            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
-            that.Value = (global::System.Double)Value;
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            that.RadiusY = (global::System.Double)Value;
         }
-        private object get_12_MainWindow_ViewModel(object instance)
+        private object get_12_RadialGradientBrush_SpreadMethod(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            return that.SpreadMethod;
+        }
+        private void set_12_RadialGradientBrush_SpreadMethod(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
+            that.SpreadMethod = (global::Microsoft.UI.Xaml.Media.GradientSpreadMethod)Value;
+        }
+        private object get_13_MainWindow_ViewModel(object instance)
         {
             var that = (global::VisionaryOptimizer.MainWindow)instance;
             return that.ViewModel;
         }
-        private object get_13_TreeViewNode_Children(object instance)
+        private object get_14_TreeViewNode_Children(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Children;
         }
-        private object get_14_TreeViewNode_Content(object instance)
+        private object get_15_TreeViewNode_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Content;
         }
-        private void set_14_TreeViewNode_Content(object instance, object Value)
+        private void set_15_TreeViewNode_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_15_TreeViewNode_Depth(object instance)
+        private object get_16_TreeViewNode_Depth(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Depth;
         }
-        private object get_16_TreeViewNode_HasChildren(object instance)
+        private object get_17_TreeViewNode_HasChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasChildren;
         }
-        private object get_17_TreeViewNode_HasUnrealizedChildren(object instance)
+        private object get_18_TreeViewNode_HasUnrealizedChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasUnrealizedChildren;
         }
-        private void set_17_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
+        private void set_18_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.HasUnrealizedChildren = (global::System.Boolean)Value;
         }
-        private object get_18_TreeViewNode_IsExpanded(object instance)
+        private object get_19_TreeViewNode_IsExpanded(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.IsExpanded;
         }
-        private void set_18_TreeViewNode_IsExpanded(object instance, object Value)
+        private void set_19_TreeViewNode_IsExpanded(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.IsExpanded = (global::System.Boolean)Value;
         }
-        private object get_19_TreeViewNode_Parent(object instance)
+        private object get_20_TreeViewNode_Parent(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Parent;
@@ -797,104 +832,111 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlMember.Getter = get_4_Color_B;
                 xamlMember.Setter = set_4_Color_B;
                 break;
-            case "Microsoft.UI.Xaml.Media.MicaBackdrop.Kind":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.MicaBackdrop");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Kind", "Microsoft.UI.Composition.SystemBackdrops.MicaKind");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_5_MicaBackdrop_Kind;
-                xamlMember.Setter = set_5_MicaBackdrop_Kind;
-                break;
-            case "Microsoft.UI.Xaml.Controls.ProgressRing.IsActive":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IsActive", "Boolean");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_6_ProgressRing_IsActive;
-                xamlMember.Setter = set_6_ProgressRing_IsActive;
-                break;
-            case "Microsoft.UI.Xaml.Controls.ProgressRing.IsIndeterminate":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IsIndeterminate", "Boolean");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_7_ProgressRing_IsIndeterminate;
-                xamlMember.Setter = set_7_ProgressRing_IsIndeterminate;
-                break;
-            case "Microsoft.UI.Xaml.Controls.ProgressRing.Maximum":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Maximum", "Double");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_8_ProgressRing_Maximum;
-                xamlMember.Setter = set_8_ProgressRing_Maximum;
-                break;
-            case "Microsoft.UI.Xaml.Controls.ProgressRing.Minimum":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Minimum", "Double");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_9_ProgressRing_Minimum;
-                xamlMember.Setter = set_9_ProgressRing_Minimum;
-                break;
-            case "Microsoft.UI.Xaml.Controls.ProgressRing.TemplateSettings":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "TemplateSettings", "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings");
-                xamlMember.Getter = get_10_ProgressRing_TemplateSettings;
+            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.GradientStops":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "GradientStops", "Windows.Foundation.Collections.IObservableVector`1<Microsoft.UI.Xaml.Media.GradientStop>");
+                xamlMember.Getter = get_5_RadialGradientBrush_GradientStops;
                 xamlMember.SetIsReadOnly();
                 break;
-            case "Microsoft.UI.Xaml.Controls.ProgressRing.Value":
-                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
-                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Value", "Double");
+            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.Center":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Center", "Windows.Foundation.Point");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_11_ProgressRing_Value;
-                xamlMember.Setter = set_11_ProgressRing_Value;
+                xamlMember.Getter = get_6_RadialGradientBrush_Center;
+                xamlMember.Setter = set_6_RadialGradientBrush_Center;
+                break;
+            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.GradientOrigin":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "GradientOrigin", "Windows.Foundation.Point");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_7_RadialGradientBrush_GradientOrigin;
+                xamlMember.Setter = set_7_RadialGradientBrush_GradientOrigin;
+                break;
+            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.InterpolationSpace":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "InterpolationSpace", "Microsoft.UI.Composition.CompositionColorSpace");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_8_RadialGradientBrush_InterpolationSpace;
+                xamlMember.Setter = set_8_RadialGradientBrush_InterpolationSpace;
+                break;
+            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.MappingMode":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "MappingMode", "Microsoft.UI.Xaml.Media.BrushMappingMode");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_9_RadialGradientBrush_MappingMode;
+                xamlMember.Setter = set_9_RadialGradientBrush_MappingMode;
+                break;
+            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.RadiusX":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "RadiusX", "Double");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_10_RadialGradientBrush_RadiusX;
+                xamlMember.Setter = set_10_RadialGradientBrush_RadiusX;
+                break;
+            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.RadiusY":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "RadiusY", "Double");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_11_RadialGradientBrush_RadiusY;
+                xamlMember.Setter = set_11_RadialGradientBrush_RadiusY;
+                break;
+            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.SpreadMethod":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "SpreadMethod", "Microsoft.UI.Xaml.Media.GradientSpreadMethod");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_12_RadialGradientBrush_SpreadMethod;
+                xamlMember.Setter = set_12_RadialGradientBrush_SpreadMethod;
                 break;
             case "VisionaryOptimizer.MainWindow.ViewModel":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("VisionaryOptimizer.MainWindow");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "ViewModel", "VisionaryOptimizer.ViewModels.MainViewModel");
-                xamlMember.Getter = get_12_MainWindow_ViewModel;
+                xamlMember.Getter = get_13_MainWindow_ViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Children":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Children", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>");
-                xamlMember.Getter = get_13_TreeViewNode_Children;
+                xamlMember.Getter = get_14_TreeViewNode_Children;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Content":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_14_TreeViewNode_Content;
-                xamlMember.Setter = set_14_TreeViewNode_Content;
+                xamlMember.Getter = get_15_TreeViewNode_Content;
+                xamlMember.Setter = set_15_TreeViewNode_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Depth":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Depth", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_15_TreeViewNode_Depth;
+                xamlMember.Getter = get_16_TreeViewNode_Depth;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasChildren":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "HasChildren", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_16_TreeViewNode_HasChildren;
+                xamlMember.Getter = get_17_TreeViewNode_HasChildren;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasUnrealizedChildren":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "HasUnrealizedChildren", "Boolean");
-                xamlMember.Getter = get_17_TreeViewNode_HasUnrealizedChildren;
-                xamlMember.Setter = set_17_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Getter = get_18_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Setter = set_18_TreeViewNode_HasUnrealizedChildren;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.IsExpanded":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_18_TreeViewNode_IsExpanded;
-                xamlMember.Setter = set_18_TreeViewNode_IsExpanded;
+                xamlMember.Getter = get_19_TreeViewNode_IsExpanded;
+                xamlMember.Setter = set_19_TreeViewNode_IsExpanded;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Parent":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Parent", "Microsoft.UI.Xaml.Controls.TreeViewNode");
-                xamlMember.Getter = get_19_TreeViewNode_Parent;
+                xamlMember.Getter = get_20_TreeViewNode_Parent;
                 xamlMember.SetIsReadOnly();
                 break;
             }

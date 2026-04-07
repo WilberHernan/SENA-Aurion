@@ -9,151 +9,124 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
             
-            <!-- SENA BRAND COLOURS & THEMES -->
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
-                    <Color x:Key="SystemAccentColor">#1DB870</Color>
-                    <Color x:Key="SystemAccentColorDark1">#16A060</Color>
-                    <Color x:Key="SystemAccentColorDark2">#2A5C45</Color>
-                    <Color x:Key="SystemAccentColorDark3">#0A0F0D</Color>
-                    <Color x:Key="SystemAccentColorLight1">#4DEBA0</Color>
-                    <Color x:Key="SystemAccentColorLight2">#1DB870</Color>
-                    <Color x:Key="SystemAccentColorLight3">#1DB870</Color>
+                    <Color x:Key="SystemAccentColor">#FFFFFF</Color>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
-                    <Color x:Key="SystemAccentColor">#1DB870</Color>
-                    <Color x:Key="SystemAccentColorLight1">#4DEBA0</Color>
-                    <Color x:Key="SystemAccentColorLight2">#1DB870</Color>
-                    <Color x:Key="SystemAccentColorLight3">#1DB870</Color>
-                    <Color x:Key="SystemAccentColorDark1">#1DB870</Color>
-                    <Color x:Key="SystemAccentColorDark2">#16A060</Color>
-                    <Color x:Key="SystemAccentColorDark3">#2A5C45</Color>
+                    <Color x:Key="SystemAccentColor">#FFFFFF</Color>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <!-- CUSTOM PREMIUM BRUSHES & FONTS -->
-            <!-- Local Custom Fonts mapping -->
-            <FontFamily x:Key="InterFont">ms-appx:///Assets/Fonts/Inter/Inter-VariableFont_slnt,wght.ttf#Inter</FontFamily>
-            <FontFamily x:Key="MontserratFont">ms-appx:///Assets/Fonts/Montserrat/Montserrat-VariableFont_wght.ttf#Montserrat</FontFamily>
-            <!-- JetBrains fallback for tech data -->
-            <FontFamily x:Key="MonoFont">Consolas</FontFamily>
+            <SolidColorBrush x:Key="AppBackground" Color="#111111" />
+            <SolidColorBrush x:Key="SurfacePrimary" Color="#1A1A1A" />
+            <SolidColorBrush x:Key="SurfaceSecondary" Color="#222222" />
+            <SolidColorBrush x:Key="SurfaceActive" Color="#2A2A2A" />
+            <SolidColorBrush x:Key="TextPrimary" Color="#D9FFFFFF" />
+            <SolidColorBrush x:Key="TextSecondary" Color="#73FFFFFF" />
+            <SolidColorBrush x:Key="TextMuted" Color="#33FFFFFF" />
+            <SolidColorBrush x:Key="BorderSubtle" Color="#12FFFFFF" />
+            <SolidColorBrush x:Key="BorderNormal" Color="#26FFFFFF" />
+            <SolidColorBrush x:Key="ButtonLight" Color="#F0F0F0" />
+            <SolidColorBrush x:Key="ButtonDark" Color="#111111" />
 
-            <SolidColorBrush x:Key="SenaPrimaryBrush" Color="#1DB870" />
-            <SolidColorBrush x:Key="SenaTextAccentBrush" Color="#4DEBA0" />
-            <SolidColorBrush x:Key="SenaWarningBrush" Color="#E05555" />
-            <SolidColorBrush x:Key="SenaMainBackgroundBrush" Color="#0A0F0D" />
+            <FontFamily x:Key="InterFont">Segoe UI Variable</FontFamily>
+            <FontFamily x:Key="MontserratFont">Segoe UI Variable</FontFamily>
+            <FontFamily x:Key="MonoFont">Cascadia Code</FontFamily>
+
+            <!-- Retrocompatibilidad sin romper el antiguo esquema -->
+            <SolidColorBrush x:Key="SenaPrimaryBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="SenaTextAccentBrush" Color="#D9FFFFFF" />
+            <SolidColorBrush x:Key="SenaWarningBrush" Color="#D9FFFFFF" />
+            <SolidColorBrush x:Key="SenaMainBackgroundBrush" Color="#111111" />
             
-            <SolidColorBrush x:Key="GlassCardBackground" Color="#0AFFFFFF" />
-            <SolidColorBrush x:Key="GlassCardHoverBackground" Color="#12FFFFFF" />
+            <SolidColorBrush x:Key="GlassCardBackground" Color="#1A1A1A" />
+            <SolidColorBrush x:Key="GlassCardHoverBackground" Color="#222222" />
             
-            <!-- STYLES -->
-            
-            <!-- Base Premium Card -->
-            <Style x:Key="PremiumCardStyle" TargetType="Border">
-                <Setter Property="Background" Value="{StaticResource GlassCardBackground}" />
-                <Setter Property="BorderBrush" Value="#14FFFFFF" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="Padding" Value="24" />
-                <!-- Transitions animadas en XAML para hover nativo -->
-                <Setter Property="Transitions">
-                    <Setter.Value>
-                        <TransitionCollection>
-                            <ContentThemeTransition />
-                        </TransitionCollection>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- Home Dashboard Cards -->
-            <Style x:Key="HomeCardStyle" TargetType="Border" BasedOn="{StaticResource PremiumCardStyle}">
-                <Setter Property="BorderThickness" Value="4,1,1,1" />
-                <Setter Property="BorderBrush" Value="#0AFFFFFF" />   
-            </Style>
-
-            <!-- Primary Gradient Button -->
-            <Style x:Key="PrimaryPremiumButton" TargetType="Button">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#1DB870" Offset="0.0"/>
-                            <GradientStop Color="#16A060" Offset="1.0"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Foreground" Value="#0A0F0D" />
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Padding" Value="14,10" />
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
-                <Setter Property="Transitions">
-                    <Setter.Value>
-                        <TransitionCollection>
-                            <ContentThemeTransition />
-                        </TransitionCollection>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="RenderTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="100" CenterY="20" />
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- Secondary Outline Button -->
-            <Style x:Key="SecondaryPremiumButton" TargetType="Button">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Foreground" Value="#4DEBA0" />
-                <Setter Property="BorderBrush" Value="#2A5C45" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="Padding" Value="14,10" />
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
-                <Setter Property="Transitions">
-                    <Setter.Value>
-                        <TransitionCollection>
-                            <ContentThemeTransition />
-                        </TransitionCollection>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="RenderTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="100" CenterY="20" />
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- Checkbox Redefined Style base mapping WinUI -->
             <Style TargetType="CheckBox">
-                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
-                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="Foreground" Value="#D9FFFFFF"/>
+                <Setter Property="FontFamily" Value="Segoe UI Variable"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="CheckBox">
+                            <Grid Background="Transparent" x:Name="RootGrid" ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="CheckBorder" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="#40FFFFFF" Duration="0:0:0.15"/>
+                                                <DoubleAnimation Storyboard.TargetName="CheckScale" Storyboard.TargetProperty="ScaleX" To="1.04" Duration="0:0:0.15"/>
+                                                <DoubleAnimation Storyboard.TargetName="CheckScale" Storyboard.TargetProperty="ScaleY" To="1.04" Duration="0:0:0.15"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="CheckStates">
+                                        <VisualState x:Name="Unchecked"/>
+                                        <VisualState x:Name="Checked">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="CheckBorder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#E0E0E0" Duration="0"/>
+                                                <ColorAnimation Storyboard.TargetName="CheckBorder" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="#CCCCCC" Duration="0"/>
+                                                <DoubleAnimation Storyboard.TargetName="CheckMark" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.18">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <BackEase Amplitude="1" EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <DoubleAnimation Storyboard.TargetName="MarkScale" Storyboard.TargetProperty="ScaleX" From="0.3" To="1" Duration="0:0:0.18">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <BackEase Amplitude="1" EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <DoubleAnimation Storyboard.TargetName="MarkScale" Storyboard.TargetProperty="ScaleY" From="0.3" To="1" Duration="0:0:0.18">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <BackEase Amplitude="1" EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <Border x:Name="CheckBorder" Grid.Column="0" Width="18" Height="18" CornerRadius="5" Background="#222222" BorderBrush="#1AFFFFFF" BorderThickness="1" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <Border.RenderTransform>
+                                        <ScaleTransform x:Name="CheckScale" ScaleX="1" ScaleY="1"/>
+                                    </Border.RenderTransform>
+                                    <Path x:Name="CheckMark" Data="M 3,9 L 7,13 L 15,5" Stroke="#111111" StrokeThickness="1.5" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" RenderTransformOrigin="0.5,0.5">
+                                        <Path.RenderTransform>
+                                            <ScaleTransform x:Name="MarkScale" ScaleX="0.3" ScaleY="0.3"/>
+                                        </Path.RenderTransform>
+                                    </Path>
+                                </Border>
+                                <ContentPresenter Grid.Column="1" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Margin="{TemplateBinding Padding}"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
-            <!-- Text Formatting -->
             <Style x:Key="CategoryHeaderStyle" TargetType="TextBlock">
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="FontSize" Value="12" />
-                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
-                <Setter Property="Foreground" Value="#8A9E94" />
-                <Setter Property="CharacterSpacing" Value="80" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="Foreground" Value="#D9FFFFFF" />
             </Style>
 
-            <!-- Page Title Formatting -->
             <Style x:Key="PageTitleStyle" TargetType="TextBlock">
-                <Setter Property="FontWeight" Value="ExtraBold" />
-                <Setter Property="FontSize" Value="28" />
-                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
-                <Setter Property="Foreground" Value="#F0F4F2" />
-                <Setter Property="CharacterSpacing" Value="60" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="Foreground" Value="#E6FFFFFF" />
             </Style>
 
-            <!-- Muted Text Subtext -->
             <Style x:Key="BodyMutedStyle" TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="{StaticResource InterFont}" />
-                <Setter Property="Foreground" Value="#8A9E94" />
-                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontFamily" Value="Segoe UI Variable" />
+                <Setter Property="Foreground" Value="#73FFFFFF" />
+                <Setter Property="FontSize" Value="12" />
             </Style>
 
         </ResourceDictionary>

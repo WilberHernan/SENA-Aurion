@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#050C07">
+    <Grid x:Name="SplashRoot" Background="#111111">
         <Grid.Resources>
             <Storyboard x:Name="ScrollAnimation" RepeatBehavior="Forever">
                 <DoubleAnimation Storyboard.TargetName="ScrollTransform"
