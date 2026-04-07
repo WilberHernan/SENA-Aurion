@@ -66,6 +66,7 @@ public sealed partial class MainShellWindow : Window
         } catch { }
 
         ViewModel.SelectedTag = "home";
+        UpdateNavBarHighlight("home");
 
         this.Activated += MainWindow_Activated;
         this.SizeChanged += MainWindow_SizeChanged;
@@ -633,42 +634,42 @@ public sealed partial class MainShellWindow : Window
     {
         if (sender is Button btn && btn.CommandParameter is string tag)
         {
-            // Animacion: Cambio de modulo
-            var comp = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(MainContainerContent).Compositor;
-            var outVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(MainContainerContent);
-            
-            var slideOut = comp.CreateVector3KeyFrameAnimation();
-            slideOut.InsertKeyFrame(1.0f, new System.Numerics.Vector3(-40, 0, 0), comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.25f, 1f), new System.Numerics.Vector2(0.25f, 1f)));
-            slideOut.Duration = TimeSpan.FromMilliseconds(180);
-            
-            var fadeOut = comp.CreateScalarKeyFrameAnimation();
-            fadeOut.InsertKeyFrame(1.0f, 0.0f, comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.25f, 1f), new System.Numerics.Vector2(0.25f, 1f)));
-            fadeOut.Duration = TimeSpan.FromMilliseconds(180);
+            ViewModel.SelectedTag = tag;
+            UpdateNavBarHighlight(tag);
+        }
+    }
 
-            var batch = comp.CreateScopedBatch(Microsoft.UI.Composition.CompositionBatchTypes.Animation);
-            outVisual.StartAnimation("Offset", slideOut);
-            outVisual.StartAnimation("Opacity", fadeOut);
-            
-            batch.Completed += (s2, e2) =>
+    private void UpdateNavBarHighlight(string selectedTag)
+    {
+        foreach (var child in NavBarStack.Children)
+        {
+            if (child is Button b && b.CommandParameter is string tag)
             {
-                ViewModel.SelectedTag = tag;
-                
-                var inVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(MainContainerContent);
-                var slideIn = comp.CreateVector3KeyFrameAnimation();
-                slideIn.InsertKeyFrame(0f, new System.Numerics.Vector3(40, 0, 0));
-                slideIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(0, 0, 0), comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.25f, 1f), new System.Numerics.Vector2(0.25f, 1f)));
-                slideIn.Duration = TimeSpan.FromMilliseconds(220);
-                
-                var fadeIn = comp.CreateScalarKeyFrameAnimation();
-                fadeIn.InsertKeyFrame(0f, 0.0f);
-                fadeIn.InsertKeyFrame(1.0f, 1.0f, comp.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.25f, 1f), new System.Numerics.Vector2(0.25f, 1f)));
-                fadeIn.Duration = TimeSpan.FromMilliseconds(220);
-                
-                inVisual.StartAnimation("Offset", slideIn);
-                inVisual.StartAnimation("Opacity", fadeIn);
-            };
-            batch.End();
-            
+                if (b.Content is Grid btnGrid)
+                {
+                    if (btnGrid.Children.Count == 1 && btnGrid.Children[0] is FontIcon)
+                    {
+                        var icon = (FontIcon)btnGrid.Children[0];
+                        btnGrid.Children.Clear();
+                        btnGrid.Children.Add(new Microsoft.UI.Xaml.Shapes.Ellipse { Width = 36, Height = 36, Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent) });
+                        btnGrid.Children.Add(icon);
+                    }
+                    
+                    if (btnGrid.Children.Count >= 2 && btnGrid.Children[0] is Microsoft.UI.Xaml.Shapes.Ellipse ellipse && btnGrid.Children[1] is FontIcon fIcon)
+                    {
+                        if (tag == selectedTag)
+                        {
+                            ellipse.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 30, 200, 110));
+                            fIcon.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.White);
+                        }
+                        else
+                        {
+                            ellipse.Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                            fIcon.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(77, 255, 255, 255));
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -226,7 +226,7 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
         
         private void InitTypeTables()
         {
-            _typeNameTable = new string[30];
+            _typeNameTable = new string[23];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -240,25 +240,18 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
             _typeNameTable[10] = "Double";
             _typeNameTable[11] = "System.Nullable`1<Double>";
             _typeNameTable[12] = "TimeSpan";
-            _typeNameTable[13] = "Microsoft.UI.Xaml.Media.RadialGradientBrush";
-            _typeNameTable[14] = "Windows.Foundation.Collections.IObservableVector`1<Microsoft.UI.Xaml.Media.GradientStop>";
-            _typeNameTable[15] = "Microsoft.UI.Xaml.Media.GradientStop";
-            _typeNameTable[16] = "Windows.Foundation.Point";
-            _typeNameTable[17] = "Microsoft.UI.Composition.CompositionColorSpace";
-            _typeNameTable[18] = "System.Enum";
-            _typeNameTable[19] = "Microsoft.UI.Xaml.Media.BrushMappingMode";
-            _typeNameTable[20] = "Microsoft.UI.Xaml.Media.GradientSpreadMethod";
-            _typeNameTable[21] = "SenaAurion.Shell.MainShellWindow";
-            _typeNameTable[22] = "Microsoft.UI.Xaml.Window";
-            _typeNameTable[23] = "SenaAurion.ViewModels.MainViewModel";
-            _typeNameTable[24] = "SenaAurion.ViewModels.ViewModelBase";
-            _typeNameTable[25] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
-            _typeNameTable[26] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[27] = "Microsoft.UI.Xaml.DependencyObject";
-            _typeNameTable[28] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
-            _typeNameTable[29] = "Int32";
+            _typeNameTable[13] = "Microsoft.UI.Xaml.Controls.ListViewItem";
+            _typeNameTable[14] = "SenaAurion.Shell.MainShellWindow";
+            _typeNameTable[15] = "Microsoft.UI.Xaml.Window";
+            _typeNameTable[16] = "SenaAurion.ViewModels.MainViewModel";
+            _typeNameTable[17] = "SenaAurion.ViewModels.ViewModelBase";
+            _typeNameTable[18] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
+            _typeNameTable[19] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[20] = "Microsoft.UI.Xaml.DependencyObject";
+            _typeNameTable[21] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[22] = "Int32";
 
-            _typeTable = new global::System.Type[30];
+            _typeTable = new global::System.Type[23];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -272,23 +265,16 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
             _typeTable[10] = typeof(global::System.Double);
             _typeTable[11] = typeof(global::System.Nullable<global::System.Double>);
             _typeTable[12] = typeof(global::System.TimeSpan);
-            _typeTable[13] = typeof(global::Microsoft.UI.Xaml.Media.RadialGradientBrush);
-            _typeTable[14] = typeof(global::Windows.Foundation.Collections.IObservableVector<global::Microsoft.UI.Xaml.Media.GradientStop>);
-            _typeTable[15] = typeof(global::Microsoft.UI.Xaml.Media.GradientStop);
-            _typeTable[16] = typeof(global::Windows.Foundation.Point);
-            _typeTable[17] = typeof(global::Microsoft.UI.Composition.CompositionColorSpace);
-            _typeTable[18] = typeof(global::System.Enum);
-            _typeTable[19] = typeof(global::Microsoft.UI.Xaml.Media.BrushMappingMode);
-            _typeTable[20] = typeof(global::Microsoft.UI.Xaml.Media.GradientSpreadMethod);
-            _typeTable[21] = typeof(global::SenaAurion.Shell.MainShellWindow);
-            _typeTable[22] = typeof(global::Microsoft.UI.Xaml.Window);
-            _typeTable[23] = typeof(global::SenaAurion.ViewModels.MainViewModel);
-            _typeTable[24] = typeof(global::SenaAurion.ViewModels.ViewModelBase);
-            _typeTable[25] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
-            _typeTable[26] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[27] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
-            _typeTable[28] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
-            _typeTable[29] = typeof(global::System.Int32);
+            _typeTable[13] = typeof(global::Microsoft.UI.Xaml.Controls.ListViewItem);
+            _typeTable[14] = typeof(global::SenaAurion.Shell.MainShellWindow);
+            _typeTable[15] = typeof(global::Microsoft.UI.Xaml.Window);
+            _typeTable[16] = typeof(global::SenaAurion.ViewModels.MainViewModel);
+            _typeTable[17] = typeof(global::SenaAurion.ViewModels.ViewModelBase);
+            _typeTable[18] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
+            _typeTable[19] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[20] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
+            _typeTable[21] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[22] = typeof(global::System.Int32);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -325,9 +311,8 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
 
         private object Activate_0_XamlControlsResources() { return new global::Microsoft.UI.Xaml.Controls.XamlControlsResources(); }
         private object Activate_8_AcrylicBrush() { return new global::Microsoft.UI.Xaml.Media.AcrylicBrush(); }
-        private object Activate_13_RadialGradientBrush() { return new global::Microsoft.UI.Xaml.Media.RadialGradientBrush(); }
-        private object Activate_21_MainShellWindow() { return new global::SenaAurion.Shell.MainShellWindow(); }
-        private object Activate_26_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_14_MainShellWindow() { return new global::SenaAurion.Shell.MainShellWindow(); }
+        private object Activate_19_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void StaticInitializer_0_XamlControlsResources() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources).TypeHandle);
         private void StaticInitializer_4_Color() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Windows.UI.Color).TypeHandle);
         private void StaticInitializer_5_ValueType() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.ValueType).TypeHandle);
@@ -335,16 +320,12 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
         private void StaticInitializer_8_AcrylicBrush() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Media.AcrylicBrush).TypeHandle);
         private void StaticInitializer_11_Nullable() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Nullable<global::System.Double>).TypeHandle);
         private void StaticInitializer_12_TimeSpan() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.TimeSpan).TypeHandle);
-        private void StaticInitializer_13_RadialGradientBrush() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Media.RadialGradientBrush).TypeHandle);
-        private void StaticInitializer_14_IObservableVector() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Windows.Foundation.Collections.IObservableVector<global::Microsoft.UI.Xaml.Media.GradientStop>).TypeHandle);
-        private void StaticInitializer_17_CompositionColorSpace() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Composition.CompositionColorSpace).TypeHandle);
-        private void StaticInitializer_18_Enum() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Enum).TypeHandle);
-        private void StaticInitializer_21_MainShellWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Shell.MainShellWindow).TypeHandle);
-        private void StaticInitializer_23_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.ViewModels.MainViewModel).TypeHandle);
-        private void StaticInitializer_24_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.ViewModels.ViewModelBase).TypeHandle);
-        private void StaticInitializer_25_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
-        private void StaticInitializer_26_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
-        private void StaticInitializer_28_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
+        private void StaticInitializer_14_MainShellWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Shell.MainShellWindow).TypeHandle);
+        private void StaticInitializer_16_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.ViewModels.MainViewModel).TypeHandle);
+        private void StaticInitializer_17_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.ViewModels.ViewModelBase).TypeHandle);
+        private void StaticInitializer_18_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
+        private void StaticInitializer_19_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
+        private void StaticInitializer_21_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -352,13 +333,7 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
             var newItem = (global::System.Object)item;
             collection.Add(newKey, newItem);
         }
-        private void VectorAdd_14_IObservableVector(object instance, object item)
-        {
-            var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Media.GradientStop>)instance;
-            var newItem = (global::Microsoft.UI.Xaml.Media.GradientStop)item;
-            collection.Add(newItem);
-        }
-        private void VectorAdd_28_IList(object instance, object item)
+        private void VectorAdd_21_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -459,101 +434,48 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 13:   //  Microsoft.UI.Xaml.Media.RadialGradientBrush
-                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Media.XamlCompositionBrushBase"));
-                userType.Activator = Activate_13_RadialGradientBrush;
-                userType.StaticInitializer = StaticInitializer_13_RadialGradientBrush;
-                userType.SetContentPropertyName("Microsoft.UI.Xaml.Media.RadialGradientBrush.GradientStops");
-                userType.AddMemberName("GradientStops");
-                userType.AddMemberName("Center");
-                userType.AddMemberName("GradientOrigin");
-                userType.AddMemberName("InterpolationSpace");
-                userType.AddMemberName("MappingMode");
-                userType.AddMemberName("RadiusX");
-                userType.AddMemberName("RadiusY");
-                userType.AddMemberName("SpreadMethod");
-                xamlType = userType;
-                break;
-
-            case 14:   //  Windows.Foundation.Collections.IObservableVector`1<Microsoft.UI.Xaml.Media.GradientStop>
-                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_14_IObservableVector;
-                userType.CollectionAdd = VectorAdd_14_IObservableVector;
-                userType.SetIsReturnTypeStub();
-                xamlType = userType;
-                break;
-
-            case 15:   //  Microsoft.UI.Xaml.Media.GradientStop
+            case 13:   //  Microsoft.UI.Xaml.Controls.ListViewItem
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 16:   //  Windows.Foundation.Point
-                xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 17:   //  Microsoft.UI.Composition.CompositionColorSpace
-                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Enum"));
-                userType.StaticInitializer = StaticInitializer_17_CompositionColorSpace;
-                userType.AddEnumValue("Auto", global::Microsoft.UI.Composition.CompositionColorSpace.Auto);
-                userType.AddEnumValue("Hsl", global::Microsoft.UI.Composition.CompositionColorSpace.Hsl);
-                userType.AddEnumValue("Rgb", global::Microsoft.UI.Composition.CompositionColorSpace.Rgb);
-                userType.AddEnumValue("HslLinear", global::Microsoft.UI.Composition.CompositionColorSpace.HslLinear);
-                userType.AddEnumValue("RgbLinear", global::Microsoft.UI.Composition.CompositionColorSpace.RgbLinear);
-                xamlType = userType;
-                break;
-
-            case 18:   //  System.Enum
-                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
-                userType.StaticInitializer = StaticInitializer_18_Enum;
-                xamlType = userType;
-                break;
-
-            case 19:   //  Microsoft.UI.Xaml.Media.BrushMappingMode
-                xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 20:   //  Microsoft.UI.Xaml.Media.GradientSpreadMethod
-                xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 21:   //  SenaAurion.Shell.MainShellWindow
+            case 14:   //  SenaAurion.Shell.MainShellWindow
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_21_MainShellWindow;
-                userType.StaticInitializer = StaticInitializer_21_MainShellWindow;
+                userType.Activator = Activate_14_MainShellWindow;
+                userType.StaticInitializer = StaticInitializer_14_MainShellWindow;
                 userType.AddMemberName("ViewModel");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 22:   //  Microsoft.UI.Xaml.Window
+            case 15:   //  Microsoft.UI.Xaml.Window
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 23:   //  SenaAurion.ViewModels.MainViewModel
+            case 16:   //  SenaAurion.ViewModels.MainViewModel
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("SenaAurion.ViewModels.ViewModelBase"));
-                userType.StaticInitializer = StaticInitializer_23_MainViewModel;
+                userType.StaticInitializer = StaticInitializer_16_MainViewModel;
                 userType.SetIsReturnTypeStub();
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 24:   //  SenaAurion.ViewModels.ViewModelBase
+            case 17:   //  SenaAurion.ViewModels.ViewModelBase
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("CommunityToolkit.Mvvm.ComponentModel.ObservableObject"));
-                userType.StaticInitializer = StaticInitializer_24_ViewModelBase;
+                userType.StaticInitializer = StaticInitializer_17_ViewModelBase;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 25:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
+            case 18:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.StaticInitializer = StaticInitializer_25_ObservableObject;
+                userType.StaticInitializer = StaticInitializer_18_ObservableObject;
                 xamlType = userType;
                 break;
 
-            case 26:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 19:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_26_TreeViewNode;
-                userType.StaticInitializer = StaticInitializer_26_TreeViewNode;
+                userType.Activator = Activate_19_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_19_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -565,19 +487,19 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 27:   //  Microsoft.UI.Xaml.DependencyObject
+            case 20:   //  Microsoft.UI.Xaml.DependencyObject
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 28:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 21:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_28_IList;
-                userType.CollectionAdd = VectorAdd_28_IList;
+                userType.StaticInitializer = StaticInitializer_21_IList;
+                userType.CollectionAdd = VectorAdd_21_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 29:   //  Int32
+            case 22:   //  Int32
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
             }
@@ -739,132 +661,57 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             that.TintTransitionDuration = (global::System.TimeSpan)Value;
         }
-        private object get_10_RadialGradientBrush_GradientStops(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            return that.GradientStops;
-        }
-        private object get_11_RadialGradientBrush_Center(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            return that.Center;
-        }
-        private void set_11_RadialGradientBrush_Center(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            that.Center = (global::Windows.Foundation.Point)Value;
-        }
-        private object get_12_RadialGradientBrush_GradientOrigin(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            return that.GradientOrigin;
-        }
-        private void set_12_RadialGradientBrush_GradientOrigin(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            that.GradientOrigin = (global::Windows.Foundation.Point)Value;
-        }
-        private object get_13_RadialGradientBrush_InterpolationSpace(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            return that.InterpolationSpace;
-        }
-        private void set_13_RadialGradientBrush_InterpolationSpace(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            that.InterpolationSpace = (global::Microsoft.UI.Composition.CompositionColorSpace)Value;
-        }
-        private object get_14_RadialGradientBrush_MappingMode(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            return that.MappingMode;
-        }
-        private void set_14_RadialGradientBrush_MappingMode(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            that.MappingMode = (global::Microsoft.UI.Xaml.Media.BrushMappingMode)Value;
-        }
-        private object get_15_RadialGradientBrush_RadiusX(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            return that.RadiusX;
-        }
-        private void set_15_RadialGradientBrush_RadiusX(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            that.RadiusX = (global::System.Double)Value;
-        }
-        private object get_16_RadialGradientBrush_RadiusY(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            return that.RadiusY;
-        }
-        private void set_16_RadialGradientBrush_RadiusY(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            that.RadiusY = (global::System.Double)Value;
-        }
-        private object get_17_RadialGradientBrush_SpreadMethod(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            return that.SpreadMethod;
-        }
-        private void set_17_RadialGradientBrush_SpreadMethod(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Media.RadialGradientBrush)instance;
-            that.SpreadMethod = (global::Microsoft.UI.Xaml.Media.GradientSpreadMethod)Value;
-        }
-        private object get_18_MainShellWindow_ViewModel(object instance)
+        private object get_10_MainShellWindow_ViewModel(object instance)
         {
             var that = (global::SenaAurion.Shell.MainShellWindow)instance;
             return that.ViewModel;
         }
-        private object get_19_TreeViewNode_Children(object instance)
+        private object get_11_TreeViewNode_Children(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Children;
         }
-        private object get_20_TreeViewNode_Content(object instance)
+        private object get_12_TreeViewNode_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Content;
         }
-        private void set_20_TreeViewNode_Content(object instance, object Value)
+        private void set_12_TreeViewNode_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_21_TreeViewNode_Depth(object instance)
+        private object get_13_TreeViewNode_Depth(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Depth;
         }
-        private object get_22_TreeViewNode_HasChildren(object instance)
+        private object get_14_TreeViewNode_HasChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasChildren;
         }
-        private object get_23_TreeViewNode_HasUnrealizedChildren(object instance)
+        private object get_15_TreeViewNode_HasUnrealizedChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasUnrealizedChildren;
         }
-        private void set_23_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
+        private void set_15_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.HasUnrealizedChildren = (global::System.Boolean)Value;
         }
-        private object get_24_TreeViewNode_IsExpanded(object instance)
+        private object get_16_TreeViewNode_IsExpanded(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.IsExpanded;
         }
-        private void set_24_TreeViewNode_IsExpanded(object instance, object Value)
+        private void set_16_TreeViewNode_IsExpanded(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.IsExpanded = (global::System.Boolean)Value;
         }
-        private object get_25_TreeViewNode_Parent(object instance)
+        private object get_17_TreeViewNode_Parent(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Parent;
@@ -943,111 +790,56 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlMember.Getter = get_9_AcrylicBrush_TintTransitionDuration;
                 xamlMember.Setter = set_9_AcrylicBrush_TintTransitionDuration;
                 break;
-            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.GradientStops":
-                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
-                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "GradientStops", "Windows.Foundation.Collections.IObservableVector`1<Microsoft.UI.Xaml.Media.GradientStop>");
-                xamlMember.Getter = get_10_RadialGradientBrush_GradientStops;
-                xamlMember.SetIsReadOnly();
-                break;
-            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.Center":
-                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
-                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Center", "Windows.Foundation.Point");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_11_RadialGradientBrush_Center;
-                xamlMember.Setter = set_11_RadialGradientBrush_Center;
-                break;
-            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.GradientOrigin":
-                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
-                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "GradientOrigin", "Windows.Foundation.Point");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_12_RadialGradientBrush_GradientOrigin;
-                xamlMember.Setter = set_12_RadialGradientBrush_GradientOrigin;
-                break;
-            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.InterpolationSpace":
-                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
-                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "InterpolationSpace", "Microsoft.UI.Composition.CompositionColorSpace");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_13_RadialGradientBrush_InterpolationSpace;
-                xamlMember.Setter = set_13_RadialGradientBrush_InterpolationSpace;
-                break;
-            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.MappingMode":
-                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
-                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "MappingMode", "Microsoft.UI.Xaml.Media.BrushMappingMode");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_14_RadialGradientBrush_MappingMode;
-                xamlMember.Setter = set_14_RadialGradientBrush_MappingMode;
-                break;
-            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.RadiusX":
-                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
-                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "RadiusX", "Double");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_15_RadialGradientBrush_RadiusX;
-                xamlMember.Setter = set_15_RadialGradientBrush_RadiusX;
-                break;
-            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.RadiusY":
-                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
-                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "RadiusY", "Double");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_16_RadialGradientBrush_RadiusY;
-                xamlMember.Setter = set_16_RadialGradientBrush_RadiusY;
-                break;
-            case "Microsoft.UI.Xaml.Media.RadialGradientBrush.SpreadMethod":
-                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.RadialGradientBrush");
-                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "SpreadMethod", "Microsoft.UI.Xaml.Media.GradientSpreadMethod");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_17_RadialGradientBrush_SpreadMethod;
-                xamlMember.Setter = set_17_RadialGradientBrush_SpreadMethod;
-                break;
             case "SenaAurion.Shell.MainShellWindow.ViewModel":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Shell.MainShellWindow");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "ViewModel", "SenaAurion.ViewModels.MainViewModel");
-                xamlMember.Getter = get_18_MainShellWindow_ViewModel;
+                xamlMember.Getter = get_10_MainShellWindow_ViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Children":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Children", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>");
-                xamlMember.Getter = get_19_TreeViewNode_Children;
+                xamlMember.Getter = get_11_TreeViewNode_Children;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Content":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_20_TreeViewNode_Content;
-                xamlMember.Setter = set_20_TreeViewNode_Content;
+                xamlMember.Getter = get_12_TreeViewNode_Content;
+                xamlMember.Setter = set_12_TreeViewNode_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Depth":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Depth", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_21_TreeViewNode_Depth;
+                xamlMember.Getter = get_13_TreeViewNode_Depth;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasChildren":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "HasChildren", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_22_TreeViewNode_HasChildren;
+                xamlMember.Getter = get_14_TreeViewNode_HasChildren;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasUnrealizedChildren":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "HasUnrealizedChildren", "Boolean");
-                xamlMember.Getter = get_23_TreeViewNode_HasUnrealizedChildren;
-                xamlMember.Setter = set_23_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Getter = get_15_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Setter = set_15_TreeViewNode_HasUnrealizedChildren;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.IsExpanded":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_24_TreeViewNode_IsExpanded;
-                xamlMember.Setter = set_24_TreeViewNode_IsExpanded;
+                xamlMember.Getter = get_16_TreeViewNode_IsExpanded;
+                xamlMember.Setter = set_16_TreeViewNode_IsExpanded;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Parent":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Parent", "Microsoft.UI.Xaml.Controls.TreeViewNode");
-                xamlMember.Getter = get_25_TreeViewNode_Parent;
+                xamlMember.Getter = get_17_TreeViewNode_Parent;
                 xamlMember.SetIsReadOnly();
                 break;
             }
