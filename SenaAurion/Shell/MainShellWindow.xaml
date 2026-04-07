@@ -84,43 +84,6 @@
             <SolidColorBrush x:Key="SenaTextAccentBrush" Color="#FFFFFF" />
             </Grid.Resources>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="ResponsiveStates">
-                <!-- Pantalla Ancha -->
-                <VisualState x:Name="WideState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1200"/>
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <!-- Pantalla Mediana -->
-                <VisualState x:Name="MediumState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="900"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="TabHomeText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabInputText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabNetworkText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabServicesText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabCleanerText.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-                <!-- Pantalla PequeÃ±a -->
-                <VisualState x:Name="NarrowState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="TabHomeText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabInputText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabNetworkText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabServicesText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabCleanerText.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="200" />
@@ -135,44 +98,11 @@
 
             <!-- BARRA SUPERIOR (TOPBAR) -->
             <Grid x:Name="AppCustomTitleBar" Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Height="46">
-                <!-- Pills de navegaciÃ³n y Control Central -->
-                <Grid Padding="14,0" Background="Transparent">
-                    
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Spacing="8">
-                        <Button x:Name="TabHome" CommandParameter="home" Click="TabButton_Click" Background="Transparent" Foreground="#E6FFFFFF" BorderBrush="#4DFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:Name="TabHomeText" Text="Inicio" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="TabInput" CommandParameter="input" Click="TabButton_Click" Background="Transparent" Foreground="#99FFFFFF" BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:Name="TabInputText" Text="Input" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="TabNetwork" CommandParameter="network" Click="TabButton_Click" Background="Transparent" Foreground="#99FFFFFF" BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:Name="TabNetworkText" Text="Network" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="TabServices" CommandParameter="services" Click="TabButton_Click" Background="Transparent" Foreground="#99FFFFFF" BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:Name="TabServicesText" Text="Services" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="TabCleaner" CommandParameter="cleaner" Click="TabButton_Click" Background="Transparent" Foreground="#99FFFFFF" BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:Name="TabCleanerText" Text="Cleaner" FontSize="12" />
-                            </StackPanel>
-                        </Button>
+                <Grid Padding="18,0" Background="Transparent">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Spacing="1">
+                        <TextBlock Text="{x:Bind ViewModel.CurrentModuleTitle, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" />
+                        <TextBlock Text="{x:Bind ViewModel.CurrentModuleDescription, Mode=OneWay}" FontSize="11" Foreground="#8CFFFFFF" />
                     </StackPanel>
-
-                    <!-- Titulo Central -->
-                    <TextBlock Text="SENA AURION" FontSize="13" FontFamily="{StaticResource InterFont}" FontWeight="Bold" Foreground="#80FFFFFF" CharacterSpacing="60" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-                    <!-- Ãcono Derecha -->
-                    <Border CornerRadius="14" Width="28" Height="28" BorderThickness="1" BorderBrush="#26FFFFFF" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <FontIcon Glyph="&#xE90C;" FontSize="12" Foreground="#80FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
                 </Grid>
             </Grid>
 
@@ -180,219 +110,74 @@
             <Grid Grid.Row="1" Margin="0,8,0,0">
                 <Border Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid x:Name="MainContainerContent">
-                        <!-- Flecha Salida -->
                         <Button Width="36" Height="36" Style="{StaticResource NeoActionButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Canvas.ZIndex="10" Click="BackToSplash_Click" ToolTipService.ToolTip="Volver al Splash">
                              <FontIcon Glyph="&#xE72B;" FontSize="14" Foreground="#E6FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Button>
+                        <TextBlock Text="{x:Bind ViewModel.CurrentModuleTitle, Mode=OneWay}" FontSize="84" FontWeight="ExtraBold" Foreground="#10FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-                        <!-- INICIO / DASHBOARD -->
-                        <Grid Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionHome), Mode=OneWay}">
-                            <TextBlock Text="INICIO" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="DETALLES DEL EQUIPO" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="Vista general del entorno y recursos fÃ­sicos." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <Grid ColumnSpacing="8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <!-- Celda 1 -->
-                                        <Border Grid.Column="0" Background="#222222" CornerRadius="10" Padding="10,8">
-                                            <StackPanel>
-                                                <TextBlock Text="{x:Bind ViewModel.SystemInfo.RamTotalText, Mode=OneWay}" FontSize="18" FontWeight="Bold" Foreground="#CCFFFFFF" />
-                                                <TextBlock Text="RAM" FontSize="8" Foreground="#33FFFFFF" CharacterSpacing="80" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <!-- Celda 2 -->
-                                        <Border Grid.Column="1" Background="#222222" CornerRadius="10" Padding="10,8">
-                                            <StackPanel>
-                                                <TextBlock Text="{x:Bind ViewModel.SystemInfo.CpuCoresText, Mode=OneWay}" FontSize="18" FontWeight="Bold" Foreground="#CCFFFFFF" />
-                                                <TextBlock Text="CPU" FontSize="8" Foreground="#33FFFFFF" CharacterSpacing="80" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <!-- Celda 3 -->
-                                        <Border Grid.Column="2" Background="#222222" CornerRadius="10" Padding="10,8">
-                                            <StackPanel>
-                                                <TextBlock Text="{x:Bind ViewModel.SystemInfo.Disks.Count, Mode=OneWay}" FontSize="18" FontWeight="Bold" Foreground="#CCFFFFFF" />
-                                                <TextBlock Text="DISCOS" FontSize="8" Foreground="#33FFFFFF" CharacterSpacing="80" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <!-- Celda 4 -->
-                                        <Border Grid.Column="3" Background="#222222" CornerRadius="10" Padding="10,8">
-                                            <StackPanel>
-                                                <TextBlock Text="{x:Bind ViewModel.SystemInfo.MacAddresses.Count, Mode=OneWay}" FontSize="18" FontWeight="Bold" Foreground="#CCFFFFFF" />
-                                                <TextBlock Text="REDS" FontSize="8" Foreground="#33FFFFFF" CharacterSpacing="80" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
-                                </StackPanel>
-                            </Border>
+                        <Grid Margin="76,34,76,30">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,10">
+                                <TextBlock Text="{x:Bind ViewModel.CurrentModuleTitle, Mode=OneWay}" FontSize="24" FontWeight="SemiBold" Foreground="#F2FFFFFF"/>
+                                <TextBlock Text="{x:Bind ViewModel.CurrentModuleDescription, Mode=OneWay}" FontSize="12" Foreground="#A6FFFFFF" Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <Grid Grid.Row="1">
+                                <ListBox ItemsSource="{x:Bind ViewModel.CurrentModuleItems, Mode=OneWay}"
+                                         SelectedItem="{x:Bind ViewModel.SelectedModuleItem, Mode=TwoWay}"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                         ScrollViewer.VerticalScrollMode="Enabled">
+                                    <ListBox.ItemContainerTransitions>
+                                        <TransitionCollection>
+                                            <ContentThemeTransition />
+                                        </TransitionCollection>
+                                    </ListBox.ItemContainerTransitions>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate x:DataType="viewmodels:TweakItemViewModel">
+                                            <Grid Margin="0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox IsChecked="{x:Bind IsSelected, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                                    <TextBlock Text="{x:Bind DisplayName}" FontSize="14" Foreground="#F2FFFFFF" FontWeight="SemiBold"/>
+                                                    <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="11" Foreground="#8CFFFFFF" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <Rectangle VerticalAlignment="Top" Height="34" IsHitTestVisible="False">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#CC101010" Offset="0"/>
+                                            <GradientStop Color="#00101010" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <Rectangle VerticalAlignment="Bottom" Height="34" IsHitTestVisible="False">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#00101010" Offset="0"/>
+                                            <GradientStop Color="#CC101010" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+
+                            <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,10,0,0">
+                                <TextBlock Text="{x:Bind ViewModel.SelectedModuleDisplayName, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" Foreground="#E6FFFFFF"/>
+                                <TextBlock Text="{x:Bind ViewModel.SelectedModuleDetail, Mode=OneWay}" TextWrapping="Wrap" FontSize="12" Foreground="#B3FFFFFF" Margin="0,4,0,0"/>
+                            </StackPanel>
                         </Grid>
-
-                        <!-- SECCIÃ“N INPUT (RATÃ“N/TECLADO) -->
-                        <Grid Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionInput), Mode=OneWay}">
-                            <TextBlock Text="INPUT" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="INPUT RESPONSE" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="ReducciÃ³n extrema de latencia en perifÃ©ricos." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <ScrollViewer MaxHeight="200" Margin="0,0,0,16" Padding="0,0,12,0">
-                                        <ItemsControl ItemsSource="{x:Bind ViewModel.InputTweakItems, Mode=OneWay}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="viewmodels:TweakItemViewModel">
-                                                    <Grid Margin="0,0,0,12">
-                                                        <CheckBox IsChecked="{x:Bind IsSelected, Mode=TwoWay}" VerticalAlignment="Top"/>
-                                                        <StackPanel Margin="30,0,0,0">
-                                                            <TextBlock Text="{x:Bind DisplayName}" FontSize="12" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="10" Foreground="#80FFFFFF" Margin="0,2,0,0"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-
-                                    <Button Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="Input" Background="#F0F0F0" CornerRadius="24" Padding="16,8,8,8" HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <TextBlock Text="APLICAMOS SELECCIÃ“N" FontSize="12" FontWeight="SemiBold" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,32,0"/>
-                                            <Ellipse Width="26" Height="26" Fill="#111111" HorizontalAlignment="Right" />
-                                            <FontIcon Glyph="&#xE72A;" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,8,0" />
-                                        </Grid>
-                                    </Button>
-
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16" Margin="0,12,0,0">
-                                        <Button Content="Revertir" Command="{x:Bind ViewModel.RevertSelectedModuleCommand}" CommandParameter="Input" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                        <Button Content="FÃ¡brica" Command="{x:Bind ViewModel.RevertAllModuleCommand}" CommandParameter="Input" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
-                        <!-- SECCIÃ“N RED Y TCP -->
-                        <Grid Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionNetwork), Mode=OneWay}">
-                            <TextBlock Text="NETWORK" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="NETWORK &amp; TCP" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="Optimiza el protocolo TCP/IP para priorizar el ping en aplicaciones." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <ScrollViewer MaxHeight="200" Margin="0,0,0,16" Padding="0,0,12,0">
-                                        <ItemsControl ItemsSource="{x:Bind ViewModel.NetworkTweakItems, Mode=OneWay}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="viewmodels:TweakItemViewModel">
-                                                    <Grid Margin="0,0,0,12">
-                                                        <CheckBox IsChecked="{x:Bind IsSelected, Mode=TwoWay}" VerticalAlignment="Top"/>
-                                                        <StackPanel Margin="30,0,0,0">
-                                                            <TextBlock Text="{x:Bind DisplayName}" FontSize="12" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="10" Foreground="#80FFFFFF" Margin="0,2,0,0"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-
-                                    <Button Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="Network" Background="#F0F0F0" CornerRadius="24" Padding="16,8,8,8" HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <TextBlock Text="APLICAR RED" FontSize="12" FontWeight="SemiBold" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,32,0"/>
-                                            <Ellipse Width="26" Height="26" Fill="#111111" HorizontalAlignment="Right" />
-                                            <FontIcon Glyph="&#xE72A;" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,8,0" />
-                                        </Grid>
-                                    </Button>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16" Margin="0,12,0,0">
-                                        <Button Content="Revertir" Command="{x:Bind ViewModel.RevertSelectedModuleCommand}" CommandParameter="Network" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                        <Button Content="FÃ¡brica" Command="{x:Bind ViewModel.RevertAllModuleCommand}" CommandParameter="Network" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
-                        <!-- SECCIÃ“N SERVICIOS DE WINDOWS -->
-                        <Grid Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionServices), Mode=OneWay}">
-                            <TextBlock Text="SERVICES" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="SERVICIOS DE SISTEMA" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="Deshabilita servicios innecesarios que consumen recursos." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <ScrollViewer MaxHeight="200" Margin="0,0,0,16" Padding="0,0,12,0">
-                                        <ItemsControl ItemsSource="{x:Bind ViewModel.ServiceTweakItems, Mode=OneWay}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="viewmodels:ServiceTweakModel">
-                                                    <Grid Margin="0,0,0,12">
-                                                        <CheckBox IsChecked="{x:Bind IsSelected, Mode=TwoWay}" IsEnabled="{x:Bind IsToggleEnabled, Mode=OneWay}" VerticalAlignment="Top"/>
-                                                        <StackPanel Margin="30,0,0,0">
-                                                            <TextBlock Text="{x:Bind DisplayName}" FontSize="12" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="10" Foreground="#80FFFFFF" Margin="0,2,0,0"/>
-                                                            <TextBlock Text="âš ï¸ Protegido Wi-Fi" Visibility="{x:Bind IsWifiLockedVisibility, Mode=OneWay}" Foreground="#D4944A" FontSize="10" Margin="0,2,0,0"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-
-                                    <Button Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="Services" Background="#F0F0F0" CornerRadius="24" Padding="16,8,8,8" HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <TextBlock Text="MUTR SERVICIOS" FontSize="12" FontWeight="SemiBold" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,32,0"/>
-                                            <Ellipse Width="26" Height="26" Fill="#111111" HorizontalAlignment="Right" />
-                                            <FontIcon Glyph="&#xE72A;" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,8,0" />
-                                        </Grid>
-                                    </Button>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16" Margin="0,12,0,0">
-                                        <Button Content="Revertir" Command="{x:Bind ViewModel.RevertSelectedModuleCommand}" CommandParameter="Services" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                        <Button Content="FÃ¡brica" Command="{x:Bind ViewModel.RevertAllModuleCommand}" CommandParameter="Services" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
-                        <!-- SECCIÃ“N LIMPIEZA DE WINDOWS -->
-                        <Grid Visibility="{x:Bind BoolToVisibility(ViewModel.IsSectionCleaner), Mode=OneWay}">
-                            <TextBlock Text="CLEANER" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="LIMPIEZA DE SISTEMA" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="Elimina archivos temporales y basura." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <ScrollViewer MaxHeight="200" Margin="0,0,0,16" Padding="0,0,12,0">
-                                        <ItemsControl ItemsSource="{x:Bind ViewModel.CleanerTweakItems, Mode=OneWay}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate x:DataType="viewmodels:CleanerTweakModel">
-                                                    <Grid Margin="0,0,0,12">
-                                                        <CheckBox IsChecked="{x:Bind IsSelected, Mode=TwoWay}" VerticalAlignment="Top"/>
-                                                        <StackPanel Margin="30,0,0,0">
-                                                            <TextBlock Text="{x:Bind DisplayName}" FontSize="12" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="10" Foreground="#80FFFFFF" Margin="0,2,0,0"/>
-                                                            <TextBlock Text="âš ï¸ ELIMINARÃ CARPETAS" Visibility="{x:Bind IsDangerVisibility, Mode=OneWay}" Foreground="#E05555" FontSize="10" Margin="0,2,0,0"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-
-                                    <Button Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="Cleaner" Background="#F0F0F0" CornerRadius="24" Padding="16,8,8,8" HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <TextBlock Text="EJECUTAR LIMPIEZA" FontSize="12" FontWeight="SemiBold" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,32,0"/>
-                                            <Ellipse Width="26" Height="26" Fill="#111111" HorizontalAlignment="Right" />
-                                            <FontIcon Glyph="&#xE72A;" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,8,0" />
-                                        </Grid>
-                                    </Button>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
                     </Grid>
                 </Border>
             </Grid>
@@ -409,7 +194,7 @@
             <Border Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel>
                     <TextBlock Text="NETWORK STATS" FontSize="13" FontWeight="Bold" Foreground="#D9FFFFFF" />
-                    <TextBlock Text="Actividad de red y latencia en ms." FontSize="10" Foreground="#4DFFFFFF" LineHeight="1.5" Margin="0,6,0,10" TextWrapping="Wrap" />
+                    <TextBlock Text="SENA AURION optimiza rendimiento con reglas seguras y reversibles. Los cambios buscan estabilidad y fluidez sin comprometer la integridad del dispositivo." FontSize="10" Foreground="#9AFFFFFF" LineHeight="15" Margin="0,6,0,10" TextWrapping="Wrap" />
                     
                     <ItemsControl>
                         <ItemsControl.ItemsPanel>
@@ -447,8 +232,11 @@
                             </RadialGradientBrush>
                         </Ellipse.Fill>
                     </Ellipse>
-                    <TextBlock Text="OPTIMIZER" FontSize="13" FontWeight="Bold" Foreground="#D9FFFFFF" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Motor listo." FontSize="10" Foreground="#4DFFFFFF" LineHeight="1.5" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    <TextBlock Text="OPTIMIZER MOTOR" FontSize="13" FontWeight="Bold" Foreground="#D9FFFFFF" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Panel de ejecución del módulo activo." FontSize="10" Foreground="#8CFFFFFF" LineHeight="1.5" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                    <Button Content="Aplicar" Command="{x:Bind ViewModel.ApplySelectedModuleCommand}" CommandParameter="{x:Bind ViewModel.CurrentModuleActionName, Mode=OneWay}" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                    <Button Content="Revertir" Command="{x:Bind ViewModel.RevertSelectedModuleCommand}" CommandParameter="{x:Bind ViewModel.CurrentModuleActionName, Mode=OneWay}" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                    <Button Content="Restaurar fábrica" Command="{x:Bind ViewModel.RevertAllModuleCommand}" CommandParameter="{x:Bind ViewModel.CurrentModuleActionName, Mode=OneWay}" Style="{StaticResource NeoActionButtonStyle}"/>
                 </StackPanel>
             </Border>
         </Grid>

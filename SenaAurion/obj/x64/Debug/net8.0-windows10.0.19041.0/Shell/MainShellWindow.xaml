@@ -84,43 +84,6 @@
             <SolidColorBrush x:Key="SenaTextAccentBrush" Color="#FFFFFF" />
             </Grid.Resources>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:ConnectionId='17' x:Name="ResponsiveStates">
-                <!-- Pantalla Ancha -->
-                <VisualState x:ConnectionId='18' x:Name="WideState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1200"/>
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <!-- Pantalla Mediana -->
-                <VisualState x:ConnectionId='19' x:Name="MediumState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="900"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="TabHomeText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabInputText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabNetworkText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabServicesText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabCleanerText.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-                <!-- Pantalla PequeÃ±a -->
-                <VisualState x:ConnectionId='20' x:Name="NarrowState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="TabHomeText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabInputText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabNetworkText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabServicesText.Visibility" Value="Collapsed" />
-                        <Setter Target="TabCleanerText.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="200" />
@@ -134,265 +97,87 @@
             </Grid.RowDefinitions>
 
             <!-- BARRA SUPERIOR (TOPBAR) -->
-            <Grid x:ConnectionId='27' x:Name="AppCustomTitleBar" Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Height="46">
-                <!-- Pills de navegaciÃ³n y Control Central -->
-                <Grid Padding="14,0" Background="Transparent">
-                    
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Spacing="8">
-                        <Button x:ConnectionId='75' x:Name="TabHome" CommandParameter="home"                         Background="Transparent" Foreground="#E6FFFFFF" BorderBrush="#4DFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:ConnectionId='84' x:Name="TabHomeText" Text="Inicio" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:ConnectionId='76' x:Name="TabInput" CommandParameter="input"                         Background="Transparent" Foreground="#99FFFFFF" BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:ConnectionId='83' x:Name="TabInputText" Text="Input" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:ConnectionId='77' x:Name="TabNetwork" CommandParameter="network"                         Background="Transparent" Foreground="#99FFFFFF" BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:ConnectionId='82' x:Name="TabNetworkText" Text="Network" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:ConnectionId='78' x:Name="TabServices" CommandParameter="services"                         Background="Transparent" Foreground="#99FFFFFF" BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:ConnectionId='81' x:Name="TabServicesText" Text="Services" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:ConnectionId='79' x:Name="TabCleaner" CommandParameter="cleaner"                         Background="Transparent" Foreground="#99FFFFFF" BorderBrush="#1FFFFFFF" BorderThickness="1" CornerRadius="20" Padding="14,5" FontFamily="{StaticResource InterFont}" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock x:ConnectionId='80' x:Name="TabCleanerText" Text="Cleaner" FontSize="12" />
-                            </StackPanel>
-                        </Button>
+            <Grid x:ConnectionId='26' x:Name="AppCustomTitleBar" Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Height="46">
+                <Grid Padding="18,0" Background="Transparent">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Spacing="1">
+                        <TextBlock x:ConnectionId='40'                                                           FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" />
+                        <TextBlock x:ConnectionId='41'                                                                 FontSize="11" Foreground="#8CFFFFFF" />
                     </StackPanel>
-
-                    <!-- Titulo Central -->
-                    <TextBlock Text="SENA AURION" FontSize="13" FontFamily="{StaticResource InterFont}" FontWeight="Bold" Foreground="#80FFFFFF" CharacterSpacing="60" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-                    <!-- Ãcono Derecha -->
-                    <Border CornerRadius="14" Width="28" Height="28" BorderThickness="1" BorderBrush="#26FFFFFF" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <FontIcon Glyph="&#xE90C;" FontSize="12" Foreground="#80FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
                 </Grid>
             </Grid>
 
             <!-- AREA DE CONTENIDO -->
             <Grid Grid.Row="1" Margin="0,8,0,0">
                 <Border Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Grid x:ConnectionId='28' x:Name="MainContainerContent">
-                        <!-- Flecha Salida -->
-                        <Button x:ConnectionId='29' Width="36" Height="36" Style="{StaticResource NeoActionButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Canvas.ZIndex="10"                            ToolTipService.ToolTip="Volver al Splash">
+                    <Grid x:ConnectionId='27' x:Name="MainContainerContent">
+                        <Button x:ConnectionId='28' Width="36" Height="36" Style="{StaticResource NeoActionButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Canvas.ZIndex="10"                            ToolTipService.ToolTip="Volver al Splash">
                              <FontIcon Glyph="&#xE72B;" FontSize="14" Foreground="#E6FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Button>
+                        <TextBlock x:ConnectionId='29'                                                           FontSize="84" FontWeight="ExtraBold" Foreground="#10FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-                        <!-- INICIO / DASHBOARD -->
-                        <Grid x:ConnectionId='30'                                                                             >
-                            <TextBlock Text="INICIO" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="DETALLES DEL EQUIPO" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="Vista general del entorno y recursos fÃ­sicos." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <Grid ColumnSpacing="8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <!-- Celda 1 -->
-                                        <Border Grid.Column="0" Background="#222222" CornerRadius="10" Padding="10,8">
-                                            <StackPanel>
-                                                <TextBlock x:ConnectionId='74'                                                                FontSize="18" FontWeight="Bold" Foreground="#CCFFFFFF" />
-                                                <TextBlock Text="RAM" FontSize="8" Foreground="#33FFFFFF" CharacterSpacing="80" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <!-- Celda 2 -->
-                                        <Border Grid.Column="1" Background="#222222" CornerRadius="10" Padding="10,8">
-                                            <StackPanel>
-                                                <TextBlock x:ConnectionId='73'                                                                FontSize="18" FontWeight="Bold" Foreground="#CCFFFFFF" />
-                                                <TextBlock Text="CPU" FontSize="8" Foreground="#33FFFFFF" CharacterSpacing="80" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <!-- Celda 3 -->
-                                        <Border Grid.Column="2" Background="#222222" CornerRadius="10" Padding="10,8">
-                                            <StackPanel>
-                                                <TextBlock x:ConnectionId='72'                                                               FontSize="18" FontWeight="Bold" Foreground="#CCFFFFFF" />
-                                                <TextBlock Text="DISCOS" FontSize="8" Foreground="#33FFFFFF" CharacterSpacing="80" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <!-- Celda 4 -->
-                                        <Border Grid.Column="3" Background="#222222" CornerRadius="10" Padding="10,8">
-                                            <StackPanel>
-                                                <TextBlock x:ConnectionId='71'                                                                      FontSize="18" FontWeight="Bold" Foreground="#CCFFFFFF" />
-                                                <TextBlock Text="REDS" FontSize="8" Foreground="#33FFFFFF" CharacterSpacing="80" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
-                                </StackPanel>
-                            </Border>
+                        <Grid Margin="76,34,76,30">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,10">
+                                <TextBlock x:ConnectionId='38'                                                           FontSize="24" FontWeight="SemiBold" Foreground="#F2FFFFFF"/>
+                                <TextBlock x:ConnectionId='39'                                                                 FontSize="12" Foreground="#A6FFFFFF" Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <Grid Grid.Row="1">
+                                <ListBox x:ConnectionId='32'                                                                 
+                                                                                                          
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                         ScrollViewer.VerticalScrollMode="Enabled">
+                                    <ListBox.ItemContainerTransitions>
+                                        <TransitionCollection>
+                                            <ContentThemeTransition />
+                                        </TransitionCollection>
+                                    </ListBox.ItemContainerTransitions>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate                                           >
+                                            <Grid x:ConnectionId='34' Margin="0,8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox x:ConnectionId='35'                                              VerticalAlignment="Center"/>
+                                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                                    <TextBlock x:ConnectionId='36'                             FontSize="14" Foreground="#F2FFFFFF" FontWeight="SemiBold"/>
+                                                    <TextBlock x:ConnectionId='37'                                               FontSize="11" Foreground="#8CFFFFFF" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <Rectangle VerticalAlignment="Top" Height="34" IsHitTestVisible="False">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#CC101010" Offset="0"/>
+                                            <GradientStop Color="#00101010" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <Rectangle VerticalAlignment="Bottom" Height="34" IsHitTestVisible="False">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#00101010" Offset="0"/>
+                                            <GradientStop Color="#CC101010" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+
+                            <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,10,0,0">
+                                <TextBlock x:ConnectionId='30'                                                                  FontSize="15" FontWeight="SemiBold" Foreground="#E6FFFFFF"/>
+                                <TextBlock x:ConnectionId='31'                                                             TextWrapping="Wrap" FontSize="12" Foreground="#B3FFFFFF" Margin="0,4,0,0"/>
+                            </StackPanel>
                         </Grid>
-
-                        <!-- SECCIÃ“N INPUT (RATÃ“N/TECLADO) -->
-                        <Grid x:ConnectionId='31'                                                                              >
-                            <TextBlock Text="INPUT" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="INPUT RESPONSE" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="ReducciÃ³n extrema de latencia en perifÃ©ricos." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <ScrollViewer MaxHeight="200" Margin="0,0,0,16" Padding="0,0,12,0">
-                                        <ItemsControl x:ConnectionId='65'                                                              >
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate                                           >
-                                                    <Grid x:ConnectionId='67' Margin="0,0,0,12">
-                                                        <CheckBox x:ConnectionId='68'                                              VerticalAlignment="Top"/>
-                                                        <StackPanel Margin="30,0,0,0">
-                                                            <TextBlock x:ConnectionId='69'                             FontSize="12" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                                                            <TextBlock x:ConnectionId='70'                                               FontSize="10" Foreground="#80FFFFFF" Margin="0,2,0,0"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-
-                                    <Button x:ConnectionId='62'                                                         CommandParameter="Input" Background="#F0F0F0" CornerRadius="24" Padding="16,8,8,8" HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <TextBlock Text="APLICAMOS SELECCIÃ“N" FontSize="12" FontWeight="SemiBold" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,32,0"/>
-                                            <Ellipse Width="26" Height="26" Fill="#111111" HorizontalAlignment="Right" />
-                                            <FontIcon Glyph="&#xE72A;" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,8,0" />
-                                        </Grid>
-                                    </Button>
-
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16" Margin="0,12,0,0">
-                                        <Button x:ConnectionId='63' Content="Revertir"                                                          CommandParameter="Input" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                        <Button x:ConnectionId='64' Content="FÃ¡brica"                                                     CommandParameter="Input" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
-                        <!-- SECCIÃ“N RED Y TCP -->
-                        <Grid x:ConnectionId='32'                                                                                >
-                            <TextBlock Text="NETWORK" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="NETWORK &amp; TCP" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="Optimiza el protocolo TCP/IP para priorizar el ping en aplicaciones." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <ScrollViewer MaxHeight="200" Margin="0,0,0,16" Padding="0,0,12,0">
-                                        <ItemsControl x:ConnectionId='56'                                                                >
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate                                           >
-                                                    <Grid x:ConnectionId='58' Margin="0,0,0,12">
-                                                        <CheckBox x:ConnectionId='59'                                              VerticalAlignment="Top"/>
-                                                        <StackPanel Margin="30,0,0,0">
-                                                            <TextBlock x:ConnectionId='60'                             FontSize="12" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                                                            <TextBlock x:ConnectionId='61'                                               FontSize="10" Foreground="#80FFFFFF" Margin="0,2,0,0"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-
-                                    <Button x:ConnectionId='53'                                                         CommandParameter="Network" Background="#F0F0F0" CornerRadius="24" Padding="16,8,8,8" HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <TextBlock Text="APLICAR RED" FontSize="12" FontWeight="SemiBold" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,32,0"/>
-                                            <Ellipse Width="26" Height="26" Fill="#111111" HorizontalAlignment="Right" />
-                                            <FontIcon Glyph="&#xE72A;" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,8,0" />
-                                        </Grid>
-                                    </Button>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16" Margin="0,12,0,0">
-                                        <Button x:ConnectionId='54' Content="Revertir"                                                          CommandParameter="Network" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                        <Button x:ConnectionId='55' Content="FÃ¡brica"                                                     CommandParameter="Network" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
-                        <!-- SECCIÃ“N SERVICIOS DE WINDOWS -->
-                        <Grid x:ConnectionId='33'                                                                                 >
-                            <TextBlock Text="SERVICES" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="SERVICIOS DE SISTEMA" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="Deshabilita servicios innecesarios que consumen recursos." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <ScrollViewer MaxHeight="200" Margin="0,0,0,16" Padding="0,0,12,0">
-                                        <ItemsControl x:ConnectionId='46'                                                                >
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate                                          >
-                                                    <Grid x:ConnectionId='48' Margin="0,0,0,12">
-                                                        <CheckBox x:ConnectionId='49'                                                                                                VerticalAlignment="Top"/>
-                                                        <StackPanel Margin="30,0,0,0">
-                                                            <TextBlock x:ConnectionId='50'                             FontSize="12" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                                                            <TextBlock x:ConnectionId='51'                                               FontSize="10" Foreground="#80FFFFFF" Margin="0,2,0,0"/>
-                                                            <TextBlock x:ConnectionId='52' Text="âš ï¸ Protegido Wi-Fi"                                                           Foreground="#D4944A" FontSize="10" Margin="0,2,0,0"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-
-                                    <Button x:ConnectionId='43'                                                         CommandParameter="Services" Background="#F0F0F0" CornerRadius="24" Padding="16,8,8,8" HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <TextBlock Text="MUTR SERVICIOS" FontSize="12" FontWeight="SemiBold" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,32,0"/>
-                                            <Ellipse Width="26" Height="26" Fill="#111111" HorizontalAlignment="Right" />
-                                            <FontIcon Glyph="&#xE72A;" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,8,0" />
-                                        </Grid>
-                                    </Button>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16" Margin="0,12,0,0">
-                                        <Button x:ConnectionId='44' Content="Revertir"                                                          CommandParameter="Services" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                        <Button x:ConnectionId='45' Content="FÃ¡brica"                                                     CommandParameter="Services" Background="Transparent" Foreground="#66FFFFFF" BorderThickness="0" FontSize="10"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
-                        <!-- SECCIÃ“N LIMPIEZA DE WINDOWS -->
-                        <Grid x:ConnectionId='34'                                                                                >
-                            <TextBlock Text="CLEANER" FontSize="72" FontWeight="ExtraBold" Foreground="#08FFFFFF" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Border CornerRadius="16" Padding="20" Margin="20" Background="#66000000" BorderBrush="#0FFFFFFF" BorderThickness="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="320">
-                                <StackPanel>
-                                    <TextBlock Text="LIMPIEZA DE SISTEMA" FontSize="16" FontWeight="Bold" Foreground="#E6FFFFFF" LineHeight="1.2" />
-                                    <TextBlock Text="Elimina archivos temporales y basura." FontSize="11" Foreground="#66FFFFFF" Margin="0,6,0,16" LineHeight="1.5" TextWrapping="Wrap" />
-                                    
-                                    <ScrollViewer MaxHeight="200" Margin="0,0,0,16" Padding="0,0,12,0">
-                                        <ItemsControl x:ConnectionId='36'                                                                >
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate                                          >
-                                                    <Grid x:ConnectionId='38' Margin="0,0,0,12">
-                                                        <CheckBox x:ConnectionId='39'                                              VerticalAlignment="Top"/>
-                                                        <StackPanel Margin="30,0,0,0">
-                                                            <TextBlock x:ConnectionId='40'                             FontSize="12" Foreground="#FFFFFF" FontWeight="SemiBold"/>
-                                                            <TextBlock x:ConnectionId='41'                                               FontSize="10" Foreground="#80FFFFFF" Margin="0,2,0,0"/>
-                                                            <TextBlock x:ConnectionId='42' Text="âš ï¸ ELIMINARÃ CARPETAS"                                                       Foreground="#E05555" FontSize="10" Margin="0,2,0,0"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
-
-                                    <Button x:ConnectionId='35'                                                         CommandParameter="Cleaner" Background="#F0F0F0" CornerRadius="24" Padding="16,8,8,8" HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <TextBlock Text="EJECUTAR LIMPIEZA" FontSize="12" FontWeight="SemiBold" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,32,0"/>
-                                            <Ellipse Width="26" Height="26" Fill="#111111" HorizontalAlignment="Right" />
-                                            <FontIcon Glyph="&#xE72A;" FontSize="10" Foreground="#FFFFFF" HorizontalAlignment="Right" Margin="0,0,8,0" />
-                                        </Grid>
-                                    </Button>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
                     </Grid>
                 </Border>
             </Grid>
@@ -409,7 +194,7 @@
             <Border Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel>
                     <TextBlock Text="NETWORK STATS" FontSize="13" FontWeight="Bold" Foreground="#D9FFFFFF" />
-                    <TextBlock Text="Actividad de red y latencia en ms." FontSize="10" Foreground="#4DFFFFFF" LineHeight="1.5" Margin="0,6,0,10" TextWrapping="Wrap" />
+                    <TextBlock Text="SENA AURION optimiza rendimiento con reglas seguras y reversibles. Los cambios buscan estabilidad y fluidez sin comprometer la integridad del dispositivo." FontSize="10" Foreground="#9AFFFFFF" LineHeight="15" Margin="0,6,0,10" TextWrapping="Wrap" />
                     
                     <ItemsControl>
                         <ItemsControl.ItemsPanel>
@@ -447,8 +232,11 @@
                             </RadialGradientBrush>
                         </Ellipse.Fill>
                     </Ellipse>
-                    <TextBlock Text="OPTIMIZER" FontSize="13" FontWeight="Bold" Foreground="#D9FFFFFF" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Motor listo." FontSize="10" Foreground="#4DFFFFFF" LineHeight="1.5" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                    <TextBlock Text="OPTIMIZER MOTOR" FontSize="13" FontWeight="Bold" Foreground="#D9FFFFFF" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Panel de ejecución del módulo activo." FontSize="10" Foreground="#8CFFFFFF" LineHeight="1.5" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,12"/>
+                    <Button x:ConnectionId='23' Content="Aplicar"                                                                                                                                    Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                    <Button x:ConnectionId='24' Content="Revertir"                                                                                                                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                    <Button x:ConnectionId='25' Content="Restaurar fábrica"                                                                                                                                Style="{StaticResource NeoActionButtonStyle}"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -459,7 +247,7 @@
                 <!-- Ãconos de NavegaciÃ³n Verticalmente Centrados -->
                 <StackPanel VerticalAlignment="Center" Spacing="16" HorizontalAlignment="Center">
                     <!-- Home -->
-                    <Button x:ConnectionId='21'                         CommandParameter="home" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Inicio">
+                    <Button x:ConnectionId='17'                         CommandParameter="home" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Inicio">
                         <Grid>
                             <Ellipse Width="36" Height="36" Fill="#2A2A2A" />
                             <FontIcon Glyph="&#xE80F;" FontSize="16" Foreground="#B3FFFFFF" />
@@ -467,35 +255,35 @@
                     </Button>
 
                     <!-- Input -->
-                    <Button x:ConnectionId='22'                         CommandParameter="input" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Input">
+                    <Button x:ConnectionId='18'                         CommandParameter="input" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Input">
                         <Grid>
                             <FontIcon Glyph="&#xE144;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Network -->
-                    <Button x:ConnectionId='23'                         CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Network">
+                    <Button x:ConnectionId='19'                         CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Network">
                         <Grid>
                             <FontIcon Glyph="&#xE701;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
                     
                     <!-- TCP -->
-                    <Button x:ConnectionId='24'                         CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="TCP">
+                    <Button x:ConnectionId='20'                         CommandParameter="network" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="TCP">
                         <Grid>
                             <FontIcon Glyph="&#xE968;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Servicios -->
-                    <Button x:ConnectionId='25'                         CommandParameter="services" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Servicios">
+                    <Button x:ConnectionId='21'                         CommandParameter="services" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Servicios">
                         <Grid>
                             <FontIcon Glyph="&#xE9D9;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>
                     </Button>
 
                     <!-- Cleaner -->
-                    <Button x:ConnectionId='26'                         CommandParameter="cleaner" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Limpieza">
+                    <Button x:ConnectionId='22'                         CommandParameter="cleaner" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="10" Width="36" Height="36" ToolTipService.ToolTip="Limpieza">
                         <Grid>
                             <FontIcon Glyph="&#xE7FC;" FontSize="16" Foreground="#4DFFFFFF" />
                         </Grid>

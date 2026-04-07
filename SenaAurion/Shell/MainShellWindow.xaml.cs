@@ -67,10 +67,6 @@ public sealed partial class MainShellWindow : Window
 
         ViewModel.SelectedTag = "home";
 
-        TabHome.Opacity = 1.0;
-        TabHome.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(230, 255, 255, 255));
-        TabHome.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(76, 255, 255, 255));
-
         this.Activated += MainWindow_Activated;
         this.SizeChanged += MainWindow_SizeChanged;
     }
@@ -673,22 +669,6 @@ public sealed partial class MainShellWindow : Window
             };
             batch.End();
             
-            // Restablecer estilos base en todos los botones hermanos
-            if (btn.Parent is StackPanel panel)
-            {
-                foreach (var child in panel.Children)
-                {
-                    if (child is Button b)
-                    {
-                        b.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(153, 255, 255, 255)); // 60%
-                        b.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(30, 255, 255, 255)); // 12%
-                    }
-                }
-            }
-
-            // Aplicar estado activo
-            btn.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(230, 255, 255, 255)); // 90%
-            btn.BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(76, 255, 255, 255)); // 30%
         }
     }
 

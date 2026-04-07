@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -165,6 +165,13 @@ public sealed partial class MainViewModel : ViewModelBase
     public ObservableCollection<RegistryTweakViewModel> NetworkTweakItems { get; } = new();
     public ObservableCollection<ServiceTweakModel> ServiceTweakItems { get; } = new();
     public ObservableCollection<CleanerTweakModel> CleanerTweakItems { get; } = new();
+    public ObservableCollection<TweakItemViewModel> CurrentModuleItems { get; } = new();
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentModuleDescription))]
+    [NotifyPropertyChangedFor(nameof(SelectedModuleDisplayName))]
+    [NotifyPropertyChangedFor(nameof(SelectedModuleDetail))]
+    private TweakItemViewModel? _selectedModuleItem;
 
     // SYSTEM INFO HOME
     [ObservableProperty]
@@ -200,6 +207,60 @@ public sealed partial class MainViewModel : ViewModelBase
         {
             _ = LoadSystemInfoAsync();
         }
+
+        RefreshCurrentModuleView();
+    }
+
+    public string CurrentModuleTitle => SelectedTag switch
+    {
+        "input" => "Input",
+        "network" => "Network",
+        "services" => "Services",
+        "cleaner" => "Cleaner",
+        _ => "Inicio"
+    };
+
+    public string CurrentModuleActionName => SelectedTag switch
+    {
+        "input" => "Input",
+        "network" => "Network",
+        "services" => "Services",
+        "cleaner" => "Cleaner",
+        _ => "Input"
+    };
+
+    public string CurrentModuleDescription => SelectedTag switch
+    {
+        "input" => "Ajustes de latencia para periféricos y respuesta del sistema.",
+        "network" => "Tweaks TCP/IP enfocados en estabilidad y menor latencia.",
+        "services" => "Gestión de servicios para reducir carga sin dañar el sistema.",
+        "cleaner" => "Tareas de limpieza y mantenimiento de archivos temporales.",
+        _ => "Panel principal de estado y resumen del equipo."
+    };
+
+    public string SelectedModuleDisplayName => SelectedModuleItem?.DisplayName ?? "Selecciona una función";
+    public string SelectedModuleDetail => SelectedModuleItem?.Description ?? CurrentModuleDescription;
+
+    private void RefreshCurrentModuleView()
+    {
+        CurrentModuleItems.Clear();
+        IEnumerable<TweakItemViewModel> source = SelectedTag switch
+        {
+            "input" => InputTweakItems,
+            "network" => NetworkTweakItems,
+            "services" => ServiceTweakItems,
+            "cleaner" => CleanerTweakItems,
+            _ => Array.Empty<TweakItemViewModel>()
+        };
+
+        foreach (var item in source)
+            CurrentModuleItems.Add(item);
+
+        SelectedModuleItem = CurrentModuleItems.FirstOrDefault();
+
+        OnPropertyChanged(nameof(CurrentModuleTitle));
+        OnPropertyChanged(nameof(CurrentModuleActionName));
+        OnPropertyChanged(nameof(CurrentModuleDescription));
     }
 
     private async Task LoadSystemInfoAsync()
@@ -273,6 +334,7 @@ public sealed partial class MainViewModel : ViewModelBase
         SelectAllNetwork = false;
         SelectAllCleaner = false;
         // ... Check if we want to default false? Yes.
+        RefreshCurrentModuleView();
     }
 
     [RelayCommand]
