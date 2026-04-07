@@ -226,7 +226,7 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         
         private void InitTypeTables()
         {
-            _typeNameTable = new string[28];
+            _typeNameTable = new string[31];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -250,13 +250,16 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             _typeNameTable[20] = "VisionaryOptimizer.ViewModels.MainViewModel";
             _typeNameTable[21] = "VisionaryOptimizer.ViewModels.ViewModelBase";
             _typeNameTable[22] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
-            _typeNameTable[23] = "VisionaryOptimizer.SplashWindow";
-            _typeNameTable[24] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[25] = "Microsoft.UI.Xaml.DependencyObject";
-            _typeNameTable[26] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
-            _typeNameTable[27] = "Int32";
+            _typeNameTable[23] = "Microsoft.UI.Xaml.Media.AcrylicBrush";
+            _typeNameTable[24] = "System.Nullable`1<Double>";
+            _typeNameTable[25] = "TimeSpan";
+            _typeNameTable[26] = "VisionaryOptimizer.SplashWindow";
+            _typeNameTable[27] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[28] = "Microsoft.UI.Xaml.DependencyObject";
+            _typeNameTable[29] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[30] = "Int32";
 
-            _typeTable = new global::System.Type[28];
+            _typeTable = new global::System.Type[31];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -280,11 +283,14 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             _typeTable[20] = typeof(global::VisionaryOptimizer.ViewModels.MainViewModel);
             _typeTable[21] = typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase);
             _typeTable[22] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
-            _typeTable[23] = typeof(global::VisionaryOptimizer.SplashWindow);
-            _typeTable[24] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[25] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
-            _typeTable[26] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
-            _typeTable[27] = typeof(global::System.Int32);
+            _typeTable[23] = typeof(global::Microsoft.UI.Xaml.Media.AcrylicBrush);
+            _typeTable[24] = typeof(global::System.Nullable<global::System.Double>);
+            _typeTable[25] = typeof(global::System.TimeSpan);
+            _typeTable[26] = typeof(global::VisionaryOptimizer.SplashWindow);
+            _typeTable[27] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[28] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
+            _typeTable[29] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[30] = typeof(global::System.Int32);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -322,8 +328,9 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         private object Activate_0_XamlControlsResources() { return new global::Microsoft.UI.Xaml.Controls.XamlControlsResources(); }
         private object Activate_8_RadialGradientBrush() { return new global::Microsoft.UI.Xaml.Media.RadialGradientBrush(); }
         private object Activate_18_MainWindow() { return new global::VisionaryOptimizer.MainWindow(); }
-        private object Activate_23_SplashWindow() { return new global::VisionaryOptimizer.SplashWindow(); }
-        private object Activate_24_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_23_AcrylicBrush() { return new global::Microsoft.UI.Xaml.Media.AcrylicBrush(); }
+        private object Activate_26_SplashWindow() { return new global::VisionaryOptimizer.SplashWindow(); }
+        private object Activate_27_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void StaticInitializer_0_XamlControlsResources() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources).TypeHandle);
         private void StaticInitializer_4_Color() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Windows.UI.Color).TypeHandle);
         private void StaticInitializer_5_ValueType() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.ValueType).TypeHandle);
@@ -336,9 +343,12 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
         private void StaticInitializer_20_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.MainViewModel).TypeHandle);
         private void StaticInitializer_21_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.ViewModels.ViewModelBase).TypeHandle);
         private void StaticInitializer_22_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
-        private void StaticInitializer_23_SplashWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.SplashWindow).TypeHandle);
-        private void StaticInitializer_24_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
-        private void StaticInitializer_26_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
+        private void StaticInitializer_23_AcrylicBrush() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Media.AcrylicBrush).TypeHandle);
+        private void StaticInitializer_24_Nullable() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Nullable<global::System.Double>).TypeHandle);
+        private void StaticInitializer_25_TimeSpan() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.TimeSpan).TypeHandle);
+        private void StaticInitializer_26_SplashWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::VisionaryOptimizer.SplashWindow).TypeHandle);
+        private void StaticInitializer_27_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
+        private void StaticInitializer_29_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -352,7 +362,7 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             var newItem = (global::Microsoft.UI.Xaml.Media.GradientStop)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_26_IList(object instance, object item)
+        private void VectorAdd_29_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -516,18 +526,46 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 23:   //  VisionaryOptimizer.SplashWindow
+            case 23:   //  Microsoft.UI.Xaml.Media.AcrylicBrush
+                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Media.XamlCompositionBrushBase"));
+                userType.Activator = Activate_23_AcrylicBrush;
+                userType.StaticInitializer = StaticInitializer_23_AcrylicBrush;
+                userType.AddMemberName("TintColor");
+                userType.AddMemberName("TintOpacity");
+                userType.AddMemberName("AlwaysUseFallback");
+                userType.AddMemberName("TintLuminosityOpacity");
+                userType.AddMemberName("TintTransitionDuration");
+                xamlType = userType;
+                break;
+
+            case 24:   //  System.Nullable`1<Double>
+                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
+                userType.SetBoxedType(GetXamlTypeByName("Double"));
+                userType.BoxInstance = userType.BoxType<global::System.Double>;
+                userType.StaticInitializer = StaticInitializer_24_Nullable;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 25:   //  TimeSpan
+                userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
+                userType.StaticInitializer = StaticInitializer_25_TimeSpan;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 26:   //  VisionaryOptimizer.SplashWindow
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_23_SplashWindow;
-                userType.StaticInitializer = StaticInitializer_23_SplashWindow;
+                userType.Activator = Activate_26_SplashWindow;
+                userType.StaticInitializer = StaticInitializer_26_SplashWindow;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 24:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 27:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_24_TreeViewNode;
-                userType.StaticInitializer = StaticInitializer_24_TreeViewNode;
+                userType.Activator = Activate_27_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_27_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -539,19 +577,19 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 25:   //  Microsoft.UI.Xaml.DependencyObject
+            case 28:   //  Microsoft.UI.Xaml.DependencyObject
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 26:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 29:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_26_IList;
-                userType.CollectionAdd = VectorAdd_26_IList;
+                userType.StaticInitializer = StaticInitializer_29_IList;
+                userType.CollectionAdd = VectorAdd_29_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 27:   //  Int32
+            case 30:   //  Int32
                 xamlType = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
             }
@@ -743,52 +781,102 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
             var that = (global::VisionaryOptimizer.MainWindow)instance;
             return that.ViewModel;
         }
-        private object get_14_TreeViewNode_Children(object instance)
+        private object get_14_AcrylicBrush_TintColor(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            return that.TintColor;
+        }
+        private void set_14_AcrylicBrush_TintColor(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            that.TintColor = (global::Windows.UI.Color)Value;
+        }
+        private object get_15_AcrylicBrush_TintOpacity(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            return that.TintOpacity;
+        }
+        private void set_15_AcrylicBrush_TintOpacity(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            that.TintOpacity = (global::System.Double)Value;
+        }
+        private object get_16_AcrylicBrush_AlwaysUseFallback(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            return that.AlwaysUseFallback;
+        }
+        private void set_16_AcrylicBrush_AlwaysUseFallback(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            that.AlwaysUseFallback = (global::System.Boolean)Value;
+        }
+        private object get_17_AcrylicBrush_TintLuminosityOpacity(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            return that.TintLuminosityOpacity;
+        }
+        private void set_17_AcrylicBrush_TintLuminosityOpacity(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            that.TintLuminosityOpacity = (global::System.Nullable<global::System.Double>)Value;
+        }
+        private object get_18_AcrylicBrush_TintTransitionDuration(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            return that.TintTransitionDuration;
+        }
+        private void set_18_AcrylicBrush_TintTransitionDuration(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
+            that.TintTransitionDuration = (global::System.TimeSpan)Value;
+        }
+        private object get_19_TreeViewNode_Children(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Children;
         }
-        private object get_15_TreeViewNode_Content(object instance)
+        private object get_20_TreeViewNode_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Content;
         }
-        private void set_15_TreeViewNode_Content(object instance, object Value)
+        private void set_20_TreeViewNode_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_16_TreeViewNode_Depth(object instance)
+        private object get_21_TreeViewNode_Depth(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Depth;
         }
-        private object get_17_TreeViewNode_HasChildren(object instance)
+        private object get_22_TreeViewNode_HasChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasChildren;
         }
-        private object get_18_TreeViewNode_HasUnrealizedChildren(object instance)
+        private object get_23_TreeViewNode_HasUnrealizedChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasUnrealizedChildren;
         }
-        private void set_18_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
+        private void set_23_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.HasUnrealizedChildren = (global::System.Boolean)Value;
         }
-        private object get_19_TreeViewNode_IsExpanded(object instance)
+        private object get_24_TreeViewNode_IsExpanded(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.IsExpanded;
         }
-        private void set_19_TreeViewNode_IsExpanded(object instance, object Value)
+        private void set_24_TreeViewNode_IsExpanded(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.IsExpanded = (global::System.Boolean)Value;
         }
-        private object get_20_TreeViewNode_Parent(object instance)
+        private object get_25_TreeViewNode_Parent(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Parent;
@@ -893,50 +981,85 @@ namespace VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo
                 xamlMember.Getter = get_13_MainWindow_ViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
+            case "Microsoft.UI.Xaml.Media.AcrylicBrush.TintColor":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "TintColor", "Windows.UI.Color");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_14_AcrylicBrush_TintColor;
+                xamlMember.Setter = set_14_AcrylicBrush_TintColor;
+                break;
+            case "Microsoft.UI.Xaml.Media.AcrylicBrush.TintOpacity":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "TintOpacity", "Double");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_15_AcrylicBrush_TintOpacity;
+                xamlMember.Setter = set_15_AcrylicBrush_TintOpacity;
+                break;
+            case "Microsoft.UI.Xaml.Media.AcrylicBrush.AlwaysUseFallback":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "AlwaysUseFallback", "Boolean");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_16_AcrylicBrush_AlwaysUseFallback;
+                xamlMember.Setter = set_16_AcrylicBrush_AlwaysUseFallback;
+                break;
+            case "Microsoft.UI.Xaml.Media.AcrylicBrush.TintLuminosityOpacity":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "TintLuminosityOpacity", "System.Nullable`1<Double>");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_17_AcrylicBrush_TintLuminosityOpacity;
+                xamlMember.Setter = set_17_AcrylicBrush_TintLuminosityOpacity;
+                break;
+            case "Microsoft.UI.Xaml.Media.AcrylicBrush.TintTransitionDuration":
+                userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
+                xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "TintTransitionDuration", "TimeSpan");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_18_AcrylicBrush_TintTransitionDuration;
+                xamlMember.Setter = set_18_AcrylicBrush_TintTransitionDuration;
+                break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Children":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Children", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>");
-                xamlMember.Getter = get_14_TreeViewNode_Children;
+                xamlMember.Getter = get_19_TreeViewNode_Children;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Content":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_15_TreeViewNode_Content;
-                xamlMember.Setter = set_15_TreeViewNode_Content;
+                xamlMember.Getter = get_20_TreeViewNode_Content;
+                xamlMember.Setter = set_20_TreeViewNode_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Depth":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Depth", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_16_TreeViewNode_Depth;
+                xamlMember.Getter = get_21_TreeViewNode_Depth;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasChildren":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "HasChildren", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_17_TreeViewNode_HasChildren;
+                xamlMember.Getter = get_22_TreeViewNode_HasChildren;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasUnrealizedChildren":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "HasUnrealizedChildren", "Boolean");
-                xamlMember.Getter = get_18_TreeViewNode_HasUnrealizedChildren;
-                xamlMember.Setter = set_18_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Getter = get_23_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Setter = set_23_TreeViewNode_HasUnrealizedChildren;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.IsExpanded":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_19_TreeViewNode_IsExpanded;
-                xamlMember.Setter = set_19_TreeViewNode_IsExpanded;
+                xamlMember.Getter = get_24_TreeViewNode_IsExpanded;
+                xamlMember.Setter = set_24_TreeViewNode_IsExpanded;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Parent":
                 userType = (global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::VisionaryOptimizer.VisionaryOptimizer_XamlTypeInfo.XamlMember(this, "Parent", "Microsoft.UI.Xaml.Controls.TreeViewNode");
-                xamlMember.Getter = get_20_TreeViewNode_Parent;
+                xamlMember.Getter = get_25_TreeViewNode_Parent;
                 xamlMember.SetIsReadOnly();
                 break;
             }

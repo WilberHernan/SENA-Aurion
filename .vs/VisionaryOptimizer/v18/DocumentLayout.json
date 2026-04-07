@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "D:\\SENA-Aurion\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\splashwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\splashwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\splashwindow.xaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\splashwindow.xaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -13,14 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\splashwindow.xaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\splashwindow.xaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\splashwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|solutionrelative:visionaryoptimizer\\splashwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|VisionaryOptimizer\\VisionaryOptimizer.csproj|d:\\sena-aurion\\visionaryoptimizer\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,24 +34,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "SplashWindow.xaml.cs",
               "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml.cs",
               "RelativeDocumentMoniker": "VisionaryOptimizer\\SplashWindow.xaml.cs",
               "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml.cs",
               "RelativeToolTip": "VisionaryOptimizer\\SplashWindow.xaml.cs",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAKcAAAAAAAAAAAAMwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-07T13:38:20.749Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "App.xaml",
               "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\App.xaml",
               "RelativeDocumentMoniker": "VisionaryOptimizer\\App.xaml",
@@ -59,12 +59,11 @@
               "RelativeToolTip": "VisionaryOptimizer\\App.xaml",
               "ViewState": "AgIAAIYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-07T13:35:16.214Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T13:35:16.214Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\MainWindow.xaml",
               "RelativeDocumentMoniker": "VisionaryOptimizer\\MainWindow.xaml",
@@ -77,13 +76,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "SplashWindow.xaml",
               "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml",
               "RelativeDocumentMoniker": "VisionaryOptimizer\\SplashWindow.xaml",
               "ToolTip": "D:\\SENA-Aurion\\VisionaryOptimizer\\SplashWindow.xaml",
               "RelativeToolTip": "VisionaryOptimizer\\SplashWindow.xaml",
-              "ViewState": "AgIAAGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2026-04-06T23:23:14.722Z",
               "EditorCaption": ""
@@ -102,7 +101,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "D:\\SENA-Aurion\\VisionaryOptimizer\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "VisionaryOptimizer\\MainWindow.xaml.cs",
@@ -110,8 +109,7 @@
               "RelativeToolTip": "VisionaryOptimizer\\MainWindow.xaml.cs",
               "ViewState": "AgIAAF4AAAAAAAAAAAAwwCgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T17:33:22.759Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-06T17:33:22.759Z"
             }
           ]
         }

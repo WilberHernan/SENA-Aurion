@@ -1,0 +1,315 @@
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.UI.Composition;
+
+namespace VisionaryOptimizer
+{
+    public sealed partial class SplashWindow : Window
+    {
+        private bool _isAnimating = false;
+
+        public SplashWindow()
+        {
+            this.InitializeComponent();
+
+            // Set window size
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+            appWindow.Resize(new SizeInt32 { Width = 900, Height = 580 });
+
+            // Center window (approximation without complex multi-monitor math)
+            if (DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary) is DisplayArea displayArea)
+            {
+                var workArea = displayArea.WorkArea;
+                var x = workArea.X + (workArea.Width - 900) / 2;
+                var y = workArea.Y + (workArea.Height - 580) / 2;
+                appWindow.Move(new PointInt32 { X = x, Y = y });
+            }
+
+            // Custom TitleBar
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
+
+            // Start Animation
+            this.Activated += SplashWindow_Activated;
+        }
+
+        private void SplashWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            this.Activated -= SplashWindow_Activated;
+            ScrollAnimation.Begin();
+        }
+
+        private void TopButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = new MainWindow();
+
+            // Animación Splash (sale por la izquierda)
+            var compositor = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SplashRoot).Compositor;
+            var splashVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SplashRoot);
+
+            var slideOutAnimation = compositor.CreateVector3KeyFrameAnimation();
+            slideOutAnimation.InsertKeyFrame(1.0f, new System.Numerics.Vector3(-(float)SplashRoot.ActualWidth, 0, 0), compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+            slideOutAnimation.Duration = TimeSpan.FromMilliseconds(350);
+
+            var fadeOutAnimation = compositor.CreateScalarKeyFrameAnimation();
+            fadeOutAnimation.InsertKeyFrame(1.0f, 0.0f, compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+            fadeOutAnimation.Duration = TimeSpan.FromMilliseconds(350);
+
+            var batch = compositor.CreateScopedBatch(Microsoft.UI.Composition.CompositionBatchTypes.Animation);
+            splashVisual.StartAnimation("Offset", slideOutAnimation);
+            splashVisual.StartAnimation("Opacity", fadeOutAnimation);
+
+            batch.Completed += (s, ev) =>
+            {
+                this.Close();
+            };
+            batch.End();
+
+            mainWindow.Activate();
+        }
+
+        private async void SpecsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isAnimating) return;
+            _isAnimating = true;
+
+            var compositor = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(this.UIContainer).Compositor;
+            var contentVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(UIContainer);
+            var modalVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SpecsModal);
+
+            // EFECTO DESINTEGRACIÓN (500ms) - Solo en el UIContainer
+            var contentFadeOut = compositor.CreateScalarKeyFrameAnimation();
+            contentFadeOut.InsertKeyFrame(0.0f, 1.0f);
+
+            // Simular un efecto "granular" y fragmentado intermedio alterando la opacidad erráticamente antes de desaparecer
+            contentFadeOut.InsertKeyFrame(0.2f, 0.7f, compositor.CreateStepEasingFunction(3));
+            contentFadeOut.InsertKeyFrame(0.5f, 0.4f, compositor.CreateStepEasingFunction(4));
+            contentFadeOut.InsertKeyFrame(0.8f, 0.1f, compositor.CreateStepEasingFunction(2));
+            contentFadeOut.InsertKeyFrame(1.0f, 0.0f, compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.9f), new System.Numerics.Vector2(0.4f, 1.1f)));
+            contentFadeOut.Duration = TimeSpan.FromMilliseconds(500);
+
+            var contentScaleOut = compositor.CreateVector3KeyFrameAnimation();
+            contentScaleOut.InsertKeyFrame(1.0f, new System.Numerics.Vector3(0.95f, 0.95f, 1f));
+            contentScaleOut.Duration = TimeSpan.FromMilliseconds(500);
+
+            var batch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+            contentVisual.StartAnimation("Opacity", contentFadeOut);
+            contentVisual.StartAnimation("Scale", contentScaleOut);
+
+            batch.Completed += async (s, ev) =>
+            {
+                UIContainer.Visibility = Visibility.Collapsed;
+
+                SpecsModal.Visibility = Visibility.Visible;
+                modalVisual.Opacity = 0.0f;
+                modalVisual.Scale = new System.Numerics.Vector3(0.95f, 0.95f, 1f);
+
+                // Modal aparece sutilmente (250ms)
+                var modalFadeIn = compositor.CreateScalarKeyFrameAnimation();
+                modalFadeIn.InsertKeyFrame(1.0f, 1.0f);
+                modalFadeIn.Duration = TimeSpan.FromMilliseconds(250);
+
+                var modalScaleIn = compositor.CreateVector3KeyFrameAnimation();
+                modalScaleIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(1f, 1f, 1f), compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.9f), new System.Numerics.Vector2(0.4f, 1.0f)));
+                modalScaleIn.Duration = TimeSpan.FromMilliseconds(250);
+
+                var modalBatch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+                modalVisual.StartAnimation("Opacity", modalFadeIn);
+                modalVisual.StartAnimation("Scale", modalScaleIn);
+
+                // Cargar la info una vez
+                if (SpecsContainer.Children.Count == 0)
+                {
+                    SpecsLoadingText.Visibility = Visibility.Visible;
+                    var info = await VisionaryOptimizer.Services.SystemInfoService.GetSystemInfoAsync();
+                    SpecsLoadingText.Visibility = Visibility.Collapsed;
+
+                    SpecsContainer.Children.Clear();
+                    AddSpecCard("SISTEMA OPERATIVO", $"{info.OsName} (Build {info.OsVersion})", $"{info.OsName} (Build {info.OsVersion})");
+                    AddSpecCard("NOMBRE DEL EQUIPO", info.MachineName, info.MachineName);
+                    AddSpecCard("DOMINIO / GRUPO", info.Domain, info.Domain);
+                    AddSpecCard("NÚMERO DE SERIE", info.SerialNumber, info.SerialNumber);
+                    AddSpecCard("PROCESADOR (CPU)", $"{info.CpuModel} | {info.CpuCoresText}", info.CpuModel);
+                    AddSpecCard("MEMORIA (RAM)", info.RamTotalText, info.RamTotalText);
+                    AddSpecCard("GRÁFICOS (GPU)", info.GpuModel, info.GpuModel);
+
+                    foreach (var disk in info.Disks)
+                    {
+                        AddSpecCard("ALMACENAMIENTO", disk.DisplayText, disk.CopyText);
+                    }
+
+                    foreach (var net in info.MacAddresses)
+                    {
+                        AddSpecCard("RED (MAC)", net.DisplayText, net.CopyText);
+                    }
+                }
+
+                modalBatch.Completed += (s2, ev2) =>
+                {
+                    _isAnimating = false;
+                };
+                modalBatch.End();
+            };
+            batch.End();
+        }
+
+        private void AddSpecCard(string label, string value, string copyText)
+        {
+            var border = new Border
+            {
+                CornerRadius = new CornerRadius(14),
+                Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(204, 26, 26, 26)), // #CC1A1A1A (~0.8 opacidad)
+                BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(51, 255, 255, 255)), // #33FFFFFF
+                BorderThickness = new Thickness(1),
+                Padding = new Thickness(20, 16, 20, 16)
+            };
+
+            var grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            var stack = new StackPanel { Orientation = Orientation.Vertical, Spacing = 6, VerticalAlignment = VerticalAlignment.Center };
+            Grid.SetColumn(stack, 0);
+
+            var labelBlock = new TextBlock
+            {
+                Text = label,
+                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(217, 255, 255, 255)), // #D9FFFFFF
+                FontSize = 12,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI Variable"),
+                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+            };
+
+            var valueBlock = new TextBlock
+            {
+                Text = value,
+                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(178, 255, 255, 255)), // #B2FFFFFF
+                FontSize = 13,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Cascadia Code"),
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 0, 10, 0)
+            };
+
+            stack.Children.Add(labelBlock);
+            stack.Children.Add(valueBlock);
+
+            var copyButton = new Button
+            {
+                Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(25, 255, 255, 255)), // #19FFFFFF
+                BorderThickness = new Thickness(1),
+                BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(25, 255, 255, 255)),
+                CornerRadius = new CornerRadius(8),
+                Padding = new Thickness(12, 8, 12, 8),
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            Grid.SetColumn(copyButton, 1);
+
+            var btnStack = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8 };
+            var btnIcon = new FontIcon { Glyph = "\uE8C8", FontSize = 13, Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(217, 255, 255, 255)) };
+            var btnText = new TextBlock { Text = "Copiar", FontSize = 12, Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(217, 255, 255, 255)) };
+            btnStack.Children.Add(btnIcon);
+            btnStack.Children.Add(btnText);
+            copyButton.Content = btnStack;
+
+            copyButton.Click += (s, e) =>
+            {
+                var package = new Windows.ApplicationModel.DataTransfer.DataPackage();
+                package.SetText(copyText);
+                Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(package);
+
+                btnIcon.Glyph = "\uE8FB"; // Checkmark XAML Icon
+                btnText.Text = "Copiado";
+                copyButton.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(51, 29, 184, 112)); // Tono verde exito
+
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+                timer.Tick += (ts, te) =>
+                {
+                    btnIcon.Glyph = "\uE8C8";
+                    btnText.Text = "Copiar";
+                    copyButton.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(25, 255, 255, 255));
+                    timer.Stop();
+                };
+                timer.Start();
+            };
+
+            grid.Children.Add(stack);
+            grid.Children.Add(copyButton);
+            border.Child = grid;
+
+            SpecsContainer.Children.Add(border);
+        }
+
+        private void CloseSpecsModal_Click(object sender, RoutedEventArgs e)
+        {
+            TriggerReverseAnimation();
+        }
+
+        private void SpecsModal_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            TriggerReverseAnimation();
+        }
+
+        private void TriggerReverseAnimation()
+        {
+            if (_isAnimating || SpecsModal.Visibility == Visibility.Collapsed) return;
+            _isAnimating = true;
+
+            var compositor = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(this.UIContainer).Compositor;
+            var contentVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(UIContainer);
+            var modalVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SpecsModal);
+
+            // 1. Desvanece el Modal
+            var modalFadeOut = compositor.CreateScalarKeyFrameAnimation();
+            modalFadeOut.InsertKeyFrame(1.0f, 0.0f);
+            modalFadeOut.Duration = TimeSpan.FromMilliseconds(150);
+
+            var batchModal = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+            modalVisual.StartAnimation("Opacity", modalFadeOut);
+
+            batchModal.Completed += (s, ev) =>
+            {
+                SpecsModal.Visibility = Visibility.Collapsed;
+
+                // 2. Reaparecer el contenido original con granularidad reverso (500ms)
+                UIContainer.Visibility = Visibility.Visible;
+
+                contentVisual.Scale = new System.Numerics.Vector3(0.95f, 0.95f, 1f);
+                contentVisual.Opacity = 0.0f;
+
+                var contentFadeIn = compositor.CreateScalarKeyFrameAnimation();
+                contentFadeIn.InsertKeyFrame(0.0f, 0.0f);
+                contentFadeIn.InsertKeyFrame(0.3f, 0.2f, compositor.CreateStepEasingFunction(2));
+                contentFadeIn.InsertKeyFrame(0.6f, 0.5f, compositor.CreateStepEasingFunction(3));
+                contentFadeIn.InsertKeyFrame(0.8f, 0.8f, compositor.CreateStepEasingFunction(2));
+                contentFadeIn.InsertKeyFrame(1.0f, 1.0f, compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.9f), new System.Numerics.Vector2(0.4f, 1.1f)));
+                contentFadeIn.Duration = TimeSpan.FromMilliseconds(500);
+
+                var contentScaleIn = compositor.CreateVector3KeyFrameAnimation();
+                contentScaleIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(1f, 1f, 1f));
+                contentScaleIn.Duration = TimeSpan.FromMilliseconds(500);
+
+                var batchContent = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+                contentVisual.StartAnimation("Opacity", contentFadeIn);
+                contentVisual.StartAnimation("Scale", contentScaleIn);
+
+                batchContent.Completed += (s2, ev2) =>
+                {
+                    _isAnimating = false;
+                };
+                batchContent.End();
+            };
+            batchModal.End();
+        }
+
+        private void SpecsModalContent_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            e.Handled = true; // Prevenir que el clic dentro del modal lo cierre
+        }
+    }
+}

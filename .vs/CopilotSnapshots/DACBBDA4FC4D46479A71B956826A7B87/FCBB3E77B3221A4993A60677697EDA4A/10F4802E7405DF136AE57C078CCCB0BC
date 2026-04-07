@@ -1,0 +1,73 @@
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
+using System;
+
+namespace VisionaryOptimizer
+{
+    public sealed partial class SplashWindow : Window
+    {
+        public SplashWindow()
+        {
+            this.InitializeComponent();
+
+            // Set window size
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+            appWindow.Resize(new SizeInt32 { Width = 900, Height = 580 });
+
+            // Center window (approximation without complex multi-monitor math)
+            if (DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary) is DisplayArea displayArea)
+            {
+                var workArea = displayArea.WorkArea;
+                var x = workArea.X + (workArea.Width - 900) / 2;
+                var y = workArea.Y + (workArea.Height - 580) / 2;
+                appWindow.Move(new PointInt32 { X = x, Y = y });
+            }
+
+            // Custom TitleBar
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
+
+            // Start Animation
+            this.Activated += SplashWindow_Activated;
+        }
+
+        private void SplashWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            this.Activated -= SplashWindow_Activated;
+            ScrollAnimation.Begin();
+        }
+
+        private void TopButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = new MainWindow();
+            
+            // Animación Splash (sale por la izquierda)
+            var compositor = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SplashRoot).Compositor;
+            var splashVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SplashRoot);
+            
+            var slideOutAnimation = compositor.CreateVector3KeyFrameAnimation();
+            slideOutAnimation.InsertKeyFrame(1.0f, new System.Numerics.Vector3(-(float)SplashRoot.ActualWidth, 0, 0), compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+            slideOutAnimation.Duration = TimeSpan.FromMilliseconds(350);
+            
+            var fadeOutAnimation = compositor.CreateScalarKeyFrameAnimation();
+            fadeOutAnimation.InsertKeyFrame(1.0f, 0.0f, compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+            fadeOutAnimation.Duration = TimeSpan.FromMilliseconds(350);
+
+            var batch = compositor.CreateScopedBatch(Microsoft.UI.Composition.CompositionBatchTypes.Animation);
+            splashVisual.StartAnimation("Offset", slideOutAnimation);
+            splashVisual.StartAnimation("Opacity", fadeOutAnimation);
+
+            batch.Completed += (s, ev) =>
+            {
+                this.Close();
+            };
+            batch.End();
+
+            mainWindow.Activate();
+        }
+    }
+}

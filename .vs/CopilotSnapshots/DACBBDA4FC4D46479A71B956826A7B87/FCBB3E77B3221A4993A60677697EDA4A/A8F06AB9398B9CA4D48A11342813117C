@@ -1,0 +1,155 @@
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
+using System;
+
+namespace VisionaryOptimizer
+{
+    public sealed partial class SplashWindow : Window
+    {
+        public SplashWindow()
+        {
+            this.InitializeComponent();
+
+            // Set window size
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+            appWindow.Resize(new SizeInt32 { Width = 900, Height = 580 });
+
+            // Center window (approximation without complex multi-monitor math)
+            if (DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary) is DisplayArea displayArea)
+            {
+                var workArea = displayArea.WorkArea;
+                var x = workArea.X + (workArea.Width - 900) / 2;
+                var y = workArea.Y + (workArea.Height - 580) / 2;
+                appWindow.Move(new PointInt32 { X = x, Y = y });
+            }
+
+            // Custom TitleBar
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
+
+            // Start Animation
+            this.Activated += SplashWindow_Activated;
+        }
+
+        private void SplashWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            this.Activated -= SplashWindow_Activated;
+            ScrollAnimation.Begin();
+        }
+
+        private void TopButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = new MainWindow();
+            
+            // Animación Splash (sale por la izquierda)
+            var compositor = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SplashRoot).Compositor;
+            var splashVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SplashRoot);
+            
+            var slideOutAnimation = compositor.CreateVector3KeyFrameAnimation();
+            slideOutAnimation.InsertKeyFrame(1.0f, new System.Numerics.Vector3(-(float)SplashRoot.ActualWidth, 0, 0), compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+            slideOutAnimation.Duration = TimeSpan.FromMilliseconds(350);
+            
+            var fadeOutAnimation = compositor.CreateScalarKeyFrameAnimation();
+            fadeOutAnimation.InsertKeyFrame(1.0f, 0.0f, compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.0f), new System.Numerics.Vector2(0.0f, 1.0f)));
+            fadeOutAnimation.Duration = TimeSpan.FromMilliseconds(350);
+
+            var batch = compositor.CreateScopedBatch(Microsoft.UI.Composition.CompositionBatchTypes.Animation);
+            splashVisual.StartAnimation("Offset", slideOutAnimation);
+            splashVisual.StartAnimation("Opacity", fadeOutAnimation);
+
+            batch.Completed += (s, ev) =>
+            {
+                this.Close();
+            };
+            batch.End();
+
+            mainWindow.Activate();
+        }
+
+        private async void SpecsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SpecsModal.Visibility = Visibility.Visible;
+
+            if (SpecsContainer.Children.Count == 0)
+            {
+                SpecsLoadingText.Visibility = Visibility.Visible;
+                var info = await VisionaryOptimizer.Services.SystemInfoService.GetSystemInfoAsync();
+                SpecsLoadingText.Visibility = Visibility.Collapsed;
+
+                SpecsContainer.Children.Clear();
+                AddSpecCard("CPU", info.CpuModel);
+                AddSpecCard("RAM", info.RamTotalText);
+                AddSpecCard("GPU", info.GpuModel);
+
+                if (info.Disks.Count > 0)
+                    AddSpecCard("ALMACENAMIENTO", info.Disks[0].CopyText);
+                else
+                    AddSpecCard("ALMACENAMIENTO", "Desconocido");
+
+                if (info.MacAddresses.Count > 0)
+                    AddSpecCard("RED", info.MacAddresses[0].CopyText);
+                else
+                    AddSpecCard("RED", "Desconocido");
+
+                AddSpecCard("SO", $"{info.OsName} (Build {info.OsVersion})");
+            }
+        }
+
+        private void AddSpecCard(string label, string value)
+        {
+            var border = new Border
+            {
+                CornerRadius = new CornerRadius(14),
+                Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(204, 26, 26, 26)), // #CC1A1A1A
+                BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(25, 255, 255, 255)), // #19FFFFFF
+                BorderThickness = new Thickness(1),
+                Padding = new Thickness(16, 12, 16, 12)
+            };
+
+            var stack = new StackPanel { Orientation = Orientation.Vertical, Spacing = 4 };
+
+            var labelBlock = new TextBlock
+            {
+                Text = label,
+                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(217, 255, 255, 255)), // #D9FFFFFF
+                FontSize = 12,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI Variable"),
+                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+            };
+
+            var valueBlock = new TextBlock
+            {
+                Text = value,
+                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(115, 255, 255, 255)), // #73FFFFFF
+                FontSize = 13,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Cascadia Code"),
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            stack.Children.Add(labelBlock);
+            stack.Children.Add(valueBlock);
+            border.Child = stack;
+
+            SpecsContainer.Children.Add(border);
+        }
+
+        private void CloseSpecsModal_Click(object sender, RoutedEventArgs e)
+        {
+            SpecsModal.Visibility = Visibility.Collapsed;
+        }
+
+        private void SpecsModal_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            SpecsModal.Visibility = Visibility.Collapsed;
+        }
+
+        private void SpecsModalContent_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            e.Handled = true; // Prevenir que el clic dentro del modal lo cierre
+        }
+    }
+}
