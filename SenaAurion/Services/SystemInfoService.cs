@@ -1,0 +1,323 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management;
+using System.Net.Sockets;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Microsoft.Win32;
+
+namespace SenaAurion.Services;
+
+public class DiskInfoModel
+{
+    public string DisplayText { get; set; } = string.Empty;
+    public string CopyText { get; set; } = string.Empty;
+}
+
+public class NetworkMacModel
+{
+    public string DisplayText { get; set; } = string.Empty;
+    public string CopyText { get; set; } = string.Empty;
+}
+
+public class SystemInfoModel
+{
+    public string MachineName { get; set; } = "Cargando...";
+    public string SerialNumber { get; set; } = "Cargando...";
+    public string OsName { get; set; } = "Cargando...";
+    public string OsVersion { get; set; } = "Cargando...";
+    public string Domain { get; set; } = "Cargando...";
+
+    public string CpuModel { get; set; } = "Cargando...";
+    public string CpuCoresText { get; set; } = "Cargando...";
+
+    public string GpuModel { get; set; } = "Cargando...";
+
+    public string RamTotalText { get; set; } = "Cargando...";
+
+    public List<DiskInfoModel> Disks { get; set; } = new();
+    public List<NetworkMacModel> MacAddresses { get; set; } = new();
+}
+
+public static class SystemInfoService
+{
+    public static async Task<SystemInfoModel> GetSystemInfoAsync()
+    {
+        return await Task.Run(() =>
+        {
+            var info = new SystemInfoModel();
+
+            try 
+            {
+                // 1. NOMBRE DE EQUIPO
+                try
+                {
+                    info.MachineName = Environment.MachineName;
+                    if (string.IsNullOrEmpty(info.MachineName) || info.MachineName.Length > 15) // Fallback to NetBIOS equivalent length
+                    {
+                        info.MachineName = System.Net.Dns.GetHostName();
+                    }
+                }
+                catch { info.MachineName = "No disponible"; }
+
+                // 10. DOMINIO
+                try
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Domain FROM Win32_ComputerSystem");
+                    foreach (var obj in searcher.Get())
+                    {
+                        info.Domain = obj["Domain"]?.ToString() ?? Environment.UserDomainName;
+                        break;
+                    }
+                    if (string.IsNullOrEmpty(info.Domain)) info.Domain = Environment.UserDomainName;
+                }
+                catch { info.Domain = Environment.UserDomainName; }
+
+                // 8. OBTENER SISTEMA OPERATIVO & 9. OBTENER VERSIÃ“N DE WINDOWS
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Caption, Version FROM Win32_OperatingSystem");
+                    foreach (var obj in searcher.Get())
+                    {
+                        info.OsName = obj["Caption"]?.ToString()?.Trim() ?? "Windows";
+                        info.OsVersion = obj["Version"]?.ToString() ?? "";
+                        break;
+                    }
+
+                    if (string.IsNullOrEmpty(info.OsVersion))
+                    {
+                        using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+                        info.OsVersion = key?.GetValue("CurrentBuildNumber")?.ToString() ?? Environment.OSVersion.Version.ToString();
+                    }
+                }
+                catch 
+                { 
+                    info.OsName = "Windows"; 
+                    info.OsVersion = Environment.OSVersion.Version.ToString(); 
+                }
+
+                // 2. NÃšMERO DE SERIE
+                try 
+                {
+                    string serial = "";
+                    string[] badSerialPatterns = { "System Serial Number", "To Be Filled", "Default", "None", "O.E.M.", "OEM" };
+
+                    bool IsValidSerial(string s)
+                    {
+                        if (string.IsNullOrWhiteSpace(s)) return false;
+                        foreach (var pat in badSerialPatterns)
+                            if (s.IndexOf(pat, StringComparison.OrdinalIgnoreCase) >= 0) return false;
+                        return true;
+                    }
+
+                    // Priority 1: Win32_BIOS
+                    if (string.IsNullOrEmpty(serial))
+                    {
+                        using var s1 = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
+                        foreach (var obj in s1.Get())
+                        {
+                            var val = obj["SerialNumber"]?.ToString();
+                            if (IsValidSerial(val)) { serial = val!; break; }
+                        }
+                    }
+
+                    // Priority 2: Win32_ComputerSystemProduct IdentifyingNumber
+                    if (string.IsNullOrEmpty(serial))
+                    {
+                        using var s2 = new ManagementObjectSearcher("SELECT IdentifyingNumber FROM Win32_ComputerSystemProduct");
+                        foreach (var obj in s2.Get())
+                        {
+                            var val = obj["IdentifyingNumber"]?.ToString();
+                            if (IsValidSerial(val)) { serial = val!; break; }
+                        }
+                    }
+
+                    // Priority 3: Win32_BaseBoard
+                    if (string.IsNullOrEmpty(serial))
+                    {
+                        using var s3 = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BaseBoard");
+                        foreach (var obj in s3.Get())
+                        {
+                            var val = obj["SerialNumber"]?.ToString();
+                            if (IsValidSerial(val)) { serial = val!; break; }
+                        }
+                    }
+
+                    // Priority 4: Win32_ComputerSystemProduct UUID
+                    if (string.IsNullOrEmpty(serial))
+                    {
+                        using var s4 = new ManagementObjectSearcher("SELECT UUID FROM Win32_ComputerSystemProduct");
+                        foreach (var obj in s4.Get())
+                        {
+                            var val = obj["UUID"]?.ToString();
+                            if (!string.IsNullOrWhiteSpace(val) && !val.Replace("-", "").All(c => c == 'F' || c == '0'))
+                            {
+                                serial = val;
+                                break;
+                            }
+                        }
+                    }
+
+                    info.SerialNumber = string.IsNullOrEmpty(serial) ? "Desconocido" : serial;
+                }
+                catch { info.SerialNumber = "No disponible"; }
+
+                // 3. CPU
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Name, NumberOfCores, NumberOfLogicalProcessors FROM Win32_Processor");
+                    foreach (var obj in searcher.Get())
+                    {
+                        info.CpuModel = obj["Name"]?.ToString()?.Trim() ?? "Desconocido";
+                        info.CpuCoresText = $"{obj["NumberOfCores"]} fÃ­sicos / {obj["NumberOfLogicalProcessors"]} lÃ³gicos";
+                        break;
+                    }
+                }
+                catch { info.CpuModel = "No disponible"; info.CpuCoresText = "No disponible"; }
+
+                // 6. GPU
+                try 
+                {
+                    var gpus = new List<string>();
+                    using var searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_VideoController");
+                    foreach (var obj in searcher.Get())
+                    {
+                        var name = obj["Name"]?.ToString()?.Trim();
+                        if (!string.IsNullOrEmpty(name)) gpus.Add(name);
+                    }
+                    if (gpus.Any())
+                        info.GpuModel = string.Join(" | ", gpus);
+                    else
+                        info.GpuModel = "Desconocida";
+                }
+                catch { info.GpuModel = "No disponible"; }
+
+                // 4. RAM
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Capacity, Speed, SMBIOSMemoryType FROM Win32_PhysicalMemory");
+                    long totalCapacity = 0;
+                    uint speed = 0;
+                    int typeCode = 0;
+
+                    foreach (var obj in searcher.Get())
+                    {
+                        totalCapacity += Convert.ToInt64(obj["Capacity"] ?? 0);
+                        if (speed == 0) speed = Convert.ToUInt32(obj["Speed"] ?? 0);
+                        if (typeCode == 0) typeCode = Convert.ToInt32(obj["SMBIOSMemoryType"] ?? 0);
+                    }
+
+                    string typeStr = typeCode switch {
+                        20 => "DDR",
+                        21 => "DDR2",
+                        24 => "DDR3",
+                        26 => "DDR4",
+                        34 => "DDR5",
+                        _ => "Desconocido"
+                    };
+
+                    if (totalCapacity > 0)
+                    {
+                        double capacityGb = Math.Round(totalCapacity / (1024.0 * 1024.0 * 1024.0), 2);
+                        string speedStr = speed > 0 ? $"{speed} MHz" : "Desconocida";
+                        info.RamTotalText = $"{capacityGb:F2} GB ({typeStr}-{speedStr})";
+                    }
+                    else
+                    {
+                        info.RamTotalText = "Desconocida";
+                    }
+                }
+                catch { info.RamTotalText = "No disponible"; }
+
+                // 5. DISKS
+                try 
+                {
+                    using var searcher = new ManagementObjectSearcher("SELECT Model, Size, MediaType FROM Win32_DiskDrive");
+                    foreach (var obj in searcher.Get())
+                    {
+                        long size = Convert.ToInt64(obj["Size"] ?? 0);
+                        string mediaType = obj["MediaType"]?.ToString() ?? "";
+                        string model = obj["Model"]?.ToString() ?? "Disk";
+
+                        bool isSsd = mediaType.Contains("SSD", StringComparison.OrdinalIgnoreCase) || model.Contains("SSD", StringComparison.OrdinalIgnoreCase);
+                        string shortMedia = isSsd ? "SSD" : (mediaType.Contains("Fixed") || mediaType.Contains("hard disk", StringComparison.OrdinalIgnoreCase) ? "HDD" : "Unknown");
+                        string emoji = isSsd ? "ðŸ“€" : "ðŸ’¿";
+
+                        string sizeText;
+                        if (size >= 1073741824) 
+                            sizeText = $"{Math.Round(size / (1024.0 * 1024.0 * 1024.0), 2)} GB";
+                        else if (size > 0)
+                            sizeText = $"{Math.Round(size / (1024.0 * 1024.0), 2)} MB";
+                        else
+                            sizeText = "Desconocido";
+
+                        string cleanName = $"{model} {sizeText} {shortMedia}";
+
+                        info.Disks.Add(new DiskInfoModel
+                        {
+                            DisplayText = $"{emoji} {cleanName}",
+                            CopyText = cleanName
+                        });
+                    }
+                }
+                catch { info.Disks.Add(new DiskInfoModel { DisplayText = "No disponible", CopyText = "" }); }
+
+                // 7. MAC ADDRESSES
+                try 
+                {
+                    // Obtener InterfaceIndex activa si existe la ruta destino 0.0.0.0
+                    uint? activeInterfaceIndex = null;
+                    try 
+                    {
+                        using var routeSearcher = new ManagementObjectSearcher("SELECT InterfaceIndex, Destination FROM Win32_IP4RouteTable WHERE Destination='0.0.0.0'");
+                        foreach (var route in routeSearcher.Get())
+                        {
+                            activeInterfaceIndex = Convert.ToUInt32(route["InterfaceIndex"]);
+                            break; // Solo necesitamos la primera ruta default
+                        }
+                    }
+                    catch { /* Fallback, no exception loop */ }
+
+                    using var adapterSearcher = new ManagementObjectSearcher("SELECT InterfaceIndex, MACAddress, NetConnectionID, AdapterType, PNPDeviceID, NetEnabled, PhysicalAdapter FROM Win32_NetworkAdapter");
+                    foreach (var adapter in adapterSearcher.Get())
+                    {
+                        bool netEnabled = Convert.ToBoolean(adapter["NetEnabled"] ?? false);
+                        bool isPhysical = Convert.ToBoolean(adapter["PhysicalAdapter"] ?? false);
+                        string pnpId = adapter["PNPDeviceID"]?.ToString() ?? "";
+                        string mac = adapter["MACAddress"]?.ToString() ?? "";
+
+                        if (netEnabled && isPhysical && !string.IsNullOrEmpty(mac) && !pnpId.Contains("ROOT", StringComparison.OrdinalIgnoreCase))
+                        {
+                            uint adapterIndex = Convert.ToUInt32(adapter["InterfaceIndex"] ?? 0);
+                            string netConnId = adapter["NetConnectionID"]?.ToString() ?? "";
+                            string adapterType = adapter["AdapterType"]?.ToString() ?? "";
+
+                            bool isWifi = netConnId.Contains("Wi-Fi", StringComparison.OrdinalIgnoreCase) || adapterType.Contains("Wireless", StringComparison.OrdinalIgnoreCase);
+                            string typeLabel = isWifi ? "Wi-Fi" : "LAN";
+                            string prefix = (activeInterfaceIndex.HasValue && adapterIndex == activeInterfaceIndex.Value) ? "[*]" : "";
+
+                            string formattedMac = mac.Replace(":", "-"); // Fallback for safety output
+
+                            info.MacAddresses.Add(new NetworkMacModel
+                            {
+                                DisplayText = $"{prefix}{formattedMac}({typeLabel})",
+                                CopyText = mac
+                            });
+                        }
+                    }
+
+                    if (!info.MacAddresses.Any())
+                        info.MacAddresses.Add(new NetworkMacModel { DisplayText = "Sin MAC activa", CopyText = "" });
+                }
+                catch { info.MacAddresses.Add(new NetworkMacModel { DisplayText = "No disponible", CopyText = "" }); }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"SystemInfoService error: {ex.Message}");
+            }
+
+            return info;
+        });
+    }
+}
