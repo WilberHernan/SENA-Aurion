@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Will\\Documents\\SENA-Aurion\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|c:\\users\\will\\documents\\sena-aurion\\senaaurion\\shell\\mainshellwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|solutionrelative:senaaurion\\shell\\mainshellwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|c:\\users\\will\\documents\\sena-aurion\\senaaurion\\shell\\mainshellwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|solutionrelative:senaaurion\\shell\\mainshellwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|c:\\users\\will\\documents\\sena-aurion\\senaaurion\\shell\\mainshellwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|solutionrelative:senaaurion\\shell\\mainshellwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,33 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "MainShellWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Shell\\MainShellWindow.xaml.cs",
               "RelativeDocumentMoniker": "SenaAurion\\Shell\\MainShellWindow.xaml.cs",
               "ToolTip": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Shell\\MainShellWindow.xaml.cs",
               "RelativeToolTip": "SenaAurion\\Shell\\MainShellWindow.xaml.cs",
-              "ViewState": "AgIAABIDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACgAAAAAAAAAAAAhwC8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-07T18:16:08.474Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainShellWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Shell\\MainShellWindow.xaml",
               "RelativeDocumentMoniker": "SenaAurion\\Shell\\MainShellWindow.xaml",
               "ToolTip": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Shell\\MainShellWindow.xaml",
               "RelativeToolTip": "SenaAurion\\Shell\\MainShellWindow.xaml",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAM8AAAAAAAAAAAAAANYAAABuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-07T18:15:59.089Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T18:15:59.089Z"
             }
           ]
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.UI.Composition;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -51,13 +51,13 @@ public sealed partial class MainShellWindow : Window
             var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
             var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
             var appWindow = AppWindow.GetFromWindowId(windowId);
-            appWindow.Resize(new SizeInt32 { Width = 1409, Height = 684 });
+            appWindow.Resize(new SizeInt32 { Width = 900, Height = 580 });
 
             if (DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary) is DisplayArea displayArea)
             {
                 var workArea = displayArea.WorkArea;
-                var x = workArea.X + (workArea.Width - 1409) / 2;
-                var y = workArea.Y + (workArea.Height - 684) / 2;
+                var x = workArea.X + (workArea.Width - 900) / 2;
+                var y = workArea.Y + (workArea.Height - 580) / 2;
                 appWindow.Move(new PointInt32 { X = x, Y = y });
             }
 
