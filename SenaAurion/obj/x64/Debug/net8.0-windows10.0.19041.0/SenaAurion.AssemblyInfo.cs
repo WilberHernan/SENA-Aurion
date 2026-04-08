@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SenaAurion")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46e111ba4da61fc61f09af4b81892ed3f3e80ca6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c7118d24a7cd21877346c30ba917a80a34982a1b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SenaAurion")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SenaAurion")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

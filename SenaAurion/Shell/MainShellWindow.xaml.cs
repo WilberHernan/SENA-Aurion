@@ -35,6 +35,7 @@ public sealed partial class MainShellWindow : Window
         var provider = new JsonOptimizationDataProvider();
 
         ViewModel = new MainViewModel(provider, engine);
+        ViewModel.AdvancedUninstallReviewRequested += ViewModel_AdvancedUninstallReviewRequested;
 
         try 
         {
@@ -71,6 +72,121 @@ public sealed partial class MainShellWindow : Window
 
         this.Activated += MainWindow_Activated;
         this.SizeChanged += MainWindow_SizeChanged;
+    }
+
+    private bool _isSearchOpen;
+
+    private void SearchToggleButton_Click(object sender, RoutedEventArgs e)
+    {
+        _isSearchOpen = !_isSearchOpen;
+
+        // Make it reliable: toggle visibility + animate width/opacity
+        SearchBoxHost.Visibility = Visibility.Visible;
+        double targetWidth = _isSearchOpen ? 240 : 0;
+        double targetOpacity = _isSearchOpen ? 1 : 0;
+
+        var sb = new Microsoft.UI.Xaml.Media.Animation.Storyboard();
+
+        var widthAnim = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
+        {
+            To = targetWidth,
+            Duration = new Duration(TimeSpan.FromMilliseconds(180)),
+            EasingFunction = new Microsoft.UI.Xaml.Media.Animation.SineEase { EasingMode = Microsoft.UI.Xaml.Media.Animation.EasingMode.EaseInOut }
+        };
+        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTarget(widthAnim, SearchBoxHost);
+        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTargetProperty(widthAnim, "Width");
+
+        var opAnim = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
+        {
+            To = targetOpacity,
+            Duration = new Duration(TimeSpan.FromMilliseconds(140))
+        };
+        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTarget(opAnim, SearchBoxHost);
+        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTargetProperty(opAnim, "Opacity");
+
+        sb.Children.Add(widthAnim);
+        sb.Children.Add(opAnim);
+        sb.Begin();
+
+        if (_isSearchOpen)
+        {
+            try
+            {
+                // focus after layout tick
+                Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread()
+                    .TryEnqueue(() => SearchBox.Focus(Microsoft.UI.Xaml.FocusState.Programmatic));
+            }
+            catch { }
+        }
+        else
+        {
+            ViewModel.UninstallerSearchText = string.Empty;
+            // fully hide so it doesn't reserve hit test space
+            SearchBoxHost.Visibility = Visibility.Collapsed;
+        }
+    }
+
+    private void FilterNormalPrograms_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.UninstallerIncludeSystemPrograms = false;
+    }
+
+    private void FilterIncludeSystemPrograms_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.UninstallerIncludeSystemPrograms = true;
+    }
+
+    private async void ViewModel_AdvancedUninstallReviewRequested(object? sender, MainViewModel.AdvancedUninstallReviewEventArgs e)
+    {
+        try
+        {
+            var review = new Controls.ResidueReviewDialog();
+            review.Load(e.Result);
+
+            ContentDialog? dialog = null;
+            review.DeleteRequested += async (_, selected) =>
+            {
+                if (dialog == null) return;
+
+                dialog.IsPrimaryButtonEnabled = false;
+                dialog.IsSecondaryButtonEnabled = false;
+                dialog.CloseButtonText = "Cerrando…";
+
+                var errors = await UninstallWorkflow.DeleteSelectedAsync(selected, CancellationToken.None).ConfigureAwait(true);
+
+                dialog.Hide();
+
+                var resultDialog = new ContentDialog
+                {
+                    Title = errors.Count == 0 ? "Eliminación completada" : "Eliminación completada con errores",
+                    Content = errors.Count == 0 ? "Todos los elementos seleccionados fueron eliminados." : string.Join("\n", errors.Take(30)),
+                    CloseButtonText = "Cerrar",
+                    XamlRoot = Content.XamlRoot
+                };
+                await resultDialog.ShowAsync();
+            };
+
+            dialog = new ContentDialog
+            {
+                Title = "Revisión de residuos",
+                Content = review,
+                CloseButtonText = "Cerrar",
+                XamlRoot = Content.XamlRoot
+            };
+
+            await dialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            var dlg = new ContentDialog
+            {
+                Title = "Error",
+                Content = ex.Message,
+                CloseButtonText = "Cerrar",
+                XamlRoot = Content.XamlRoot
+            };
+            await dlg.ShowAsync();
+        }
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -638,6 +754,14 @@ public sealed partial class MainShellWindow : Window
             ViewModel.SelectedTag = tag;
             UpdateNavBarHighlight(tag);
             UpdateActionButtonsForTag(tag);
+
+            // Reset search UI when leaving uninstaller
+            if (!string.Equals(tag, "uninstaller", StringComparison.OrdinalIgnoreCase))
+            {
+                _isSearchOpen = false;
+                try { SearchBoxHost.Width = 0; SearchBoxHost.Opacity = 0; SearchBoxHost.Visibility = Visibility.Collapsed; } catch { }
+                ViewModel.UninstallerSearchText = string.Empty;
+            }
         }
     }
 
@@ -671,10 +795,12 @@ public sealed partial class MainShellWindow : Window
     {
         var isCleaner = string.Equals(tag, "cleaner", StringComparison.OrdinalIgnoreCase);
         var isPrograms = string.Equals(tag, "programs", StringComparison.OrdinalIgnoreCase);
+        var isUninstaller = string.Equals(tag, "uninstaller", StringComparison.OrdinalIgnoreCase);
 
         CleanerWarningText.Visibility = isCleaner ? Visibility.Visible : Visibility.Collapsed;
-        DefaultActionsPanel.Visibility = isPrograms ? Visibility.Collapsed : Visibility.Visible;
+        DefaultActionsPanel.Visibility = (isPrograms || isUninstaller) ? Visibility.Collapsed : Visibility.Visible;
         ProgramsActionsPanel.Visibility = isPrograms ? Visibility.Visible : Visibility.Collapsed;
+        UninstallerActionsPanel.Visibility = isUninstaller ? Visibility.Visible : Visibility.Collapsed;
 
         PrimaryActionButton.Content = isCleaner ? "Eliminar" : "Aplicar";
         SecondaryActionButton.Visibility = isCleaner ? Visibility.Collapsed : Visibility.Visible;
@@ -749,6 +875,42 @@ public sealed partial class MainShellWindow : Window
         if (result == ContentDialogResult.Primary)
         {
             await ExecuteAsyncCommandAsync(ViewModel.UninstallSelectedProgramsCommand);
+        }
+    }
+
+    private async void UninstallInstalledProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Desinstalar (oficial)",
+            Content = "Ejecutará el desinstalador oficial del/los programas seleccionados (sin limpieza adicional).",
+            PrimaryButtonText = "Continuar",
+            CloseButtonText = "Cancelar",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = Content.XamlRoot
+        };
+
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+        {
+            await ExecuteAsyncCommandAsync(ViewModel.UninstallSelectedInstalledProgramsCommand);
+        }
+    }
+
+    private async void AdvancedUninstallInstalledProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Desinstalación avanzada",
+            Content = "Cerrará procesos, intentará el desinstalador oficial y luego escaneará residuos (carpetas, registro, servicios, tareas) para que elijas qué eliminar.",
+            PrimaryButtonText = "Continuar",
+            CloseButtonText = "Cancelar",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = Content.XamlRoot
+        };
+
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+        {
+            await ExecuteAsyncCommandAsync(ViewModel.AdvancedUninstallSelectedInstalledProgramsCommand);
         }
     }
 

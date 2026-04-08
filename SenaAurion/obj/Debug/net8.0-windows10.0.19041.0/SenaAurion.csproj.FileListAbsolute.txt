@@ -118,3 +118,8 @@ C:\Users\Will\Documents\SENA-Aurion\SenaAurion\obj\Debug\net8.0-windows10.0.1904
 C:\Users\Will\Documents\SENA-Aurion\SenaAurion\obj\Debug\net8.0-windows10.0.19041.0\Controls\ModuleStatusBadgeControl.g.cs
 C:\Users\Will\Documents\SENA-Aurion\SenaAurion\obj\Debug\net8.0-windows10.0.19041.0\Controls\ModuleStatusBadgeControl.xaml
 C:\Users\Will\Documents\SENA-Aurion\SenaAurion\obj\Debug\net8.0-windows10.0.19041.0\Controls\ModuleStatusBadgeControl.xbf
+C:\Users\Will\Documents\SENA-Aurion\SenaAurion\bin\Debug\net8.0-windows10.0.19041.0\Controls\ResidueReviewDialog.xbf
+C:\Users\Will\Documents\SENA-Aurion\SenaAurion\obj\Debug\net8.0-windows10.0.19041.0\Controls\ResidueReviewDialog.g.i.cs
+C:\Users\Will\Documents\SENA-Aurion\SenaAurion\obj\Debug\net8.0-windows10.0.19041.0\Controls\ResidueReviewDialog.g.cs
+C:\Users\Will\Documents\SENA-Aurion\SenaAurion\obj\Debug\net8.0-windows10.0.19041.0\Controls\ResidueReviewDialog.xaml
+C:\Users\Will\Documents\SENA-Aurion\SenaAurion\obj\Debug\net8.0-windows10.0.19041.0\Controls\ResidueReviewDialog.xbf

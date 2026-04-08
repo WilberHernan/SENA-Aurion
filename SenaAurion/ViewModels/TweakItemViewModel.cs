@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Media;
 using System.Text.Json;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace SenaAurion.ViewModels;
 
@@ -12,11 +13,29 @@ public partial class TweakItemViewModel : ObservableObject
     [ObservableProperty]
     private string _displayName = string.Empty;
 
+    // Optional: for “blocked” suffix coloring
+    [ObservableProperty]
+    private string _displayNameMain = string.Empty;
+
+    [ObservableProperty]
+    private string _blockedSuffix = string.Empty; // ex: " (bloqueado)"
+
     [ObservableProperty]
     private string _description = string.Empty;
 
     [ObservableProperty]
     private string _currentStateText = string.Empty;
+
+    [ObservableProperty]
+    private ImageSource? _iconSource;
+
+    partial void OnDisplayNameChanged(string value)
+    {
+        if (string.IsNullOrWhiteSpace(DisplayNameMain))
+            DisplayNameMain = value;
+        if (BlockedSuffix is null)
+            BlockedSuffix = string.Empty;
+    }
 
     [ObservableProperty]
     private bool _isPresent = true;
@@ -59,6 +78,8 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
     {
         Definition = def;
         DisplayName = def.DisplayName;
+        DisplayNameMain = def.DisplayName;
+        BlockedSuffix = string.Empty;
         Description = def.Rationale;
         RefreshState();
     }
@@ -185,6 +206,8 @@ public partial class ServiceTweakModel : TweakItemViewModel
         Definition = def;
         IsWifiLocked = locked;
         DisplayName = def.DisplayLabel;
+        DisplayNameMain = def.DisplayLabel;
+        BlockedSuffix = string.Empty;
         Description = def.UserDescription;
         RefreshState();
     }
@@ -218,6 +241,8 @@ public partial class CleanerTweakModel : TweakItemViewModel
     {
         Definition = def;
         DisplayName = def.Id == "recycle-bin" ? "Vaciar Papelera de Reciclaje" : def.DisplayLabel;
+        DisplayNameMain = DisplayName;
+        BlockedSuffix = string.Empty;
         Description = def.Description;
         IsSelected = def.DefaultRecommended; // Defaults: true for safe ones, false for User Folders
         base.IsDanger = Definition.IsDanger || Definition.Id == "user-folders";
@@ -259,6 +284,8 @@ public partial class ProgramPackageViewModel : TweakItemViewModel
     public ProgramPackageViewModel(string displayName, string packageId, string description)
     {
         DisplayName = displayName;
+        DisplayNameMain = displayName;
+        BlockedSuffix = string.Empty;
         PackageId = packageId;
         Description = description;
         CurrentStateText = $"Id winget: {packageId}";
