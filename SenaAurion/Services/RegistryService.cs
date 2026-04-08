@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Microsoft.Win32;
 using SenaAurion.Models;
 
@@ -145,18 +145,14 @@ public sealed class RegistryService
                 return appliedCount > 0 ? $"OK en {appliedCount} interfaces" : "No hay interfaces";
             }
 
-            // Flujo estÃ¡ndar Check-Before-Action
-            using var probe = root.OpenSubKey(tweak.SubKey, writable: false);
-            if (probe is null)
-                return "Clave no encontrada - Saltando";
-
-            using var writable = root.OpenSubKey(tweak.SubKey, writable: true);
-            if (writable is null)
-                return "Sin acceso de escritura Â· omitido";
+            // Flujo estÃ¡ndar: si la clave no existe, la creamos (requisito).
+            using var created = root.CreateSubKey(tweak.SubKey, writable: true);
+            if (created is null)
+                return "No se pudo crear/abrir clave Â· omitido";
 
             var defaultKind = ParseValueKind(tweak.ValueKind);
             var defaultValue = ConvertValue(tweak.ValueData, defaultKind);
-            writable.SetValue(tweak.ValueName, defaultValue, defaultKind);
+            created.SetValue(tweak.ValueName, defaultValue, defaultKind);
             return "OK";
         }
         catch (Exception ex)

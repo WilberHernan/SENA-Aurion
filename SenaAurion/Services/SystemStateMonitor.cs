@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -24,7 +24,8 @@ public static class SystemStateMonitor
             string kbdSpeed = GetRegistryString(Registry.CurrentUser, @"Control Panel\Keyboard", "KeyboardSpeed") ?? "31";
             string mouDelay = GetRegistryString(Registry.CurrentUser, @"Control Panel\Mouse", "MouseHoverTime") ?? "400";
 
-            bool isOptimized = menuDelay == "0" && mouDelay == "10";
+            // MouseHoverTime "optimizado" en el dataset actual es 100 (no 10).
+            bool isOptimized = menuDelay == "0" && mouDelay == "100";
             return $"{(isOptimized ? "ðŸŸ¢ Modo Latencia Baja Activa" : "ðŸŸ  Ajustes EstÃ¡ndar")} | MenÃºs: {menuDelay}ms | MouseHover: {mouDelay}ms";
         }
     }
@@ -64,6 +65,50 @@ public static class SystemStateMonitor
             }
         }
     }
+
+    public static ServiceStatusInfo GetServiceStatusInfo(string serviceName)
+    {
+        lock (_lock)
+        {
+            try
+            {
+                using var sc = new ServiceController(serviceName);
+                _ = sc.Status;
+
+                using var key = Registry.LocalMachine.OpenSubKey($@"SYSTEM\CurrentControlSet\Services\{serviceName}");
+                var start = key?.GetValue("Start");
+                int startType = start as int? ?? (start is long l ? (int)l : -1);
+                var startText = startType switch { 2 => "Auto", 3 => "Manual", 4 => "Deshabilitado", _ => "Desconocido" };
+
+                var isRunning = sc.Status == ServiceControllerStatus.Running || sc.Status == ServiceControllerStatus.StartPending;
+                var isStopped = sc.Status == ServiceControllerStatus.Stopped || sc.Status == ServiceControllerStatus.StopPending;
+                var isDisabled = startType == 4;
+
+                return new ServiceStatusInfo(
+                    Exists: true,
+                    IsRunning: isRunning,
+                    IsStopped: isStopped,
+                    IsDisabled: isDisabled,
+                    StartTypeText: startText);
+            }
+            catch
+            {
+                return new ServiceStatusInfo(
+                    Exists: false,
+                    IsRunning: false,
+                    IsStopped: false,
+                    IsDisabled: false,
+                    StartTypeText: "No encontrado");
+            }
+        }
+    }
+
+    public readonly record struct ServiceStatusInfo(
+        bool Exists,
+        bool IsRunning,
+        bool IsStopped,
+        bool IsDisabled,
+        string StartTypeText);
 
     private static string? GetRegistryString(RegistryKey root, string subKey, string valueName)
     {

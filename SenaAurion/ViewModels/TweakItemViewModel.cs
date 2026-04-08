@@ -19,7 +19,30 @@ public partial class TweakItemViewModel : ObservableObject
     private string _currentStateText = string.Empty;
 
     [ObservableProperty]
+    private bool _isPresent = true;
+
+    [ObservableProperty]
+    private bool _isSelectable = true;
+
+    [ObservableProperty]
+    private string _lastChangeText = string.Empty;
+
+    public Microsoft.UI.Xaml.Visibility LastChangeVisibility =>
+        string.IsNullOrWhiteSpace(LastChangeText)
+            ? Microsoft.UI.Xaml.Visibility.Collapsed
+            : Microsoft.UI.Xaml.Visibility.Visible;
+
+    [ObservableProperty]
+    private bool _isDanger;
+
+    public Microsoft.UI.Xaml.Visibility DangerVisibility =>
+        IsDanger ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    [ObservableProperty]
     private bool _isOptimized;
+
+    partial void OnLastChangeTextChanged(string value) => OnPropertyChanged(nameof(LastChangeVisibility));
+    partial void OnIsDangerChanged(bool value) => OnPropertyChanged(nameof(DangerVisibility));
 
     public virtual void RefreshState() { }
 }
@@ -27,6 +50,10 @@ public partial class TweakItemViewModel : ObservableObject
 public partial class RegistryTweakViewModel : TweakItemViewModel
 {
     public Models.RegistryTweakDefinition Definition { get; }
+
+    public string DefaultValueText { get; private set; } = "";
+    public string OptimizedValueText { get; private set; } = "";
+    public string OptimizationStatusText { get; private set; } = "";
 
     public RegistryTweakViewModel(Models.RegistryTweakDefinition def)
     {
@@ -44,12 +71,14 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
             if (root == null)
             {
                 CurrentStateText = "Formato de clave invalido";
+                IsPresent = false;
+                IsSelectable = false;
                 return;
             }
 
             var expectedKind = Services.RegistryService.ParseValueKind(Definition.ValueKind);
             var expectedValueObj = Services.RegistryService.ConvertValue(Definition.ValueData, expectedKind);
-            var expectedStr = expectedValueObj?.ToString() ?? "";
+            OptimizedValueText = Services.RegistryValueFormatter.ToDisplayString(expectedValueObj);
 
             if (Definition.SubKey.EndsWith(@"Tcpip\Parameters\Interfaces", System.StringComparison.OrdinalIgnoreCase))
             {
@@ -58,29 +87,36 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
                 if (interfaceKey != null)
                 {
                     bool anyOptimized = false;
-                    string displayVal = "0 (Original)";
+                    string? firstFound = null;
                     foreach (var name in interfaceKey.GetSubKeyNames())
                     {
                         using var sub = interfaceKey.OpenSubKey(name, false);
                         var v = sub?.GetValue(Definition.ValueName);
                         if (v != null)
                         {
-                            var currentInterfaceVal = v.ToString() ?? "";
-                            if (!anyOptimized) displayVal = currentInterfaceVal;
-                            
-                            if (currentInterfaceVal == expectedStr) 
+                            var currentInterfaceVal = Services.RegistryValueFormatter.ToDisplayString(v);
+                            firstFound ??= currentInterfaceVal;
+                            if (Services.RegistryValueComparer.AreEquivalent(v, expectedValueObj, expectedKind))
                             {
                                 anyOptimized = true;
-                                displayVal = currentInterfaceVal; // Force the optimized one for the UI showing if at least one hit
                             }
                         }
                     }
                     IsOptimized = anyOptimized;
-                    CurrentStateText = $"[ACTUAL: {displayVal} {(IsOptimized ? "optimizado" : "original")}]";
+                    IsPresent = firstFound != null;
+                    IsSelectable = true;
+                    OptimizationStatusText = IsOptimized ? "optimizado" : "no optimizado";
+                    CurrentStateText = firstFound is null
+                        ? "Estado actual: inexistente"
+                        : $"Estado actual: {OptimizationStatusText} ({firstFound})";
                 }
                 else
                 {
-                    CurrentStateText = "[ACTUAL: No existe]";
+                    IsPresent = false;
+                    IsSelectable = true; // se puede crear al aplicar (en interfaces se aplica a subclaves existentes)
+                    IsOptimized = false;
+                    OptimizationStatusText = "inexistente";
+                    CurrentStateText = "Estado actual: inexistente";
                 }
                 return;
             }
@@ -89,33 +125,50 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
             var currentVal = probe?.GetValue(Definition.ValueName);
             if (currentVal == null)
             {
-                CurrentStateText = "[ACTUAL: No aplicado ¸ original]";
+                IsPresent = probe != null; // clave puede existir aunque el valor no
+                IsSelectable = true;
                 IsOptimized = false;
+                OptimizationStatusText = probe == null ? "inexistente" : "default";
+                DefaultValueText = Services.RegistryDefaults.TryGetDefaultDisplayValue(Definition, out var defTxt) ? defTxt : "";
+                CurrentStateText = probe == null
+                    ? "Estado actual: inexistente"
+                    : (string.IsNullOrWhiteSpace(DefaultValueText) ? "Estado actual: default" : $"Estado actual: default ({DefaultValueText})");
             }
             else
             {
-                var currentStr = currentVal.ToString() ?? "";
-                
-                // Si el expectedKind es MultiString, currentVal suele ser string[], asÃ­ que lo formateamos si es necesario o comparamos distinto
-                if (expectedKind == Microsoft.Win32.RegistryValueKind.MultiString)
+                var currentStr = Services.RegistryValueFormatter.ToDisplayString(currentVal);
+                IsOptimized = Services.RegistryValueComparer.AreEquivalent(currentVal, expectedValueObj, expectedKind);
+                IsPresent = true;
+                IsSelectable = true;
+
+                DefaultValueText = Services.RegistryDefaults.TryGetDefaultDisplayValue(Definition, out var defTxt) ? defTxt : "";
+
+                if (IsOptimized)
                 {
-                    if (currentVal is string[] currentArr && expectedValueObj is string[] expectedArr)
-                    {
-                        IsOptimized = System.Linq.Enumerable.SequenceEqual(currentArr, expectedArr);
-                        currentStr = string.Join(",", currentArr);
-                    }
+                    OptimizationStatusText = Services.RegistryDefaults.IsWindowsDefaultOptimized(Definition, expectedValueObj, expectedKind)
+                        ? "optimizado por Windows"
+                        : "optimizado";
+                    CurrentStateText = $"Estado actual: {OptimizationStatusText} ({currentStr})";
                 }
                 else
                 {
-                    IsOptimized = currentStr.Equals(expectedStr, System.StringComparison.OrdinalIgnoreCase);
-                }
+                    // Si coincide con default conocido lo marcamos como default, si no, no optimizado.
+                    OptimizationStatusText = Services.RegistryDefaults.IsEquivalentToDefault(Definition, currentVal, expectedKind)
+                        ? "default"
+                        : "no optimizado";
 
-                CurrentStateText = $"[ACTUAL: {currentStr} {(IsOptimized ? "optimizado" : "original")}]";
+                    CurrentStateText = (OptimizationStatusText == "default" && !string.IsNullOrWhiteSpace(DefaultValueText))
+                        ? $"Estado actual: default ({DefaultValueText})"
+                        : $"Estado actual: no optimizado ({currentStr})";
+                }
             }
         }
         catch
         {
             CurrentStateText = "[ACTUAL: Error de lectura]";
+            IsPresent = true;
+            IsSelectable = true;
+            IsOptimized = false;
         }
     }
 }
@@ -138,10 +191,22 @@ public partial class ServiceTweakModel : TweakItemViewModel
 
     public override void RefreshState()
     {
-        var rawStatus = Services.SystemStateMonitor.GetServiceStatus(Definition.ServiceName);
-        IsOptimized = rawStatus.Contains("Detenido") && rawStatus.Contains("Deshabilitado");
-        
-        CurrentStateText = $"[ESTADO: {rawStatus} {(IsOptimized ? "optimizado" : "")}]";
+        var status = Services.SystemStateMonitor.GetServiceStatusInfo(Definition.ServiceName);
+        IsPresent = status.Exists;
+        IsSelectable = status.Exists && !IsWifiLocked;
+
+        if (!status.Exists)
+        {
+            IsOptimized = false;
+            CurrentStateText = "Estado actual: ⚪ No encontrado";
+            IsSelected = false;
+            return;
+        }
+
+        IsOptimized = status.IsDisabled && status.IsStopped;
+        var runTxt = status.IsRunning ? "🟢 Ejecutándose" : "🔴 Detenido";
+        var startTxt = status.StartTypeText;
+        CurrentStateText = $"Estado actual: {runTxt} | {startTxt}";
     }
 }
 
@@ -149,15 +214,13 @@ public partial class CleanerTweakModel : TweakItemViewModel
 {
     public Models.CleanerTaskDefinition Definition { get; }
 
-    public bool IsDanger => Definition.IsDanger || Definition.Id == "user-folders";
-    public Microsoft.UI.Xaml.Visibility IsDangerVisibility => IsDanger ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
-
     public CleanerTweakModel(Models.CleanerTaskDefinition def)
     {
         Definition = def;
         DisplayName = def.Id == "recycle-bin" ? "Vaciar Papelera de Reciclaje" : def.DisplayLabel;
         Description = def.Description;
         IsSelected = def.DefaultRecommended; // Defaults: true for safe ones, false for User Folders
+        base.IsDanger = Definition.IsDanger || Definition.Id == "user-folders";
         RefreshState();
     }
 
@@ -167,6 +230,8 @@ public partial class CleanerTweakModel : TweakItemViewModel
         {
             CurrentStateText = string.Empty;
             IsOptimized = false;
+            IsPresent = true;
+            IsSelectable = true;
             return;
         }
 
@@ -174,7 +239,7 @@ public partial class CleanerTweakModel : TweakItemViewModel
 
         if (Definition.Id == "user-folders")
         {
-            CurrentStateText = $"[ACTUAL: {status}]";
+            CurrentStateText = $"Estado actual: {status}";
         }
         else
         {
@@ -182,6 +247,8 @@ public partial class CleanerTweakModel : TweakItemViewModel
         }
 
         IsOptimized = status.Contains("vacÃ­a", System.StringComparison.OrdinalIgnoreCase) || status.Contains("limpio", System.StringComparison.OrdinalIgnoreCase) || status.Contains("optimizados", System.StringComparison.OrdinalIgnoreCase) || status.Contains("VacÃ­as", System.StringComparison.OrdinalIgnoreCase);
+        IsPresent = true;
+        IsSelectable = true;
     }
 }
 

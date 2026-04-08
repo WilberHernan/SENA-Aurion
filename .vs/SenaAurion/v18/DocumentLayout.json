@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Will\\Documents\\SENA-Aurion\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|c:\\users\\will\\documents\\sena-aurion\\senaaurion\\services\\wingetprogramservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|solutionrelative:senaaurion\\services\\wingetprogramservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|c:\\users\\will\\documents\\sena-aurion\\senaaurion\\shell\\mainshellwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|SenaAurion\\SenaAurion.csproj|solutionrelative:senaaurion\\shell\\mainshellwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -26,11 +30,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "WingetProgramService.cs",
+              "DocumentMoniker": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Services\\WingetProgramService.cs",
+              "RelativeDocumentMoniker": "SenaAurion\\Services\\WingetProgramService.cs",
+              "ToolTip": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Services\\WingetProgramService.cs",
+              "RelativeToolTip": "SenaAurion\\Services\\WingetProgramService.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAIwEQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-08T00:25:38.724Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "SystemInfoService.cs",
               "DocumentMoniker": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Services\\SystemInfoService.cs",
               "RelativeDocumentMoniker": "SenaAurion\\Services\\SystemInfoService.cs",
@@ -38,12 +55,11 @@
               "RelativeToolTip": "SenaAurion\\Services\\SystemInfoService.cs",
               "ViewState": "AgIAABgBAAAAAAAAAAAuwDcBAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-07T23:08:56.325Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T23:08:56.325Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "OptimizationData.json",
               "DocumentMoniker": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Data\\OptimizationData.json",
               "RelativeDocumentMoniker": "SenaAurion\\Data\\OptimizationData.json",
@@ -51,25 +67,23 @@
               "RelativeToolTip": "SenaAurion\\Data\\OptimizationData.json",
               "ViewState": "AgIAAAwCAAAAAAAAAAAYwBwCAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-04-07T23:07:24.819Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T23:07:24.819Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainShellWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Shell\\MainShellWindow.xaml",
               "RelativeDocumentMoniker": "SenaAurion\\Shell\\MainShellWindow.xaml",
               "ToolTip": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Shell\\MainShellWindow.xaml",
               "RelativeToolTip": "SenaAurion\\Shell\\MainShellWindow.xaml",
-              "ViewState": "AgIAAB8BAAAAAAAAAAAewDEBAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAPUAAAAAAAAAAAAewDEBAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-07T18:15:59.089Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T18:15:59.089Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "MainShellWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\Shell\\MainShellWindow.xaml.cs",
               "RelativeDocumentMoniker": "SenaAurion\\Shell\\MainShellWindow.xaml.cs",

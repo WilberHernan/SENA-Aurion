@@ -45,6 +45,7 @@ public sealed partial class MainViewModel : ViewModelBase
         foreach (var item in NetworkTweakItems) item.RefreshState();
         foreach (var item in ServiceTweakItems) item.RefreshState();
         foreach (var item in CleanerTweakItems) item.RefreshState();
+        OnPropertyChanged(nameof(CurrentModuleSummaryText));
     }
 
     [ObservableProperty]
@@ -102,6 +103,22 @@ public sealed partial class MainViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool _isBusy;
+
+    [ObservableProperty]
+    private bool _isCurrentModuleApplying;
+
+    public Microsoft.UI.Xaml.Visibility CurrentModuleIsApplyingVisibility =>
+        IsCurrentModuleApplying ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    [ObservableProperty]
+    private string _currentModuleLastResultText = string.Empty;
+
+    public Microsoft.UI.Xaml.Visibility CurrentModuleLastResultVisibility =>
+        string.IsNullOrWhiteSpace(CurrentModuleLastResultText)
+            ? Microsoft.UI.Xaml.Visibility.Collapsed
+            : Microsoft.UI.Xaml.Visibility.Visible;
+
+    public string CurrentModuleSummaryText => ComputeCurrentModuleSummary();
 
     // INCLUSIONES DE MÃ“DULOS (INICIO)
     [ObservableProperty]
@@ -223,6 +240,10 @@ public sealed partial class MainViewModel : ViewModelBase
         }
 
         RefreshCurrentModuleView();
+        ResetModuleTransientUiOnSwitch();
+        OnPropertyChanged(nameof(CurrentModuleSummaryText));
+        OnPropertyChanged(nameof(CurrentModuleIsApplyingVisibility));
+        OnPropertyChanged(nameof(CurrentModuleLastResultVisibility));
     }
 
     public string CurrentModuleTitle => SelectedTag switch
@@ -281,6 +302,7 @@ public sealed partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(CurrentModuleTitle));
         OnPropertyChanged(nameof(CurrentModuleActionName));
         OnPropertyChanged(nameof(CurrentModuleDescription));
+        OnPropertyChanged(nameof(CurrentModuleSummaryText));
     }
 
     private async Task LoadSystemInfoAsync()
@@ -451,9 +473,14 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         if (Data is null) return;
         IsBusy = true;
+        IsCurrentModuleApplying = true;
+        CurrentModuleLastResultText = string.Empty;
         StatusMessage = $"Aplicando selección en {CurrentModuleTitle}…";
         try
         {
+            var selectedItems = CurrentModuleItems.Where(i => i.IsSelected && i.IsSelectable).ToArray();
+            var before = selectedItems.ToDictionary(i => i, i => i.CurrentStateText);
+
             if (moduleName == "input")
                 await _engine.ApplyTweaksAsync(InputTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
             else if (moduleName == "network")
@@ -463,10 +490,92 @@ public sealed partial class MainViewModel : ViewModelBase
             else if (moduleName == "cleaner")
                 await _engine.ApplyCleanerAsync(CleanerTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
 
+            // Releer estados reales y generar "antes -> después" por ítem seleccionado.
+            foreach (var item in selectedItems)
+            {
+                item.RefreshState();
+                var beforeTxt = before.TryGetValue(item, out var b) ? b : "";
+                var afterTxt = item.CurrentStateText;
+
+                if (string.Equals(beforeTxt, afterTxt, StringComparison.OrdinalIgnoreCase))
+                {
+                    item.LastChangeText = "Sin cambios";
+                }
+                else
+                {
+                    item.LastChangeText = $"{NormalizeState(beforeTxt)} → {NormalizeState(afterTxt)}";
+                }
+            }
+
+            // Limpiar textos de cambio en ítems no seleccionados para no confundir.
+            foreach (var item in CurrentModuleItems.Except(selectedItems))
+            {
+                item.LastChangeText = string.Empty;
+            }
+
             StatusMessage = $"Módulo {CurrentModuleTitle} aplicado correctamente.";
+            CurrentModuleLastResultText = moduleName switch
+            {
+                "services" => "Servicios procesados: deshabilitación aplicada donde correspondía (y bloqueada si era crítica por Wi‑Fi).",
+                "cleaner" => "Limpieza finalizada correctamente.",
+                _ => "Cambios aplicados y verificados."
+            };
         }
         catch (Exception ex) { StatusMessage = $"Error: {ex.Message}"; }
-        finally { IsBusy = false; }
+        finally
+        {
+            IsCurrentModuleApplying = false;
+            IsBusy = false;
+            OnPropertyChanged(nameof(CurrentModuleIsApplyingVisibility));
+            OnPropertyChanged(nameof(CurrentModuleLastResultVisibility));
+            OnPropertyChanged(nameof(CurrentModuleSummaryText));
+        }
+    }
+
+    private void ResetModuleTransientUiOnSwitch()
+    {
+        // Evita “información pegada” entre módulos
+        CurrentModuleLastResultText = string.Empty;
+        IsCurrentModuleApplying = false;
+
+        foreach (var item in InputTweakItems) item.LastChangeText = string.Empty;
+        foreach (var item in NetworkTweakItems) item.LastChangeText = string.Empty;
+        foreach (var item in ServiceTweakItems) item.LastChangeText = string.Empty;
+        foreach (var item in CleanerTweakItems) item.LastChangeText = string.Empty;
+        foreach (var item in ProgramPackageItems) item.LastChangeText = string.Empty;
+    }
+
+    partial void OnIsCurrentModuleApplyingChanged(bool value) =>
+        OnPropertyChanged(nameof(CurrentModuleIsApplyingVisibility));
+
+    partial void OnCurrentModuleLastResultTextChanged(string value) =>
+        OnPropertyChanged(nameof(CurrentModuleLastResultVisibility));
+
+    private string ComputeCurrentModuleSummary()
+    {
+        var items = CurrentModuleItems.Where(IsCountableForSummary).ToArray();
+        if (items.Length == 0) return "Sin funciones disponibles en este módulo.";
+
+        var optimized = items.Count(i => i.IsOptimized);
+        return $"{optimized}/{items.Length} funciones optimizadas";
+    }
+
+    private static bool IsCountableForSummary(TweakItemViewModel item)
+    {
+        // Para servicios: si no existe, no cuenta. Para el resto siempre cuenta.
+        if (item is ServiceTweakModel) return item.IsPresent;
+        return true;
+    }
+
+    private static string NormalizeState(string raw)
+    {
+        // Normaliza textos antiguos tipo "[ACTUAL: ...]" o "Estado actual: ..."
+        if (string.IsNullOrWhiteSpace(raw)) return "desconocido";
+        raw = raw.Trim();
+        raw = raw.TrimStart('[', ' ');
+        raw = raw.TrimEnd(']', ' ');
+        raw = raw.Replace("ACTUAL:", "Estado actual:", StringComparison.OrdinalIgnoreCase);
+        return raw;
     }
 
     [RelayCommand]

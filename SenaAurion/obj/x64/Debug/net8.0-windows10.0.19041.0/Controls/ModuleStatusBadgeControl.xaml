@@ -1,0 +1,39 @@
+﻿<UserControl x:ConnectionId='1'
+    x:Class="SenaAurion.Controls.ModuleStatusBadgeControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+        <Style x:Key="BadgeBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="999" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="#0FFFFFFF" />
+            <Setter Property="BorderBrush" Value="#1AFFFFFF" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border Style="{StaticResource BadgeBorderStyle}">
+        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+            <Grid Width="10" Height="10">
+                <Ellipse x:ConnectionId='3' x:Name="Dot" />
+                <Ellipse x:ConnectionId='4' x:Name="DotGlow" Opacity="0">
+                    <Ellipse.Fill>
+                        <RadialGradientBrush Center="0.5,0.5" GradientOrigin="0.5,0.5" RadiusX="1" RadiusY="1">
+                            <GradientStop x:ConnectionId='5' x:Name="GlowA" Color="#00FFFFFF" Offset="0" />
+                            <GradientStop x:ConnectionId='6' x:Name="GlowB" Color="#00FFFFFF" Offset="1" />
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Grid>
+
+            <TextBlock x:ConnectionId='2' x:Name="BadgeText"
+                       FontSize="11"
+                       Foreground="#D9FFFFFF"
+                       FontWeight="SemiBold"
+                                                         />
+        </StackPanel>
+    </Border>
+</UserControl>
+
+

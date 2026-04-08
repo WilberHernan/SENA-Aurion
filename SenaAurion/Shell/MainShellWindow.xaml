@@ -6,6 +6,7 @@
     xmlns:viewmodels="using:SenaAurion.ViewModels"
     xmlns:models="using:SenaAurion.Models"
     xmlns:services="using:SenaAurion.Services"
+    xmlns:controls="using:SenaAurion.Controls"
     Title="SENA AURION">
 
     <Grid x:Name="HostRoot">
@@ -36,6 +37,13 @@
                 <Setter Property="Padding" Value="12,6" />
                 <Setter Property="FontSize" Value="12" />
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
+            </Style>
+
+            <Style x:Key="ModuleProgressRingStyle" TargetType="ProgressRing">
+                <Setter Property="Width" Value="20" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="IsActive" Value="True" />
+                <Setter Property="Foreground" Value="#E6FFFFFF" />
             </Style>
             <!-- Estilos MonocromÃ¡ticos Premium Dark -->
             <Style x:Key="PremiumCardStyle" TargetType="Border">
@@ -163,16 +171,47 @@
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="viewmodels:TweakItemViewModel">
-                                            <Grid>
+                                            <Grid ColumnSpacing="10">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <CheckBox IsChecked="{x:Bind IsSelected, Mode=TwoWay}" VerticalAlignment="Center"/>
-                                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                                    <TextBlock Text="{x:Bind DisplayName}" FontSize="14" Foreground="#F2FFFFFF" FontWeight="SemiBold"/>
-                                                    <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}" FontSize="11" Foreground="#8CFFFFFF" Margin="0,2,0,0"/>
+
+                                                <CheckBox Grid.Column="0"
+                                                          IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
+                                                          IsEnabled="{x:Bind IsSelectable, Mode=OneWay}"
+                                                          VerticalAlignment="Center"/>
+
+                                                <StackPanel Grid.Column="1" Spacing="3">
+                                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                                        <TextBlock Text="{x:Bind DisplayName}" FontSize="14" Foreground="#F2FFFFFF" FontWeight="SemiBold"/>
+                                                        <TextBlock Text="⚠"
+                                                                   FontSize="12"
+                                                                   Foreground="#FFC56A"
+                                                                   VerticalAlignment="Center"
+                                                                   Visibility="{x:Bind DangerVisibility, Mode=OneWay}"
+                                                                   ToolTipService.ToolTip="Acción sensible: requiere revisión manual."/>
+                                                    </StackPanel>
+
+                                                    <!-- Descripción corta (especialmente útil en Servicios) -->
+                                                    <TextBlock Text="{x:Bind Description, Mode=OneWay}"
+                                                               FontSize="11"
+                                                               Foreground="#66FFFFFF"
+                                                               TextWrapping="WrapWholeWords"
+                                                               MaxLines="2"/>
+
+                                                    <!-- Estado actual (una línea) -->
+                                                    <TextBlock Text="{x:Bind CurrentStateText, Mode=OneWay}"
+                                                               FontSize="11"
+                                                               Foreground="#8CFFFFFF"
+                                                               Margin="0,2,0,0"/>
+
+                                                    <TextBlock Text="{x:Bind LastChangeText, Mode=OneWay}"
+                                                               FontSize="11"
+                                                               Foreground="#B3FFFFFF"
+                                                               Visibility="{x:Bind LastChangeVisibility, Mode=OneWay}"/>
                                                 </StackPanel>
+
                                             </Grid>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
@@ -194,9 +233,31 @@
             <!-- CARD SUPERIOR: qué hace el módulo seleccionado -->
             <Border Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel>
-                    <TextBlock FontSize="11" Foreground="#8CFFFFFF" Margin="0,0,0,4" Text="Módulo activo" />
                     <TextBlock Text="{x:Bind ViewModel.CurrentModuleTitle, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" TextWrapping="Wrap" />
                     <TextBlock Text="{x:Bind ViewModel.CurrentModuleDescription, Mode=OneWay}" FontSize="11" Foreground="#B3FFFFFF" LineHeight="17" Margin="0,8,0,0" TextWrapping="Wrap" />
+
+                    <Grid Margin="0,12,0,0" ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <ProgressRing Grid.Column="0"
+                                      Style="{StaticResource ModuleProgressRingStyle}"
+                                      Visibility="{x:Bind ViewModel.CurrentModuleIsApplyingVisibility, Mode=OneWay}" />
+
+                        <StackPanel Grid.Column="1" Spacing="6">
+                            <TextBlock Text="{x:Bind ViewModel.CurrentModuleSummaryText, Mode=OneWay}"
+                                       FontSize="11"
+                                       Foreground="#8CFFFFFF"
+                                       TextWrapping="WrapWholeWords" />
+                            <TextBlock Text="{x:Bind ViewModel.CurrentModuleLastResultText, Mode=OneWay}"
+                                       FontSize="11"
+                                       Foreground="#B3FFFFFF"
+                                       TextWrapping="WrapWholeWords"
+                                       Visibility="{x:Bind ViewModel.CurrentModuleLastResultVisibility, Mode=OneWay}" />
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
 
