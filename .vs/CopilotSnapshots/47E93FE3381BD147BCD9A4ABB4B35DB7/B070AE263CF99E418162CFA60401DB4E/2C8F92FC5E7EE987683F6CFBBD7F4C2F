@@ -1,0 +1,1041 @@
+﻿using System;
+using Microsoft.UI.Composition;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
+using Windows.Graphics;
+using SenaAurion.Services;
+using SenaAurion.ViewModels;
+
+namespace SenaAurion.Shell;
+
+public sealed partial class MainShellWindow : Window
+{
+    private enum ShellState
+    {
+        SplashVisible,
+        DashboardVisible,
+        Transitioning
+    }
+
+    public MainViewModel ViewModel { get; }
+    private ShellState _shellState = ShellState.SplashVisible;
+    private bool _isTransitioning;
+    private bool _isAnimating;
+    private int _currentRow;
+    private int _currentCol;
+
+    public MainShellWindow()
+    {
+        var log = new FileOptimizationLogger();
+        var registry = new RegistryService(log);
+        var services = new WindowsServiceOptimizer(log);
+        var engine = new OptimizationEngine(log, registry, services);
+        var provider = new JsonOptimizationDataProvider();
+
+        ViewModel = new MainViewModel(provider, engine);
+        ViewModel.AdvancedUninstallReviewRequested += ViewModel_AdvancedUninstallReviewRequested;
+
+        try 
+        {
+            this.InitializeComponent();
+        }
+        catch (System.Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            throw;
+        }
+
+        try 
+        {
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+            appWindow.Resize(new SizeInt32 { Width = 1409, Height = 684 });
+
+            if (DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary) is DisplayArea displayArea)
+            {
+                var workArea = displayArea.WorkArea;
+                var x = workArea.X + (workArea.Width - 1409) / 2;
+                var y = workArea.Y + (workArea.Height - 684) / 2;
+                appWindow.Move(new PointInt32 { X = x, Y = y });
+            }
+
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
+        } catch { }
+
+        ViewModel.SelectedTag = "home";
+        UpdateNavBarHighlight("home");
+        UpdateActionButtonsForTag("home");
+
+        this.Activated += MainWindow_Activated;
+        this.SizeChanged += MainWindow_SizeChanged;
+    }
+
+    private bool _isSearchOpen;
+
+    private void SearchToggleButton_Click(object sender, RoutedEventArgs e)
+    {
+        _isSearchOpen = !_isSearchOpen;
+
+        // Make it reliable: toggle visibility + animate width/opacity
+        SearchBoxHost.Visibility = Visibility.Visible;
+        double targetWidth = _isSearchOpen ? 240 : 0;
+        double targetOpacity = _isSearchOpen ? 1 : 0;
+
+        var sb = new Microsoft.UI.Xaml.Media.Animation.Storyboard();
+
+        var widthAnim = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
+        {
+            To = targetWidth,
+            Duration = new Duration(TimeSpan.FromMilliseconds(180)),
+            EasingFunction = new Microsoft.UI.Xaml.Media.Animation.SineEase { EasingMode = Microsoft.UI.Xaml.Media.Animation.EasingMode.EaseInOut }
+        };
+        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTarget(widthAnim, SearchBoxHost);
+        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTargetProperty(widthAnim, "Width");
+
+        var opAnim = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
+        {
+            To = targetOpacity,
+            Duration = new Duration(TimeSpan.FromMilliseconds(140))
+        };
+        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTarget(opAnim, SearchBoxHost);
+        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTargetProperty(opAnim, "Opacity");
+
+        sb.Children.Add(widthAnim);
+        sb.Children.Add(opAnim);
+        sb.Begin();
+
+        if (_isSearchOpen)
+        {
+            try
+            {
+                // focus after layout tick
+                Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread()
+                    .TryEnqueue(() => SearchBox.Focus(Microsoft.UI.Xaml.FocusState.Programmatic));
+            }
+            catch { }
+        }
+        else
+        {
+            ViewModel.UninstallerSearchText = string.Empty;
+            // wait for animation to finish before collapsing
+            sb.Completed += (s, ev) => 
+            {
+                if (!_isSearchOpen)
+                {
+                    SearchBoxHost.Visibility = Visibility.Collapsed;
+                }
+            };
+        }
+    }
+
+    private void FilterNormalPrograms_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.UninstallerIncludeSystemPrograms = false;
+    }
+
+    private void SearchToggleCloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_isSearchOpen)
+        {
+            SearchToggleButton_Click(sender, e);
+        }
+    }
+
+    private void FilterIncludeSystemPrograms_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.UninstallerIncludeSystemPrograms = true;
+    }
+
+    private async void ViewModel_AdvancedUninstallReviewRequested(object? sender, MainViewModel.AdvancedUninstallReviewEventArgs e)
+    {
+        try
+        {
+            var review = new Controls.ResidueReviewDialog();
+            review.Load(e.Result);
+
+            ContentDialog? dialog = null;
+            review.DeleteRequested += async (_, selected) =>
+            {
+                if (dialog == null) return;
+
+                dialog.IsPrimaryButtonEnabled = false;
+                dialog.IsSecondaryButtonEnabled = false;
+                dialog.CloseButtonText = "Cerrando…";
+
+                var errors = await UninstallWorkflow.DeleteSelectedAsync(selected, CancellationToken.None).ConfigureAwait(true);
+
+                dialog.Hide();
+
+                var resultDialog = new ContentDialog
+                {
+                    Title = errors.Count == 0 ? "Eliminación completada" : "Eliminación completada con errores",
+                    Content = errors.Count == 0 ? "Todos los elementos seleccionados fueron eliminados." : string.Join("\n", errors.Take(30)),
+                    CloseButtonText = "Cerrar",
+                    XamlRoot = Content.XamlRoot
+                };
+                await resultDialog.ShowAsync();
+            };
+
+            dialog = new ContentDialog
+            {
+                Title = "Revisión de residuos",
+                Content = review,
+                CloseButtonText = "Cerrar",
+                XamlRoot = Content.XamlRoot
+            };
+
+            await dialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            var dlg = new ContentDialog
+            {
+                Title = "Error",
+                Content = ex.Message,
+                CloseButtonText = "Cerrar",
+                XamlRoot = Content.XamlRoot
+            };
+            await dlg.ShowAsync();
+        }
+    }
+
+    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+    {
+        this.Activated -= MainWindow_Activated;
+        PrepareDashboardInitialState();
+        ScrollAnimation.Begin();
+    }
+
+    private void MainWindow_SizeChanged(object sender, WindowSizeChangedEventArgs args)
+    {
+        if (!_isTransitioning && SplashRoot.Visibility == Visibility.Visible)
+        {
+            PrepareDashboardInitialState();
+        }
+    }
+
+    private void PrepareDashboardInitialState()
+    {
+        var dashboardVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(DashboardRoot);
+        dashboardVisual.Offset = new System.Numerics.Vector3((float)Math.Max(HostRoot.ActualWidth, 1), 0, 0);
+        dashboardVisual.Opacity = 1.0f;
+    }
+    private void TopButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_shellState != ShellState.SplashVisible || _isTransitioning)
+        {
+            return;
+        }
+
+        _isTransitioning = true;
+        _shellState = ShellState.Transitioning;
+        DashboardRoot.Visibility = Visibility.Visible;
+        SpecsModal.Visibility = Visibility.Collapsed;
+
+        var splashVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(UIContainer);
+        var dashboardVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(DashboardRoot);
+        var compositor = splashVisual.Compositor;
+        float width = (float)Math.Max(HostRoot.ActualWidth, 1);
+
+        dashboardVisual.Offset = new System.Numerics.Vector3(width, 0, 0);
+
+        var easing = compositor.CreateCubicBezierEasingFunction(
+            new System.Numerics.Vector2(0.2f, 0.9f),
+            new System.Numerics.Vector2(0.4f, 1.1f));
+
+        var splashSlideOut = compositor.CreateVector3KeyFrameAnimation();
+        splashSlideOut.InsertKeyFrame(1.0f, new System.Numerics.Vector3(-width, 0, 0), easing);
+        splashSlideOut.Duration = TimeSpan.FromMilliseconds(460);
+
+        var dashboardSlideIn = compositor.CreateVector3KeyFrameAnimation();
+        dashboardSlideIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(0, 0, 0), easing);
+        dashboardSlideIn.Duration = TimeSpan.FromMilliseconds(460);
+
+        var batch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+        splashVisual.StartAnimation("Offset", splashSlideOut);
+        dashboardVisual.StartAnimation("Offset", dashboardSlideIn);
+
+        batch.Completed += (s, ev) =>
+        {
+            SplashRoot.Visibility = Visibility.Collapsed;
+            _isTransitioning = false;
+            _shellState = ShellState.DashboardVisible;
+            ScrollAnimation.Stop();
+            try
+            {
+                SetTitleBar(AppCustomTitleBar);
+            }
+            catch
+            {
+            }
+        };
+
+        batch.End();
+    }
+
+    private void BackToSplash_Click(object sender, RoutedEventArgs e)
+    {
+        if (_shellState != ShellState.DashboardVisible || _isTransitioning)
+        {
+            return;
+        }
+
+        _isTransitioning = true;
+        _shellState = ShellState.Transitioning;
+
+        SplashRoot.Visibility = Visibility.Visible;
+        UIContainer.Visibility = Visibility.Visible;
+        SpecsModal.Visibility = Visibility.Collapsed;
+
+        var splashVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(UIContainer);
+        var dashboardVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(DashboardRoot);
+        var compositor = dashboardVisual.Compositor;
+        float width = (float)Math.Max(HostRoot.ActualWidth, 1);
+
+        splashVisual.Offset = new System.Numerics.Vector3(-width, 0, 0);
+
+        var easing = compositor.CreateCubicBezierEasingFunction(
+            new System.Numerics.Vector2(0.2f, 0.9f),
+            new System.Numerics.Vector2(0.4f, 1.1f));
+
+        var dashboardSlideOut = compositor.CreateVector3KeyFrameAnimation();
+        dashboardSlideOut.InsertKeyFrame(1.0f, new System.Numerics.Vector3(width, 0, 0), easing);
+        dashboardSlideOut.Duration = TimeSpan.FromMilliseconds(460);
+
+        var splashSlideIn = compositor.CreateVector3KeyFrameAnimation();
+        splashSlideIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(0, 0, 0), easing);
+        splashSlideIn.Duration = TimeSpan.FromMilliseconds(460);
+
+        var batch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+        dashboardVisual.StartAnimation("Offset", dashboardSlideOut);
+        splashVisual.StartAnimation("Offset", splashSlideIn);
+        batch.Completed += (s, ev) =>
+        {
+            DashboardRoot.Visibility = Visibility.Collapsed;
+            PrepareDashboardInitialState();
+            _isTransitioning = false;
+            _shellState = ShellState.SplashVisible;
+            ScrollAnimation.Begin();
+
+            try
+            {
+                SetTitleBar(AppTitleBar);
+            }
+            catch
+            {
+            }
+        };
+        batch.End();
+    }
+
+    private int GetMaxColumnsForResponsiveWidth()
+    {
+        double w = this.Bounds.Width;
+        if (w > 2500) return 6;
+        if (w > 1800) return 5;
+        if (w > 1300) return 4;
+        if (w > 900) return 3;
+        if (w > 600) return 2;
+        return 1;
+    }
+
+    private async void SpecsButton_Click(object sender, RoutedEventArgs e)
+    {
+        _ = ShowSpecsModalAsync();
+    }
+
+    private async System.Threading.Tasks.Task ShowSpecsModalAsync()
+    {
+        if (_isAnimating) return;
+        _isAnimating = true;
+
+        var compositor = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(UIContainer).Compositor;
+        var contentVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(UIContainer);
+        var modalVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SpecsModal);
+
+        var contentFadeOut = compositor.CreateScalarKeyFrameAnimation();
+        contentFadeOut.InsertKeyFrame(0.0f, 1.0f);
+        contentFadeOut.InsertKeyFrame(0.2f, 0.7f, compositor.CreateStepEasingFunction(3));
+        contentFadeOut.InsertKeyFrame(0.5f, 0.4f, compositor.CreateStepEasingFunction(4));
+        contentFadeOut.InsertKeyFrame(0.8f, 0.1f, compositor.CreateStepEasingFunction(2));
+        contentFadeOut.InsertKeyFrame(1.0f, 0.0f, compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.9f), new System.Numerics.Vector2(0.4f, 1.1f)));
+        contentFadeOut.Duration = TimeSpan.FromMilliseconds(500);
+
+        var contentScaleOut = compositor.CreateVector3KeyFrameAnimation();
+        contentScaleOut.InsertKeyFrame(1.0f, new System.Numerics.Vector3(0.95f, 0.95f, 1f));
+        contentScaleOut.Duration = TimeSpan.FromMilliseconds(500);
+
+        var batch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+        contentVisual.StartAnimation("Opacity", contentFadeOut);
+        contentVisual.StartAnimation("Scale", contentScaleOut);
+
+        batch.Completed += async (s, ev) =>
+        {
+            UIContainer.Visibility = Visibility.Collapsed;
+
+            SpecsModal.Visibility = Visibility.Visible;
+            modalVisual.Opacity = 0.0f;
+            modalVisual.Scale = new System.Numerics.Vector3(0.95f, 0.95f, 1f);
+
+            var modalFadeIn = compositor.CreateScalarKeyFrameAnimation();
+            modalFadeIn.InsertKeyFrame(1.0f, 1.0f);
+            modalFadeIn.Duration = TimeSpan.FromMilliseconds(250);
+
+            var modalScaleIn = compositor.CreateVector3KeyFrameAnimation();
+            modalScaleIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(1f, 1f, 1f), compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.9f), new System.Numerics.Vector2(0.4f, 1.0f)));
+            modalScaleIn.Duration = TimeSpan.FromMilliseconds(250);
+
+            var modalBatch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+            modalVisual.StartAnimation("Opacity", modalFadeIn);
+            modalVisual.StartAnimation("Scale", modalScaleIn);
+
+            if (SpecsContainer.Children.Count == 0)
+            {
+                SpecsLoadingText.Visibility = Visibility.Visible;
+                var info = await SystemInfoService.GetSystemInfoAsync();
+                SpecsLoadingText.Visibility = Visibility.Collapsed;
+
+                SpecsContainer.Children.Clear();
+                SpecsContainer.RowDefinitions.Clear();
+                _currentRow = 0;
+                _currentCol = 0;
+
+                var sysItems = new System.Collections.Generic.List<(string Label, string Value, string CopyText)>
+                {
+                    ("SISTEMA OPERATIVO", $"{info.OsName} (Build {info.OsVersion})", ""),
+                    ("NOMBRE DEL EQUIPO", info.MachineName, ""),
+                    ("DOMINIO / GRUPO", info.Domain, ""),
+                    ("NUMERO DE SERIE", info.SerialNumber, "")
+                };
+                AddCompositeSpecCard("IDENTIDAD DEL SISTEMA", sysItems);
+
+                AddSpecCard("PROCESADOR (CPU)", $"{info.CpuModel}\n{info.CpuCoresText}");
+                AddSpecCard("MEMORIA (RAM)", info.RamTotalText);
+                AddSpecCard("GRAFICOS (GPU)", info.GpuModel);
+
+                if (info.Disks.Count > 0)
+                {
+                    var diskLines = new System.Collections.Generic.List<string>();
+                    foreach (var disk in info.Disks)
+                        diskLines.Add(disk.CopyText);
+                    AddListSpecCard("ALMACENAMIENTO (DISCOS)", diskLines);
+                }
+
+                if (info.MacAddresses.Count > 0)
+                {
+                    var netLines = new System.Collections.Generic.List<string>();
+                    foreach (var net in info.MacAddresses)
+                        netLines.Add($"{net.DisplayText}\nMAC: {net.CopyText}");
+                    AddListSpecCard("RED (ADAPTADORES)", netLines);
+                }
+            }
+
+            modalBatch.Completed += (s2, ev2) =>
+            {
+                _isAnimating = false;
+            };
+            modalBatch.End();
+        };
+        batch.End();
+    }
+
+    private void SpecsContainer_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        if (SpecsContainer.Children.Count == 0) return;
+
+        int newMaxCols = GetMaxColumnsForResponsiveWidth();
+        if (SpecsContainer.ColumnDefinitions.Count == newMaxCols) return;
+
+        SpecsContainer.ColumnDefinitions.Clear();
+        for (int i = 0; i < newMaxCols; i++)
+        {
+            SpecsContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        }
+
+        _currentRow = 0;
+        _currentCol = 0;
+        foreach (FrameworkElement child in SpecsContainer.Children)
+        {
+            int originalSpan = child.Tag != null ? (int)child.Tag : 1;
+            int actSpan = originalSpan > newMaxCols ? newMaxCols : originalSpan;
+
+            if (_currentCol + actSpan > newMaxCols)
+            {
+                _currentRow++;
+                _currentCol = 0;
+            }
+            while (SpecsContainer.RowDefinitions.Count <= _currentRow)
+            {
+                SpecsContainer.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            }
+
+            Grid.SetRow(child, _currentRow);
+            Grid.SetColumn(child, _currentCol);
+            Grid.SetColumnSpan(child, actSpan);
+
+            _currentCol += actSpan;
+            if (_currentCol >= newMaxCols)
+            {
+                _currentRow++;
+                _currentCol = 0;
+            }
+        }
+    }
+
+    private void AllocateGridCell(FrameworkElement element, int colSpan)
+    {
+        element.Tag = colSpan;
+        int maxCols = GetMaxColumnsForResponsiveWidth();
+        int actualSpan = colSpan > maxCols ? maxCols : colSpan;
+
+        if (SpecsContainer.ColumnDefinitions.Count != maxCols)
+        {
+            SpecsContainer.ColumnDefinitions.Clear();
+            for (int i = 0; i < maxCols; i++)
+            {
+                SpecsContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            }
+        }
+
+        if (_currentCol + actualSpan > maxCols)
+        {
+            _currentRow++;
+            _currentCol = 0;
+        }
+
+        while (SpecsContainer.RowDefinitions.Count <= _currentRow)
+        {
+            SpecsContainer.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        }
+
+        Grid.SetRow(element, _currentRow);
+        Grid.SetColumn(element, _currentCol);
+        if (actualSpan > 1)
+        {
+            Grid.SetColumnSpan(element, actualSpan);
+        }
+
+        SpecsContainer.Children.Add(element);
+
+        _currentCol += actualSpan;
+        if (_currentCol >= maxCols)
+        {
+            _currentRow++;
+            _currentCol = 0;
+        }
+    }
+
+    private void AddListSpecCard(string title, System.Collections.Generic.IEnumerable<string> infoLines)
+    {
+        var acrylicBrush = SplashRoot.Resources["AcrylicGlassBrush"] as Microsoft.UI.Xaml.Media.Brush ?? new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(34, 255, 255, 255));
+        var border = new Border
+        {
+            CornerRadius = new CornerRadius(12),
+            Background = acrylicBrush,
+            BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(68, 255, 255, 255)),
+            BorderThickness = new Thickness(1),
+            Padding = new Thickness(20),
+            Margin = new Thickness(8)
+        };
+
+        var mainStack = new StackPanel { Orientation = Orientation.Vertical, Spacing = 8 };
+        var titleBlock = new TextBlock
+        {
+            Text = title,
+            Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(217, 255, 255, 255)),
+            FontSize = 13,
+            FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI Variable Display"),
+            FontWeight = Microsoft.UI.Text.FontWeights.Bold,
+            CharacterSpacing = 50,
+            Margin = new Thickness(0, 0, 0, 8)
+        };
+        mainStack.Children.Add(titleBlock);
+
+        foreach (var line in infoLines)
+        {
+            var valueBlock = new TextBlock
+            {
+                Text = line,
+                Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(178, 255, 255, 255)),
+                FontSize = 13,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Cascadia Code"),
+                TextWrapping = TextWrapping.Wrap,
+                IsTextSelectionEnabled = true
+            };
+            mainStack.Children.Add(valueBlock);
+        }
+        border.Child = mainStack;
+        AllocateGridCell(border, 1);
+    }
+
+    private void AddCompositeSpecCard(string title, System.Collections.Generic.List<(string Label, string Value, string CopyText)> items)
+    {
+        var acrylicBrush = SplashRoot.Resources["AcrylicGlassBrush"] as Microsoft.UI.Xaml.Media.Brush ?? new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(34, 255, 255, 255));
+
+        var border = new Border
+        {
+            CornerRadius = new CornerRadius(12),
+            Background = acrylicBrush,
+            BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(68, 255, 255, 255)),
+            BorderThickness = new Thickness(1),
+            Padding = new Thickness(20),
+            Margin = new Thickness(8)
+        };
+
+        var mainStack = new StackPanel { Orientation = Orientation.Vertical, Spacing = 16 };
+
+        var titleBlock = new TextBlock
+        {
+            Text = title,
+            Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(217, 255, 255, 255)),
+            FontSize = 13,
+            FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI Variable Display"),
+            FontWeight = Microsoft.UI.Text.FontWeights.Bold,
+            CharacterSpacing = 50
+        };
+        mainStack.Children.Add(titleBlock);
+
+        var innerGrid = new Grid { ColumnSpacing = 16 };
+        int maxCols = GetMaxColumnsForResponsiveWidth();
+        for (int i = 0; i < maxCols; i++)
+        {
+            innerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        }
+
+        int r = 0;
+        int c = 0;
+        foreach (var item in items)
+        {
+            if (c == 0) innerGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            var itemStack = CreateItemContent(item.Label, item.Value);
+            itemStack.Margin = new Thickness(0, 0, 0, 16);
+
+            Grid.SetRow(itemStack, r);
+            Grid.SetColumn(itemStack, c);
+            innerGrid.Children.Add(itemStack);
+
+            c++;
+            if (c >= maxCols) { c = 0; r++; }
+        }
+
+        mainStack.Children.Add(innerGrid);
+        border.Child = mainStack;
+
+        AllocateGridCell(border, maxCols);
+    }
+
+    private FrameworkElement CreateItemContent(string label, string value)
+    {
+        var stack = new StackPanel { Orientation = Orientation.Vertical, Spacing = 4, VerticalAlignment = VerticalAlignment.Center };
+
+        var labelBlock = new TextBlock
+        {
+            Text = label,
+            Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(217, 255, 255, 255)),
+            FontSize = 11,
+            FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI Variable"),
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+        };
+
+        var valueBlock = new TextBlock
+        {
+            Text = value,
+            Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(178, 255, 255, 255)),
+            FontSize = 13,
+            FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Cascadia Code"),
+            TextWrapping = TextWrapping.Wrap,
+            IsTextSelectionEnabled = true
+        };
+
+        stack.Children.Add(labelBlock);
+        stack.Children.Add(valueBlock);
+
+        return stack;
+    }
+
+    private void AddSpecCard(string label, string value)
+    {
+        var acrylicBrush = SplashRoot.Resources["AcrylicGlassBrush"] as Microsoft.UI.Xaml.Media.Brush ?? new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(34, 255, 255, 255));
+
+        var border = new Border
+        {
+            CornerRadius = new CornerRadius(12),
+            Background = acrylicBrush,
+            BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(68, 255, 255, 255)),
+            BorderThickness = new Thickness(1),
+            Padding = new Thickness(20),
+            Margin = new Thickness(8)
+        };
+
+        border.Child = CreateItemContent(label, value);
+
+        AllocateGridCell(border, 1);
+    }
+
+    private void CloseSpecsModal_Click(object sender, RoutedEventArgs e)
+    {
+        TriggerReverseAnimation();
+    }
+
+    private void SpecsModal_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        TriggerReverseAnimation();
+    }
+
+    private void TriggerReverseAnimation()
+    {
+        if (_isAnimating || SpecsModal.Visibility == Visibility.Collapsed) return;
+        _isAnimating = true;
+
+        var compositor = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(UIContainer).Compositor;
+        var contentVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(UIContainer);
+        var modalVisual = Microsoft.UI.Xaml.Hosting.ElementCompositionPreview.GetElementVisual(SpecsModal);
+
+        var modalFadeOut = compositor.CreateScalarKeyFrameAnimation();
+        modalFadeOut.InsertKeyFrame(1.0f, 0.0f);
+        modalFadeOut.Duration = TimeSpan.FromMilliseconds(150);
+
+        var batchModal = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+        modalVisual.StartAnimation("Opacity", modalFadeOut);
+
+        batchModal.Completed += (s, ev) =>
+        {
+            SpecsModal.Visibility = Visibility.Collapsed;
+            UIContainer.Visibility = Visibility.Visible;
+
+            contentVisual.Scale = new System.Numerics.Vector3(0.95f, 0.95f, 1f);
+            contentVisual.Opacity = 0.0f;
+
+            var contentFadeIn = compositor.CreateScalarKeyFrameAnimation();
+            contentFadeIn.InsertKeyFrame(0.0f, 0.0f);
+            contentFadeIn.InsertKeyFrame(0.3f, 0.2f, compositor.CreateStepEasingFunction(2));
+            contentFadeIn.InsertKeyFrame(0.6f, 0.5f, compositor.CreateStepEasingFunction(3));
+            contentFadeIn.InsertKeyFrame(0.8f, 0.8f, compositor.CreateStepEasingFunction(2));
+            contentFadeIn.InsertKeyFrame(1.0f, 1.0f, compositor.CreateCubicBezierEasingFunction(new System.Numerics.Vector2(0.2f, 0.9f), new System.Numerics.Vector2(0.4f, 1.1f)));
+            contentFadeIn.Duration = TimeSpan.FromMilliseconds(500);
+
+            var contentScaleIn = compositor.CreateVector3KeyFrameAnimation();
+            contentScaleIn.InsertKeyFrame(1.0f, new System.Numerics.Vector3(1f, 1f, 1f));
+            contentScaleIn.Duration = TimeSpan.FromMilliseconds(500);
+
+            var batchContent = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+            contentVisual.StartAnimation("Opacity", contentFadeIn);
+            contentVisual.StartAnimation("Scale", contentScaleIn);
+
+            batchContent.Completed += (s2, ev2) =>
+            {
+                _isAnimating = false;
+            };
+            batchContent.End();
+        };
+        batchModal.End();
+    }
+
+    private void SpecsModalContent_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        e.Handled = true;
+    }
+
+
+    private void AttachTabHoverEvents(Button tb)
+    {
+        tb.PointerEntered += (s, e) =>
+        {
+            if (tb.Opacity < 1.0)
+            {
+                tb.Opacity = 0.8;
+            }
+        };
+
+        tb.PointerExited += (s, e) =>
+        {
+            if (tb.Foreground is Microsoft.UI.Xaml.Media.SolidColorBrush b && b.Color.A < 160) // Not active (153 represents 60% approx)
+            {
+                tb.Opacity = 1.0;
+            }
+        };
+    }
+
+    private void TabButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.CommandParameter is string tag)
+        {
+            ViewModel.SelectedTag = tag;
+            UpdateNavBarHighlight(tag);
+            UpdateActionButtonsForTag(tag);
+
+            // Reset search UI when leaving uninstaller
+            if (!string.Equals(tag, "uninstaller", StringComparison.OrdinalIgnoreCase))
+            {
+                _isSearchOpen = false;
+                try { SearchBoxHost.Width = 0; SearchBoxHost.Opacity = 0; SearchBoxHost.Visibility = Visibility.Collapsed; } catch { }
+                ViewModel.UninstallerSearchText = string.Empty;
+            }
+        }
+    }
+
+    private void UpdateNavBarHighlight(string selectedTag)
+    {
+        foreach (var child in NavBarStack.Children)
+        {
+            if (child is Button b && b.CommandParameter is string tag)
+            {
+                if (b.Content is Grid btnGrid)
+                {
+                    if (btnGrid.Children.Count >= 2 && btnGrid.Children[0] is Border surface && btnGrid.Children[1] is FontIcon fIcon)
+                    {
+                        if (tag == selectedTag)
+                        {
+                            surface.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 39, 39, 39));
+                            fIcon.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.White);
+                        }
+                        else
+                        {
+                            surface.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                            fIcon.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(77, 255, 255, 255));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void UpdateActionButtonsForTag(string tag)
+    {
+        var isCleaner = string.Equals(tag, "cleaner", StringComparison.OrdinalIgnoreCase);
+        var isPrograms = string.Equals(tag, "programs", StringComparison.OrdinalIgnoreCase);
+        var isUninstaller = string.Equals(tag, "uninstaller", StringComparison.OrdinalIgnoreCase);
+
+        CleanerWarningText.Visibility = isCleaner ? Visibility.Visible : Visibility.Collapsed;
+        DefaultActionsPanel.Visibility = (isPrograms || isUninstaller) ? Visibility.Collapsed : Visibility.Visible;
+        ProgramsActionsPanel.Visibility = isPrograms ? Visibility.Visible : Visibility.Collapsed;
+        UninstallerActionsPanel.Visibility = isUninstaller ? Visibility.Visible : Visibility.Collapsed;
+
+        PrimaryActionButton.Content = isCleaner ? "Eliminar" : "Aplicar";
+        SecondaryActionButton.Visibility = isCleaner ? Visibility.Collapsed : Visibility.Visible;
+        TertiaryActionButton.Visibility = isCleaner ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    private async Task ExecuteAsyncCommandAsync(object? command, object? parameter = null)
+    {
+        if (command is CommunityToolkit.Mvvm.Input.IAsyncRelayCommand asyncCommand)
+        {
+            await asyncCommand.ExecuteAsync(parameter);
+        }
+    }
+
+    private async void PrimaryActionButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.CurrentModuleActionName == "cleaner")
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Confirmación requerida",
+                Content = "Se eliminarán archivos seleccionados y no se podrán recuperar desde esta herramienta. ¿Deseas continuar?",
+                PrimaryButtonText = "Sí, eliminar",
+                CloseButtonText = "Cancelar",
+                DefaultButton = ContentDialogButton.Close,
+                XamlRoot = Content.XamlRoot
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result != ContentDialogResult.Primary)
+            {
+                return;
+            }
+        }
+
+        await ExecuteAsyncCommandAsync(ViewModel.ApplySelectedModuleCommand, ViewModel.CurrentModuleActionName);
+    }
+
+    private async void SecondaryActionButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ExecuteAsyncCommandAsync(ViewModel.RevertSelectedModuleCommand, ViewModel.CurrentModuleActionName);
+    }
+
+    private async void TertiaryActionButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ExecuteAsyncCommandAsync(ViewModel.RevertAllModuleCommand, ViewModel.CurrentModuleActionName);
+    }
+
+    private async void InstallProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ExecuteAsyncCommandAsync(ViewModel.InstallSelectedProgramsCommand);
+    }
+
+    private async void UpdateProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ExecuteAsyncCommandAsync(ViewModel.UpdateSelectedProgramsCommand);
+    }
+
+    private async void UninstallProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Desinstalación de programas",
+            Content = "Esta acción puede remover software necesario. Verifica tu selección antes de continuar.",
+            PrimaryButtonText = "Continuar",
+            CloseButtonText = "Cancelar",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = Content.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            await ExecuteAsyncCommandAsync(ViewModel.UninstallSelectedProgramsCommand);
+        }
+    }
+
+    private async void UninstallInstalledProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Desinstalar (oficial)",
+            Content = "Ejecutará el desinstalador oficial del/los programas seleccionados (sin limpieza adicional).",
+            PrimaryButtonText = "Continuar",
+            CloseButtonText = "Cancelar",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = Content.XamlRoot
+        };
+
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+        {
+            await ExecuteAsyncCommandAsync(ViewModel.UninstallSelectedInstalledProgramsCommand);
+        }
+    }
+
+    private async void AdvancedUninstallInstalledProgramsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Desinstalación avanzada",
+            Content = "Cerrará procesos, intentará el desinstalador oficial y luego escaneará residuos (carpetas, registro, servicios, tareas) para que elijas qué eliminar.",
+            PrimaryButtonText = "Continuar",
+            CloseButtonText = "Cancelar",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = Content.XamlRoot
+        };
+
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+        {
+            await ExecuteAsyncCommandAsync(ViewModel.AdvancedUninstallSelectedInstalledProgramsCommand);
+        }
+    }
+
+    private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    {
+        // ... (Mantengo la funciÃ³n por si hay algÃºn binding oculto rezagado)
+    }
+
+    private void MainScroll_ViewChanged(object sender, ScrollViewerViewChangedEventArgs args)
+    {
+       // Removed topBlur Bottom Blur triggers completely.
+    }
+
+    private void Card_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        // Dejo intacto solo por prevenir un null reference de hover, las cards ahora transicionan en su Template
+    }
+
+    private void Card_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        // Nullified internal manual assignment (Using pure XAML animations now to prevent null dict exceptions)
+        if (sender is Border b)
+        {
+            try 
+            {
+               if(Application.Current.Resources.TryGetValue("GlassCardBackground", out object resource) && resource is Microsoft.UI.Xaml.Media.Brush bg)
+               {
+                   b.Background = bg;
+               }
+            } 
+            catch { /* Ignored logic errors on WinUI 3 Window launch layout cycles */ }
+        }
+    }
+
+    private void Btn_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 1.01;
+            trans.ScaleY = 1.01;
+        }
+    }
+
+    private void Btn_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 1.0;
+            trans.ScaleY = 1.0;
+        }
+    }
+
+    private void BtnSecondary_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            bool isTabNav = btn.CommandParameter != null && 
+                            (btn.CommandParameter.ToString() == "home" ||
+                             btn.CommandParameter.ToString() == "input" ||
+                             btn.CommandParameter.ToString() == "network" ||
+                             btn.CommandParameter.ToString() == "services" ||
+                             btn.CommandParameter.ToString() == "cleaner");
+
+            if (!isTabNav) 
+            {
+                btn.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(30, 29, 184, 112));
+                trans.ScaleX = 1.01;
+                trans.ScaleY = 1.01;
+            }
+        }
+    }
+
+    private void BtnSecondary_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+             bool isTabNav = btn.CommandParameter != null && 
+                            (btn.CommandParameter.ToString() == "home" ||
+                             btn.CommandParameter.ToString() == "input" ||
+                             btn.CommandParameter.ToString() == "network" ||
+                             btn.CommandParameter.ToString() == "services" ||
+                             btn.CommandParameter.ToString() == "cleaner");
+
+            if (!isTabNav) 
+            {
+                btn.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                trans.ScaleX = 1.0;
+                trans.ScaleY = 1.0;
+            }
+        }
+    }
+
+    private void Btn_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 0.98;
+            trans.ScaleY = 0.98;
+        }
+    }
+
+    private void Btn_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.RenderTransform is Microsoft.UI.Xaml.Media.ScaleTransform trans)
+        {
+            trans.ScaleX = 1.01;
+            trans.ScaleY = 1.01;
+        }
+    }
+
+    // Convertidor directo de funciÃ³n para x:Bind en la ventana (mÃ¡s rÃ¡pido y seguro en WinUI 3 para objetos Window)
+    public Visibility BoolToVisibility(bool isVisible) => isVisible ? Visibility.Visible : Visibility.Collapsed;
+}
+

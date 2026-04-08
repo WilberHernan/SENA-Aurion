@@ -322,7 +322,7 @@ public sealed partial class MainViewModel : ViewModelBase
         }
     }
 
-    public string UninstallerFilterText => UninstallerIncludeSystemPrograms ? "Incluye sistema" : "Solo normales";
+    public string UninstallerFilterText => UninstallerIncludeSystemPrograms ? "Sistema" : "Normales";
 
     public string SelectedModuleDisplayName => SelectedModuleItem?.DisplayName ?? "Selecciona una función";
     public string SelectedModuleDetail => SelectedModuleItem?.Description ?? CurrentModuleDescription;

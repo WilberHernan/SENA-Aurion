@@ -80,36 +80,10 @@ public sealed partial class MainShellWindow : Window
     {
         _isSearchOpen = !_isSearchOpen;
 
-        // Make it reliable: toggle visibility + animate width/opacity
-        SearchBoxHost.Visibility = Visibility.Visible;
-        double targetWidth = _isSearchOpen ? 240 : 0;
-        double targetOpacity = _isSearchOpen ? 1 : 0;
-
-        var sb = new Microsoft.UI.Xaml.Media.Animation.Storyboard();
-
-        var widthAnim = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
-        {
-            To = targetWidth,
-            Duration = new Duration(TimeSpan.FromMilliseconds(180)),
-            EasingFunction = new Microsoft.UI.Xaml.Media.Animation.SineEase { EasingMode = Microsoft.UI.Xaml.Media.Animation.EasingMode.EaseInOut }
-        };
-        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTarget(widthAnim, SearchBoxHost);
-        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTargetProperty(widthAnim, "Width");
-
-        var opAnim = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
-        {
-            To = targetOpacity,
-            Duration = new Duration(TimeSpan.FromMilliseconds(140))
-        };
-        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTarget(opAnim, SearchBoxHost);
-        Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTargetProperty(opAnim, "Opacity");
-
-        sb.Children.Add(widthAnim);
-        sb.Children.Add(opAnim);
-        sb.Begin();
-
         if (_isSearchOpen)
         {
+            SearchToggleButton.Visibility = Visibility.Collapsed;
+            SearchBoxHost.Visibility = Visibility.Visible;
             try
             {
                 // focus after layout tick
@@ -121,14 +95,22 @@ public sealed partial class MainShellWindow : Window
         else
         {
             ViewModel.UninstallerSearchText = string.Empty;
-            // fully hide so it doesn't reserve hit test space
             SearchBoxHost.Visibility = Visibility.Collapsed;
+            SearchToggleButton.Visibility = Visibility.Visible;
         }
     }
 
     private void FilterNormalPrograms_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.UninstallerIncludeSystemPrograms = false;
+    }
+
+    private void SearchToggleCloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_isSearchOpen)
+        {
+            SearchToggleButton_Click(sender, e);
+        }
     }
 
     private void FilterIncludeSystemPrograms_Click(object sender, RoutedEventArgs e)
@@ -759,7 +741,12 @@ public sealed partial class MainShellWindow : Window
             if (!string.Equals(tag, "uninstaller", StringComparison.OrdinalIgnoreCase))
             {
                 _isSearchOpen = false;
-                try { SearchBoxHost.Width = 0; SearchBoxHost.Opacity = 0; SearchBoxHost.Visibility = Visibility.Collapsed; } catch { }
+                try 
+                { 
+                    SearchBoxHost.Visibility = Visibility.Collapsed; 
+                    SearchToggleButton.Visibility = Visibility.Visible;
+                } 
+                catch { }
                 ViewModel.UninstallerSearchText = string.Empty;
             }
         }
