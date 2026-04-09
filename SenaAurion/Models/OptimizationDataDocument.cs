@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace SenaAurion.Models;
@@ -18,14 +18,59 @@ public sealed class OptimizationDataDocument
     [JsonPropertyName("networkTcp")]
     public NetworkTcpSection NetworkTcp { get; init; } = new();
 
+    /// <summary>Acciones de red fuera del registro (DNS, flush, etc.).</summary>
+    [JsonPropertyName("networkQuickActions")]
+    public IList<NetworkQuickActionDefinition> NetworkQuickActions { get; init; } = new List<NetworkQuickActionDefinition>();
+
     [JsonPropertyName("registryTweaks")]
     public IList<RegistryTweakDefinition> RegistryTweaks { get; init; } = new List<RegistryTweakDefinition>();
 
     [JsonPropertyName("services")]
     public IList<ServiceDefinition> Services { get; init; } = new List<ServiceDefinition>();
 
+    /// <summary>Perfiles predefinidos: lista de ids de servicio a marcar para deshabilitar.</summary>
+    [JsonPropertyName("serviceProfiles")]
+    public IList<ServiceProfileDefinition> ServiceProfiles { get; init; } = new List<ServiceProfileDefinition>();
+
     [JsonPropertyName("cleaner")]
     public CleanerSection Cleaner { get; init; } = new();
+}
+
+public sealed class NetworkQuickActionDefinition
+{
+    [JsonPropertyName("id")]
+    public string Id { get; init; } = "";
+
+    [JsonPropertyName("displayLabel")]
+    public string DisplayLabel { get; init; } = "";
+
+    [JsonPropertyName("description")]
+    public string Description { get; init; } = "";
+
+    /// <summary>flushDns | dnsCloudflare | dnsGoogle | dnsAdGuard | dnsDhcpReset</summary>
+    [JsonPropertyName("action")]
+    public string Action { get; init; } = "";
+
+    [JsonPropertyName("isDanger")]
+    public bool IsDanger { get; init; }
+
+    [JsonPropertyName("impactDescription")]
+    public string ImpactDescription { get; init; } = "";
+}
+
+public sealed class ServiceProfileDefinition
+{
+    [JsonPropertyName("id")]
+    public string Id { get; init; } = "";
+
+    [JsonPropertyName("label")]
+    public string Label { get; init; } = "";
+
+    [JsonPropertyName("description")]
+    public string Description { get; init; } = "";
+
+    [JsonPropertyName("disableServiceIds")]
+    public IList<string> DisableServiceIds { get; init; } = new List<string>();
 }
 
 public sealed class CleanerSection
@@ -122,6 +167,12 @@ public sealed class RegistryTweakDefinition
 
     [JsonPropertyName("sourceAlignment")]
     public string SourceAlignment { get; init; } = "";
+
+    [JsonPropertyName("isDanger")]
+    public bool IsDanger { get; init; }
+
+    [JsonPropertyName("impactDescription")]
+    public string ImpactDescription { get; init; } = "";
 }
 
 public sealed class ServiceDefinition

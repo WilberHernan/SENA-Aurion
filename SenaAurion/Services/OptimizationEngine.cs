@@ -1,4 +1,4 @@
-﻿using SenaAurion.Models;
+using SenaAurion.Models;
 
 namespace SenaAurion.Services;
 
@@ -9,6 +9,7 @@ public sealed class OptimizationEngine : IOptimizationEngine
     private readonly RegistryService _registry;
     private readonly WindowsServiceOptimizer _services;
     private readonly CleanerOptimization _cleaner;
+    private readonly NetworkQuickActionService _networkQuick;
 
     public OptimizationEngine(
         IOptimizationLogger log,
@@ -19,6 +20,7 @@ public sealed class OptimizationEngine : IOptimizationEngine
         _registry = registry;
         _services = services;
         _cleaner = new CleanerOptimization(log);
+        _networkQuick = new NetworkQuickActionService(log);
     }
 
     public async Task RunAsync(
@@ -170,6 +172,15 @@ public sealed class OptimizationEngine : IOptimizationEngine
         // Hacemos log simulado de imposibilidad de reversiÃ³n para mantener el estÃ¡ndar.
         await _log.LogAsync("Limpieza", "Reversion", "Archivos eliminados no pueden revertirse mediante esta utilidad. Omitiendo...", token).ConfigureAwait(false);
         SystemStateMonitor.NotifyStateChanged();
+    }
+
+    public async Task ApplyNetworkQuickActionsAsync(IEnumerable<NetworkQuickActionDefinition> actions, CancellationToken token = default)
+    {
+        foreach (var a in actions)
+        {
+            token.ThrowIfCancellationRequested();
+            await _networkQuick.ApplyAsync(a, token).ConfigureAwait(false);
+        }
     }
 }
 

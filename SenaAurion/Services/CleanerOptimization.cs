@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -43,9 +43,15 @@ public sealed class CleanerOptimization
                 "temp-files" => GetTempState(),
                 "prefetch" => GetPrefetchState(),
                 "wu-cache" => GetWuCacheState(),
-                "recycle-bin" => string.Empty, // Ya no se evalÃºa dinÃ¡micamente
+                "recycle-bin" => string.Empty,
                 "event-logs" => GetEventLogsState(),
                 "user-folders" => GetUserFoldersState(),
+                "thumbcache" => GetThumbCacheState(),
+                "delivery-opt" => GetDeliveryOptState(),
+                "icon-cache" => GetIconCacheState(),
+                "d3d-shader-cache" => GetD3dShaderCacheState(),
+                "wer-reports" => GetWerReportsState(),
+                "inet-cache" => GetInetCacheState(),
                 _ => "Desconocido"
             };
         }
@@ -98,6 +104,76 @@ public sealed class CleanerOptimization
         return $"{FormatBytes(total)} total (Docs: {FormatBytes(doc)}, Descargas: {FormatBytes(dl)}, Musica: {FormatBytes(mus)}, Videos: {FormatBytes(vid)})";
     }
 
+    private static string GetThumbCacheState()
+    {
+        var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Windows\Explorer");
+        if (!Directory.Exists(dir)) return "Sin carpeta Explorer local";
+        long size = 0;
+        int n = 0;
+        try
+        {
+            foreach (var f in Directory.EnumerateFiles(dir, "thumbcache_*.db", SearchOption.TopDirectoryOnly))
+            {
+                try { size += new FileInfo(f).Length; n++; } catch { }
+            }
+        }
+        catch { }
+        return n == 0 ? "Sin miniaturas en caché" : $"{n} archivos · {FormatBytes(size)}";
+    }
+
+    private static string GetDeliveryOptState()
+    {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows),
+            @"ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache");
+        if (!Directory.Exists(path)) return "Caché Delivery Optimization no encontrada";
+        return FormatBytes(GetDirectorySize(path));
+    }
+
+    private static string GetIconCacheState()
+    {
+        long size = 0;
+        var local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var db = Path.Combine(local, "IconCache.db");
+        if (File.Exists(db))
+        {
+            try { size += new FileInfo(db).Length; } catch { }
+        }
+        var exp = Path.Combine(local, @"Microsoft\Windows\Explorer");
+        if (Directory.Exists(exp))
+        {
+            try
+            {
+                foreach (var f in Directory.EnumerateFiles(exp, "iconcache*.db", SearchOption.TopDirectoryOnly))
+                {
+                    try { size += new FileInfo(f).Length; } catch { }
+                }
+            }
+            catch { }
+        }
+        return size == 0 ? "Iconos: sin datos accesibles" : $"Iconos en caché · {FormatBytes(size)}";
+    }
+
+    private static string GetD3dShaderCacheState()
+    {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "D3DSCache");
+        if (!Directory.Exists(path)) return "D3DSCache no encontrado";
+        return FormatBytes(GetDirectorySize(path));
+    }
+
+    private static string GetWerReportsState()
+    {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Microsoft\Windows\WER");
+        if (!Directory.Exists(path)) return "WER no encontrado";
+        return FormatBytes(GetDirectorySize(path));
+    }
+
+    private static string GetInetCacheState()
+    {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Windows\INetCache");
+        if (!Directory.Exists(path)) return "INetCache no encontrado";
+        return FormatBytes(GetDirectorySize(path));
+    }
+
     private static string FormatBytes(long bytes)
     {
         if (bytes >= 1073741824) return $"{bytes / 1073741824.0:F2} GB";
@@ -144,6 +220,12 @@ public sealed class CleanerOptimization
                 "recycle-bin" => CleanRecycleBin(),
                 "event-logs" => CleanEventLogs(),
                 "user-folders" => CleanUserFolders(),
+                "thumbcache" => CleanThumbCache(),
+                "delivery-opt" => CleanDeliveryOptimizationCache(),
+                "icon-cache" => CleanIconCache(),
+                "d3d-shader-cache" => CleanD3dShaderCache(),
+                "wer-reports" => CleanWerReports(),
+                "inet-cache" => CleanInetCache(),
                 _ => "Tarea no reconocida"
             };
         }
@@ -289,7 +371,97 @@ public sealed class CleanerOptimization
         return $"ATENCIÃ“N: Carpetas de usuario vaciadas. {count} elementos eliminados de forma permanente.";
     }
 
-    private int DeleteDirectoryContents(string targetDir)
+    private static string CleanThumbCache()
+    {
+        var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Windows\Explorer");
+        if (!Directory.Exists(dir)) return "Carpeta Explorer no encontrada";
+        int n = 0;
+        try
+        {
+            foreach (var f in Directory.EnumerateFiles(dir, "thumbcache_*.db", SearchOption.TopDirectoryOnly))
+            {
+                try { File.SetAttributes(f, FileAttributes.Normal); File.Delete(f); n++; }
+                catch { }
+            }
+        }
+        catch (Exception ex) { return $"Miniaturas: {ex.Message}"; }
+        return $"Miniaturas: eliminados {n} archivos (se regeneran al navegar carpetas)";
+    }
+
+    private static string CleanDeliveryOptimizationCache()
+    {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows),
+            @"ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache");
+        if (!Directory.Exists(path)) return "Caché Delivery Optimization no encontrada";
+        try
+        {
+            int n = DeleteDirectoryContents(path);
+            return $"Delivery Optimization: {n} elementos eliminados";
+        }
+        catch (Exception ex) { return $"Delivery Optimization: {ex.Message}"; }
+    }
+
+    private static string CleanIconCache()
+    {
+        int n = 0;
+        var local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var db = Path.Combine(local, "IconCache.db");
+        try
+        {
+            if (File.Exists(db)) { File.SetAttributes(db, FileAttributes.Normal); File.Delete(db); n++; }
+        }
+        catch { }
+        var exp = Path.Combine(local, @"Microsoft\Windows\Explorer");
+        if (Directory.Exists(exp))
+        {
+            foreach (var f in Directory.EnumerateFiles(exp, "iconcache*.db", SearchOption.TopDirectoryOnly))
+            {
+                try { File.SetAttributes(f, FileAttributes.Normal); File.Delete(f); n++; }
+                catch { }
+            }
+        }
+        return n == 0
+            ? "Iconos: ningún archivo eliminado (puede estar en uso; reinicia y reintenta)"
+            : $"Iconos: {n} cachés eliminados (reinicio recomendado para refrescar)";
+    }
+
+    private static string CleanD3dShaderCache()
+    {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "D3DSCache");
+        if (!Directory.Exists(path)) return "D3DSCache no encontrado";
+        try
+        {
+            int n = DeleteDirectoryContents(path);
+            return $"Sombreadores DirectX: {n} elementos · se recompilarán al ejecutar juegos";
+        }
+        catch (Exception ex) { return $"D3DSCache: {ex.Message}"; }
+    }
+
+    private static string CleanWerReports()
+    {
+        var root = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Microsoft\Windows\WER");
+        if (!Directory.Exists(root)) return "WER no encontrado";
+        try
+        {
+            int n = DeleteDirectoryContents(root);
+            return $"Informes WER: {n} elementos eliminados";
+        }
+        catch (Exception ex) { return $"WER: {ex.Message}"; }
+    }
+
+    private static string CleanInetCache()
+    {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Windows\INetCache");
+        if (!Directory.Exists(path)) return "INetCache no encontrado";
+        try
+        {
+            int n = DeleteDirectoryContents(path);
+            return $"Caché Internet (INetCache): {n} elementos";
+        }
+        catch (Exception ex) { return $"INetCache: {ex.Message}"; }
+    }
+
+    private static int DeleteDirectoryContents(string targetDir)
     {
         int deleted = 0;
         if (!Directory.Exists(targetDir)) return deleted;

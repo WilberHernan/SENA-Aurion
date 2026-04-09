@@ -118,6 +118,13 @@ public sealed partial class MainShellWindow : Window
         ViewModel.UninstallerIncludeSystemPrograms = true;
     }
 
+    private void ServiceProfile_Click(object sender, RoutedEventArgs e)
+    {
+        var id = sender is Button b ? b.Tag as string : null;
+        if (!string.IsNullOrWhiteSpace(id))
+            ViewModel.ApplyServiceProfileCommand.Execute(id);
+    }
+
     private async void ViewModel_AdvancedUninstallReviewRequested(object? sender, MainViewModel.AdvancedUninstallReviewEventArgs e)
     {
         try

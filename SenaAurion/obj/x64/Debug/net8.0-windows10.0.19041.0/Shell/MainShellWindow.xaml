@@ -103,13 +103,13 @@
 
         <Grid Grid.Column="0">
             <!-- BARRA SUPERIOR OCULTA (Usada solo para arrastrar la ventana) -->
-            <Grid x:ConnectionId='43' x:Name="AppCustomTitleBar" VerticalAlignment="Top" Background="Transparent" Height="46" Margin="64,0,0,0" Canvas.ZIndex="20" />
+            <Grid x:ConnectionId='48' x:Name="AppCustomTitleBar" VerticalAlignment="Top" Background="Transparent" Height="46" Margin="64,0,0,0" Canvas.ZIndex="20" />
 
             <!-- AREA DE CONTENIDO (Expandida al máximo) -->
             <Grid Margin="0,0,0,0">
                 <Border Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Grid x:ConnectionId='44' x:Name="MainContainerContent">
-                        <Button x:ConnectionId='45' Background="Transparent" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="18" Padding="0" Width="36" Height="36"
+                    <Grid x:ConnectionId='49' x:Name="MainContainerContent">
+                        <Button x:ConnectionId='50' Background="Transparent" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="18" Padding="0" Width="36" Height="36"
                                 HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Canvas.ZIndex="30"                            ToolTipService.ToolTip="Volver al Splash">
                             <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Path Data="M 16,10 L 4,10 M 10,4 L 4,10 L 10,16" Stroke="#FFFFFF" StrokeThickness="1.5" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Width="12" Height="12" />
@@ -130,14 +130,14 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock x:ConnectionId='59' Grid.Column="0"
+                                <TextBlock x:ConnectionId='64' Grid.Column="0"
                                                                                                     
                                            Style="{StaticResource PageTitleStyle}"
                                            VerticalAlignment="Center"
                                                                                                                       />
 
                                 <!-- Uninstaller title with subtle chevron + filter flyout -->
-                                <Button x:ConnectionId='60' Grid.Column="0"
+                                <Button x:ConnectionId='65' Grid.Column="0"
                                         Background="Transparent"
                                         BorderThickness="0"
                                         Padding="0"
@@ -146,20 +146,20 @@
                                                                                                                 >
                                     <Button.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <MenuFlyoutItem x:ConnectionId='67' Text="Programas Normales"                                    FontSize="12" Height="32"/>
-                                            <MenuFlyoutItem x:ConnectionId='68' Text="Aplicaciones del Sistema"                                           FontSize="12" Height="32"/>
+                                            <MenuFlyoutItem x:ConnectionId='72' Text="Programas Normales"                                    FontSize="12" Height="32"/>
+                                            <MenuFlyoutItem x:ConnectionId='73' Text="Aplicaciones del Sistema"                                           FontSize="12" Height="32"/>
                                         </MenuFlyout>
                                     </Button.Flyout>
                                     <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                                         <TextBlock Text="Desinstalador" Style="{StaticResource PageTitleStyle}" />
                                         <TextBlock Text="▾" FontSize="14" Foreground="#8CFFFFFF" Margin="0,1,0,0"/>
-                                        <TextBlock x:ConnectionId='69'                                                              FontSize="11" Foreground="#66FFFFFF" Margin="6,4,0,0"/>
+                                        <TextBlock x:ConnectionId='74'                                                              FontSize="11" Foreground="#66FFFFFF" Margin="6,4,0,0"/>
                                     </StackPanel>
                                 </Button>
 
                                 <!-- Search (only uninstaller) - Simplified -->
-                                <StackPanel x:ConnectionId='61' Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,3,0"                                                                         >
-                                    <Button x:ConnectionId='63' x:Name="SearchToggleButton"
+                                <StackPanel x:ConnectionId='66' Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,3,0"                                                                         >
+                                    <Button x:ConnectionId='68' x:Name="SearchToggleButton"
                                             Style="{StaticResource NeoActionButtonStyle}"
                                             Width="40" Height="34" Padding="0"
                                                                             
@@ -167,7 +167,7 @@
                                         <FontIcon Glyph="&#xE721;" FontSize="14" Foreground="#E6FFFFFF" />
                                     </Button>
 
-                                    <Border x:ConnectionId='64' x:Name="SearchBoxHost"
+                                    <Border x:ConnectionId='69' x:Name="SearchBoxHost"
                                             CornerRadius="10"
                                             Background="#0AFFFFFF"
                                             BorderBrush="#10FFFFFF"
@@ -181,7 +181,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox x:ConnectionId='65' x:Name="SearchBox"
+                                            <TextBox x:ConnectionId='70' x:Name="SearchBox"
                                                      Grid.Column="0"
                                                                                                                                                       
                                                      PlaceholderText="Buscar por nombre o editor..."
@@ -192,7 +192,7 @@
                                                      Padding="10,6,10,6"
                                                      VerticalAlignment="Center"
                                                      HorizontalAlignment="Stretch"/>
-                                            <Button x:ConnectionId='66' Grid.Column="1"
+                                            <Button x:ConnectionId='71' Grid.Column="1"
                                                     Style="{StaticResource NeoActionButtonStyle}"
                                                     Background="Transparent"
                                                     BorderThickness="0"
@@ -205,14 +205,14 @@
                                     </Border>
                                 </StackPanel>
 
-                                <Button x:ConnectionId='62' Grid.Column="3" Style="{StaticResource NeoActionButtonStyle}" Width="40" Height="34" Padding="0"
+                                <Button x:ConnectionId='67' Grid.Column="3" Style="{StaticResource NeoActionButtonStyle}" Width="40" Height="34" Padding="0"
                                                                                                          ToolTipService.ToolTip="Seleccionar todo / deseleccionar todo">
                                     <FontIcon Glyph="&#xE8FD;" FontSize="14" Foreground="#E6FFFFFF" />
                                 </Button>
                             </Grid>
 
                             <Grid Grid.Row="1">
-                                <ListView x:ConnectionId='46'                                                                 
+                                <ListView x:ConnectionId='51'                                                                 
                                                                                                           
                                          Background="Transparent"
                                          BorderThickness="0"
@@ -249,19 +249,19 @@
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemTemplate>
                                         <DataTemplate                                           >
-                                            <Grid x:ConnectionId='50' ColumnSpacing="10">
+                                            <Grid x:ConnectionId='55' ColumnSpacing="10">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <CheckBox x:ConnectionId='51' Grid.Column="0"
+                                                <CheckBox x:ConnectionId='56' Grid.Column="0"
                                                                                                       
                                                                                                         
                                                           VerticalAlignment="Center"/>
 
-                                                <Image x:ConnectionId='52' Grid.Column="1"
+                                                <Image x:ConnectionId='57' Grid.Column="1"
                                                        Width="20" Height="20"
                                                        Margin="2,0,2,0"
                                                                                                 
@@ -272,31 +272,31 @@
                                                 <StackPanel Grid.Column="2" Spacing="3">
                                                     <StackPanel Orientation="Horizontal" Spacing="8">
                                                         <TextBlock FontSize="14" Foreground="#F2FFFFFF" FontWeight="SemiBold">
-                                                            <Run x:ConnectionId='57'                                             />
-                                                            <Run x:ConnectionId='58'                                            Foreground="#FF6B6B"/>
+                                                            <Run x:ConnectionId='62'                                             />
+                                                            <Run x:ConnectionId='63'                                            Foreground="#FF6B6B"/>
                                                         </TextBlock>
-                                                        <TextBlock x:ConnectionId='56' Text="⚠"
+                                                        <TextBlock x:ConnectionId='61' Text="⚠"
                                                                    FontSize="12"
                                                                    Foreground="#FFC56A"
                                                                    VerticalAlignment="Center"
                                                                                                                       
-                                                                   ToolTipService.ToolTip="Acción sensible: requiere revisión manual."/>
+                                                                                                                               />
                                                     </StackPanel>
 
                                                     <!-- Descripción corta (especialmente útil en Servicios) -->
-                                                    <TextBlock x:ConnectionId='53'                                         
+                                                    <TextBlock x:ConnectionId='58'                                         
                                                                FontSize="11"
                                                                Foreground="#66FFFFFF"
                                                                TextWrapping="WrapWholeWords"
                                                                MaxLines="2"/>
 
                                                     <!-- Estado actual (una línea) -->
-                                                    <TextBlock x:ConnectionId='54'                                              
+                                                    <TextBlock x:ConnectionId='59'                                              
                                                                FontSize="11"
                                                                Foreground="#8CFFFFFF"
                                                                Margin="0,2,0,0"/>
 
-                                                    <TextBlock x:ConnectionId='55'                                            
+                                                    <TextBlock x:ConnectionId='60'                                            
                                                                FontSize="11"
                                                                Foreground="#B3FFFFFF"
                                                                                                                       />
@@ -323,10 +323,10 @@
             <!-- CARD SUPERIOR: qué hace el módulo seleccionado -->
             <Border Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel>
-                    <TextBlock x:ConnectionId='37'                                                           FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" TextWrapping="Wrap" />
-                    <TextBlock x:ConnectionId='38'                                                                 FontSize="11" Foreground="#B3FFFFFF" LineHeight="17" Margin="0,8,0,0" TextWrapping="Wrap" />
+                    <TextBlock x:ConnectionId='38'                                                           FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" TextWrapping="Wrap" />
+                    <TextBlock x:ConnectionId='39'                                                                 FontSize="11" Foreground="#B3FFFFFF" LineHeight="17" Margin="0,8,0,0" TextWrapping="Wrap" />
 
-                    <TextBlock x:ConnectionId='39' Text="⚠️ Se recomienda ejecutar el programa como administrador para este módulo. Algunos procesos pueden presentar errores si no se cuentan con los permisos adecuados."
+                    <TextBlock x:ConnectionId='40' Text="⚠️ Se recomienda ejecutar el programa como administrador para este módulo. Algunos procesos pueden presentar errores si no se cuentan con los permisos adecuados."
                                FontSize="11"
                                Foreground="#FF6B6B"
                                Margin="0,8,0,0"
@@ -339,16 +339,40 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <ProgressRing x:ConnectionId='40' Grid.Column="0"
+                        <ProgressRing x:ConnectionId='41' Grid.Column="0"
                                       Style="{StaticResource ModuleProgressRingStyle}"
                                                                                                                      />
 
                         <StackPanel Grid.Column="1" Spacing="6">
-                            <TextBlock x:ConnectionId='41'                                                                
+                            <TextBlock x:ConnectionId='42'                                                                
                                        FontSize="11"
                                        Foreground="#8CFFFFFF"
                                        TextWrapping="WrapWholeWords" />
-                            <TextBlock x:ConnectionId='42'                                                                   
+
+                            <StackPanel x:ConnectionId='43' Margin="0,10,0,0" Spacing="6"                                                                       >
+                                <TextBlock Text="Perfiles de servicios (marcan la selección; luego pulsa Aplicar)"
+                                           FontSize="11" Foreground="#99FFFFFF" TextWrapping="WrapWholeWords" />
+                                <ItemsControl x:ConnectionId='45'                                                                        >
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" Spacing="6" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate                                             >
+                                            <Button x:ConnectionId='47' Style="{StaticResource NeoActionButtonStyle}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Padding="10,6"
+                                                                            
+                                                                                                 
+                                                                     
+                                                                                 />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <TextBlock x:ConnectionId='44'                                                                   
                                        FontSize="11"
                                        Foreground="#B3FFFFFF"
                                        TextWrapping="WrapWholeWords"
@@ -365,15 +389,19 @@
                                Visibility="Collapsed"/>
 
                     <StackPanel x:ConnectionId='26' x:Name="DefaultActionsPanel">
-                        <Button x:ConnectionId='34' x:Name="PrimaryActionButton" Content="Aplicar"                                   Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='35' x:Name="SecondaryActionButton" Content="Revertir"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='36' x:Name="TertiaryActionButton" Content="Restaurar de fabrica"                                    Style="{StaticResource NeoActionButtonStyle}"/>
+                        <Button x:ConnectionId='35' x:Name="PrimaryActionButton" Content="Aplicar"                                   Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='36' x:Name="SecondaryActionButton" Content="Revertir"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='37' x:Name="TertiaryActionButton" Content="Restaurar de fabrica"                                    Style="{StaticResource NeoActionButtonStyle}"/>
                     </StackPanel>
 
                     <StackPanel x:ConnectionId='27' x:Name="ProgramsActionsPanel" Visibility="Collapsed">
-                        <Button x:ConnectionId='31' Content="Instalar"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='32' Content="Actualizar"                                    Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='33' Content="Desinstalar"                                       Style="{StaticResource NeoActionButtonStyle}"/>
+                        <Button x:ConnectionId='31' Content="Comprobar winget"
+                                                                                            
+                                Style="{StaticResource NeoActionButtonStyle}"
+                                Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='32' Content="Instalar"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='33' Content="Actualizar"                                    Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='34' Content="Desinstalar"                                       Style="{StaticResource NeoActionButtonStyle}"/>
                     </StackPanel>
 
                     <StackPanel x:ConnectionId='28' x:Name="UninstallerActionsPanel" Visibility="Collapsed">

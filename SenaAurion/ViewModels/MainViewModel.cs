@@ -56,6 +56,7 @@ public sealed partial class MainViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(NetworkTcpTweaks))]
     [NotifyPropertyChangedFor(nameof(WifiCriticalServices))]
     [NotifyPropertyChangedFor(nameof(ServiceItems))]
+    [NotifyPropertyChangedFor(nameof(ServiceProfileDefinitions))]
     private OptimizationDataDocument? _data;
 
     public int RegistryTweakCount => Data?.RegistryTweaks?.Count ?? 0;
@@ -73,6 +74,14 @@ public sealed partial class MainViewModel : ViewModelBase
 
     public IReadOnlyList<ServiceDefinition> ServiceItems =>
         Data?.Services?.ToArray() ?? Array.Empty<ServiceDefinition>();
+
+    public IReadOnlyList<ServiceProfileDefinition> ServiceProfileDefinitions =>
+        Data?.ServiceProfiles?.ToArray() ?? Array.Empty<ServiceProfileDefinition>();
+
+    public bool IsServicesModule => SelectedTag == "services";
+
+    public Microsoft.UI.Xaml.Visibility ServiceProfilesVisibility =>
+        IsServicesModule ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsSectionHome))]
@@ -139,14 +148,31 @@ public sealed partial class MainViewModel : ViewModelBase
     private bool _selectAllInput;
     partial void OnSelectAllInputChanged(bool value)
     {
-        foreach (var item in InputTweakItems) item.IsSelected = value;
+        foreach (var item in InputTweakItems)
+        {
+            if (value && item.IsDanger)
+                continue;
+            item.IsSelected = value;
+        }
     }
 
     [ObservableProperty]
     private bool _selectAllNetwork;
     partial void OnSelectAllNetworkChanged(bool value)
     {
-        foreach (var item in NetworkTweakItems) item.IsSelected = value;
+        foreach (var item in NetworkTweakItems)
+        {
+            if (value && item.IsDanger)
+                continue;
+            item.IsSelected = value;
+        }
+
+        foreach (var item in NetworkQuickActionItems)
+        {
+            if (value && item.IsDanger)
+                continue;
+            item.IsSelected = value;
+        }
     }
 
     [ObservableProperty]
@@ -201,6 +227,7 @@ public sealed partial class MainViewModel : ViewModelBase
     public ObservableCollection<ServiceToggleViewModel> ServiceToggles { get; } = new();
     public ObservableCollection<RegistryTweakViewModel> InputTweakItems { get; } = new();
     public ObservableCollection<RegistryTweakViewModel> NetworkTweakItems { get; } = new();
+    public ObservableCollection<NetworkQuickActionViewModel> NetworkQuickActionItems { get; } = new();
     public ObservableCollection<ServiceTweakModel> ServiceTweakItems { get; } = new();
     public ObservableCollection<CleanerTweakModel> CleanerTweakItems { get; } = new();
     public ObservableCollection<ProgramPackageViewModel> ProgramPackageItems { get; } = new();
@@ -246,6 +273,8 @@ public sealed partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsSectionNetwork));
         OnPropertyChanged(nameof(IsSectionServices));
         OnPropertyChanged(nameof(IsSectionCleaner));
+        OnPropertyChanged(nameof(IsServicesModule));
+        OnPropertyChanged(nameof(ServiceProfilesVisibility));
         OnPropertyChanged(nameof(IsCleanerModule));
         OnPropertyChanged(nameof(IsProgramsModule));
         OnPropertyChanged(nameof(IsUninstallerModule));
@@ -333,7 +362,7 @@ public sealed partial class MainViewModel : ViewModelBase
         IEnumerable<TweakItemViewModel> source = SelectedTag switch
         {
             "input" => InputTweakItems,
-            "network" => NetworkTweakItems,
+            "network" => NetworkTweakItems.Cast<TweakItemViewModel>().Concat(NetworkQuickActionItems),
             "services" => ServiceTweakItems,
             "cleaner" => CleanerTweakItems,
             "programs" => ProgramPackageItems,
@@ -423,6 +452,7 @@ public sealed partial class MainViewModel : ViewModelBase
         ServiceTweakItems.Clear();
         InputTweakItems.Clear();
         NetworkTweakItems.Clear();
+        NetworkQuickActionItems.Clear();
         CleanerTweakItems.Clear();
         ProgramPackageItems.Clear();
 
@@ -443,6 +473,11 @@ public sealed partial class MainViewModel : ViewModelBase
 
         foreach (var t in Data.InputLatency.Tweaks) InputTweakItems.Add(new RegistryTweakViewModel(t));
         foreach (var t in Data.NetworkTcp.Tweaks) NetworkTweakItems.Add(new RegistryTweakViewModel(t));
+        if (Data.NetworkQuickActions is { Count: > 0 })
+        {
+            foreach (var a in Data.NetworkQuickActions)
+                NetworkQuickActionItems.Add(new NetworkQuickActionViewModel(a));
+        }
         
         if (Data.Cleaner?.Tasks != null)
         {
@@ -464,6 +499,12 @@ public sealed partial class MainViewModel : ViewModelBase
         ProgramPackageItems.Add(new ProgramPackageViewModel("VLC", "VideoLAN.VLC", "Reproductor multimedia"));
         ProgramPackageItems.Add(new ProgramPackageViewModel("Git", "Git.Git", "Control de versiones"));
         ProgramPackageItems.Add(new ProgramPackageViewModel("Microsoft PowerToys", "Microsoft.PowerToys", "Utilidades del sistema"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Visual Studio Code", "Microsoft.VisualStudioCode", "Editor de código"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Windows Terminal", "Microsoft.WindowsTerminal", "Terminal moderno"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Discord", "Discord.Discord", "Comunicación"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Steam", "Valve.Steam", "Plataforma de juegos"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Spotify", "Spotify.Spotify", "Música en streaming"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Python 3.12", "Python.Python.3.12", "Intérprete Python"));
 
         SelectAllInput = false;
         SelectAllNetwork = false;
@@ -522,7 +563,7 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         if (Data is null) return;
         IsBusy = true;
-        StatusMessage = $"Aplicando {moduleName}â€¦";
+        StatusMessage = $"Aplicando {moduleName}…";
         try
         {
             var selections = ServiceToggles.ToDictionary(
@@ -568,7 +609,12 @@ public sealed partial class MainViewModel : ViewModelBase
             if (moduleName == "input")
                 await _engine.ApplyTweaksAsync(InputTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
             else if (moduleName == "network")
-                await _engine.ApplyTweaksAsync(NetworkTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
+            {
+                var regDefs = selectedItems.OfType<RegistryTweakViewModel>().Select(t => t.Definition);
+                var quickDefs = selectedItems.OfType<NetworkQuickActionViewModel>().Select(t => t.Definition);
+                await _engine.ApplyTweaksAsync(regDefs, cancellationToken).ConfigureAwait(true);
+                await _engine.ApplyNetworkQuickActionsAsync(quickDefs, cancellationToken).ConfigureAwait(true);
+            }
             else if (moduleName == "services")
                 await _engine.ApplyServicesAsync(ServiceTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
             else if (moduleName == "cleaner")
@@ -602,6 +648,7 @@ public sealed partial class MainViewModel : ViewModelBase
             {
                 "services" => "Servicios procesados: deshabilitación aplicada donde correspondía (y bloqueada si era crítica por Wi‑Fi).",
                 "cleaner" => "Limpieza finalizada correctamente.",
+                "network" => "Ajustes de registro y acciones de red (DNS/caché) ejecutadas según la selección.",
                 _ => "Cambios aplicados y verificados."
             };
         }
@@ -627,6 +674,7 @@ public sealed partial class MainViewModel : ViewModelBase
         foreach (var item in ServiceTweakItems) item.LastChangeText = string.Empty;
         foreach (var item in CleanerTweakItems) item.LastChangeText = string.Empty;
         foreach (var item in ProgramPackageItems) item.LastChangeText = string.Empty;
+        foreach (var item in NetworkQuickActionItems) item.LastChangeText = string.Empty;
     }
 
     partial void OnIsCurrentModuleApplyingChanged(bool value) =>
@@ -679,7 +727,8 @@ public sealed partial class MainViewModel : ViewModelBase
             if (moduleName == "input")
                 await _engine.RevertInputTweaksAsync(InputTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
             else if (moduleName == "network")
-                await _engine.RevertNetworkTweaksAsync(NetworkTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
+                await _engine.RevertNetworkTweaksAsync(
+                    NetworkTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
             else if (moduleName == "services")
                 await _engine.RevertServicesAsync(ServiceTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
             else if (moduleName == "cleaner")
@@ -895,10 +944,10 @@ public sealed partial class MainViewModel : ViewModelBase
         switch (SelectedTag)
         {
             case "input":
-                SelectAllInput = !AreAllSelected(InputTweakItems);
+                SelectAllInput = !AreAllSafeInputSelected();
                 break;
             case "network":
-                SelectAllNetwork = !AreAllSelected(NetworkTweakItems);
+                SelectAllNetwork = !AreAllNetworkSafeSelected();
                 break;
             case "services":
                 SelectAllServices = !AreAllSelectableServicesSelected();
@@ -935,6 +984,74 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         var safe = CleanerTweakItems.Where(c => !c.IsDanger).ToArray();
         return safe.Length > 0 && safe.All(c => c.IsSelected);
+    }
+
+    private bool AreAllNetworkSafeSelected()
+    {
+        var items = NetworkTweakItems.Where(t => !t.IsDanger)
+            .Cast<TweakItemViewModel>()
+            .Concat(NetworkQuickActionItems.Where(t => !t.IsDanger))
+            .ToArray();
+        return items.Length > 0 && items.All(i => i.IsSelected);
+    }
+
+    private bool AreAllSafeInputSelected()
+    {
+        var safe = InputTweakItems.Where(t => !t.IsDanger).ToArray();
+        return safe.Length > 0 && safe.All(i => i.IsSelected);
+    }
+
+    /// <summary>Aplica un perfil de servicios (solo marca casillas; usa «Aplicar» para ejecutar).</summary>
+    [RelayCommand]
+    private void ApplyServiceProfile(string? profileId)
+    {
+        if (Data is null || string.IsNullOrWhiteSpace(profileId)) return;
+        var profile = Data.ServiceProfiles.FirstOrDefault(p =>
+            string.Equals(p.Id, profileId, StringComparison.OrdinalIgnoreCase));
+        if (profile is null)
+        {
+            StatusMessage = $"Perfil no encontrado: {profileId}";
+            return;
+        }
+
+        var disable = new HashSet<string>(profile.DisableServiceIds, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var item in ServiceTweakItems)
+        {
+            var want = disable.Contains(item.Definition.Id);
+            if (item.IsWifiLocked)
+                item.IsSelected = false;
+            else
+                item.IsSelected = want;
+        }
+
+        foreach (var toggle in ServiceToggles)
+        {
+            var want = disable.Contains(toggle.ServiceId);
+            if (toggle.IsWifiLocked)
+                toggle.IsDisableRequested = false;
+            else
+                toggle.IsDisableRequested = want;
+        }
+
+        StatusMessage = $"Perfil «{profile.Label}»: selección actualizada. Pulsa Aplicar para deshabilitar servicios.";
+        OnPropertyChanged(nameof(CurrentModuleSummaryText));
+    }
+
+    [RelayCommand]
+    private async Task ProbeWingetAsync(CancellationToken cancellationToken)
+    {
+        IsBusy = true;
+        StatusMessage = "Comprobando winget…";
+        try
+        {
+            var msg = await WingetProgramService.ProbeAsync(cancellationToken).ConfigureAwait(true);
+            StatusMessage = $"winget: {msg}";
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }
 

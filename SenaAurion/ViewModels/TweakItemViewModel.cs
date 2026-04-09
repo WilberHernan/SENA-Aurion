@@ -54,6 +54,10 @@ public partial class TweakItemViewModel : ObservableObject
     [ObservableProperty]
     private bool _isDanger;
 
+    /// <summary>Texto para tooltip del icono de advertencia (impacto / riesgo).</summary>
+    [ObservableProperty]
+    private string _dangerTooltip = "";
+
     public Microsoft.UI.Xaml.Visibility DangerVisibility =>
         IsDanger ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
 
@@ -61,7 +65,8 @@ public partial class TweakItemViewModel : ObservableObject
     private bool _isOptimized;
 
     partial void OnLastChangeTextChanged(string value) => OnPropertyChanged(nameof(LastChangeVisibility));
-    partial void OnIsDangerChanged(bool value) => OnPropertyChanged(nameof(DangerVisibility));
+    partial void OnIsDangerChanged(bool value) =>
+        OnPropertyChanged(nameof(DangerVisibility));
 
     public virtual void RefreshState() { }
 }
@@ -80,7 +85,13 @@ public partial class RegistryTweakViewModel : TweakItemViewModel
         DisplayName = def.DisplayName;
         DisplayNameMain = def.DisplayName;
         BlockedSuffix = string.Empty;
-        Description = def.Rationale;
+        Description = string.IsNullOrWhiteSpace(def.ImpactDescription)
+            ? def.Rationale
+            : $"{def.Rationale}\n\nAdvertencia: {def.ImpactDescription}";
+        IsDanger = def.IsDanger;
+        DangerTooltip = string.IsNullOrWhiteSpace(def.ImpactDescription)
+            ? "Ajuste sensible al sistema o al hardware: revisa la descripción antes de aplicar."
+            : def.ImpactDescription;
         RefreshState();
     }
 
@@ -246,6 +257,8 @@ public partial class CleanerTweakModel : TweakItemViewModel
         Description = def.Description;
         IsSelected = def.DefaultRecommended; // Defaults: true for safe ones, false for User Folders
         base.IsDanger = Definition.IsDanger || Definition.Id == "user-folders";
+        if (base.IsDanger)
+            DangerTooltip = "Eliminación permanente o muy agresiva. Revisa la descripción y haz copia de seguridad si aplica.";
         RefreshState();
     }
 
@@ -262,16 +275,17 @@ public partial class CleanerTweakModel : TweakItemViewModel
 
         var status = Services.CleanerOptimization.GetTaskState(Definition.Id);
 
-        if (Definition.Id == "user-folders")
-        {
-            CurrentStateText = $"Estado actual: {status}";
-        }
-        else
-        {
-            CurrentStateText = string.Empty;
-        }
+        var showStatus = Definition.Id is "user-folders" or "temp-files" or "prefetch" or "wu-cache" or "event-logs"
+            or "thumbcache" or "delivery-opt" or "icon-cache" or "d3d-shader-cache" or "wer-reports" or "inet-cache";
+        CurrentStateText = showStatus ? $"Estado actual: {status}" : string.Empty;
 
-        IsOptimized = status.Contains("vacÃ­a", System.StringComparison.OrdinalIgnoreCase) || status.Contains("limpio", System.StringComparison.OrdinalIgnoreCase) || status.Contains("optimizados", System.StringComparison.OrdinalIgnoreCase) || status.Contains("VacÃ­as", System.StringComparison.OrdinalIgnoreCase);
+        IsOptimized = status.Contains("vacía", System.StringComparison.OrdinalIgnoreCase)
+            || status.Contains("vacÃ­a", System.StringComparison.OrdinalIgnoreCase)
+            || status.Contains("limpio", System.StringComparison.OrdinalIgnoreCase)
+            || status.Contains("optimizados", System.StringComparison.OrdinalIgnoreCase)
+            || status.Contains("VacÃ­as", System.StringComparison.OrdinalIgnoreCase)
+            || status.Contains("0 archivos", System.StringComparison.OrdinalIgnoreCase)
+            || status.Contains("Sin miniaturas", System.StringComparison.OrdinalIgnoreCase);
         IsPresent = true;
         IsSelectable = true;
     }
@@ -289,5 +303,31 @@ public partial class ProgramPackageViewModel : TweakItemViewModel
         PackageId = packageId;
         Description = description;
         CurrentStateText = $"Id winget: {packageId}";
+    }
+}
+
+public sealed partial class NetworkQuickActionViewModel : TweakItemViewModel
+{
+    public Models.NetworkQuickActionDefinition Definition { get; }
+
+    public NetworkQuickActionViewModel(Models.NetworkQuickActionDefinition def)
+    {
+        Definition = def;
+        DisplayName = def.DisplayLabel;
+        DisplayNameMain = def.DisplayLabel;
+        Description = def.Description;
+        IsDanger = def.IsDanger;
+        DangerTooltip = string.IsNullOrWhiteSpace(def.ImpactDescription)
+            ? def.Description
+            : def.ImpactDescription;
+        RefreshState();
+    }
+
+    public override void RefreshState()
+    {
+        CurrentStateText = "Acción de sistema (DNS / caché). Ejecutar como administrador si falla el cambio de DNS.";
+        IsPresent = true;
+        IsSelectable = true;
+        IsOptimized = false;
     }
 }

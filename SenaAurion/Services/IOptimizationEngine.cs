@@ -1,4 +1,4 @@
-﻿using SenaAurion.Models;
+using SenaAurion.Models;
 
 namespace SenaAurion.Services;
 
@@ -31,5 +31,7 @@ public interface IOptimizationEngine
     
     Task ApplyCleanerAsync(IEnumerable<CleanerTaskDefinition> tasks, CancellationToken token = default);
     Task RevertCleanerAsync(IEnumerable<CleanerTaskDefinition> tasks, CancellationToken token = default);
+
+    Task ApplyNetworkQuickActionsAsync(IEnumerable<NetworkQuickActionDefinition> actions, CancellationToken token = default);
 }
 

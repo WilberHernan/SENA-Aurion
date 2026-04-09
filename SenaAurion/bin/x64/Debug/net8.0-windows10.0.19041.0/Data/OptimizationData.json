@@ -7,7 +7,9 @@
       "Dataset alineado con políticas y rutas habituales en Chris Titus Tech Windows Utility, Sophia Script, guías tipo Fr33thy (latencia) y enfoques de privacidad/rendimiento estilo AtlasOS / scripts de comunidad (solo valores documentados en código abierto o documentación Microsoft).",
       "El motor comprueba existencia de clave antes de escribir; si falta la rama, registra y continúa.",
       "Servicios neverDisableWhenWifi / lista wifiCriticalServices: el motor no deshabilita esos servicios con Wi‑Fi activo.",
-      "NetworkThrottlingIndex usa -1 en JSON (DWORD 0xFFFFFFFF) para desactivar limitación de red en segundo plano; es un patrón habitual en perfiles multimedia/juego."
+      "NetworkThrottlingIndex usa -1 en JSON (DWORD 0xFFFFFFFF) para desactivar limitación de red en segundo plano; es un patrón habitual en perfiles multimedia/juego.",
+      "networkQuickActions: DNS y flush vía ipconfig/PowerShell (estilo WinUtil Set-WinUtilDNS); ejecutar elevado si falla.",
+      "serviceProfiles: solo marcan la selección del módulo Servicios; la aplicación real sigue siendo explícita con el botón Aplicar."
     ]
   },
   "inputLatency": {
@@ -129,6 +131,125 @@
         "requiresAdmin": true,
         "rationale": "Cola de teclado; 20 es un valor habitual en scripts de latencia (si la clave no existe, el motor omite).",
         "sourceAlignment": "Paridad con ajustes kbdclass en scripts públicos"
+      },
+      {
+        "id": "explorer-launch-thispc",
+        "displayName": "Explorador: abrir en Este equipo",
+        "category": "Productividad",
+        "hive": "CurrentUser",
+        "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "valueName": "LaunchTo",
+        "valueKind": "DWord",
+        "valueData": 1,
+        "requiresAdmin": false,
+        "rationale": "Win+E y ventanas nuevas enfocan «Este equipo» en lugar de accesos rápidos.",
+        "sourceAlignment": "Preferencias de productividad / WinUtil-style"
+      },
+      {
+        "id": "explorer-show-hidden",
+        "displayName": "Explorador: mostrar archivos ocultos",
+        "category": "Productividad",
+        "hive": "CurrentUser",
+        "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "valueName": "Hidden",
+        "valueKind": "DWord",
+        "valueData": 1,
+        "requiresAdmin": false,
+        "rationale": "Visibilidad de archivos y carpetas ocultos del sistema.",
+        "sourceAlignment": "Soporte técnico / power users"
+      },
+      {
+        "id": "explorer-show-extensions",
+        "displayName": "Explorador: mostrar extensiones",
+        "category": "Productividad",
+        "hive": "CurrentUser",
+        "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "valueName": "HideFileExt",
+        "valueKind": "DWord",
+        "valueData": 0,
+        "requiresAdmin": false,
+        "rationale": "Evita confusiones entre .txt, .exe, etc.",
+        "sourceAlignment": "Buenas prácticas de seguridad básica"
+      },
+      {
+        "id": "desktop-autoendtasks",
+        "displayName": "Cerrar apps automáticamente al apagar",
+        "category": "Escritorio",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Desktop",
+        "valueName": "AutoEndTasks",
+        "valueKind": "String",
+        "valueData": "1",
+        "requiresAdmin": false,
+        "rationale": "Apagado más rápido; puede cerrar aplicaciones sin confirmación explícita.",
+        "sourceAlignment": "Scripts de escritorio",
+        "isDanger": true,
+        "impactDescription": "Windows puede terminar procesos colgados o con datos sin guardar al apagar o reiniciar. No recomendado en equipos de trabajo crítico."
+      },
+      {
+        "id": "desktop-hung-timeout",
+        "displayName": "HungAppTimeout (apps colgadas)",
+        "category": "Escritorio",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Desktop",
+        "valueName": "HungAppTimeout",
+        "valueKind": "String",
+        "valueData": "1000",
+        "requiresAdmin": false,
+        "rationale": "Tiempo más corto antes de considerar una app colgada (ms).",
+        "sourceAlignment": "Tweaks de respuesta del escritorio"
+      },
+      {
+        "id": "desktop-wait-kill-app",
+        "displayName": "WaitToKillAppTimeout",
+        "category": "Escritorio",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Desktop",
+        "valueName": "WaitToKillAppTimeout",
+        "valueKind": "String",
+        "valueData": "2000",
+        "requiresAdmin": false,
+        "rationale": "Menos espera al cerrar aplicaciones durante el apagado.",
+        "sourceAlignment": "Optimización de tiempos de apagado"
+      },
+      {
+        "id": "desktop-wait-kill-service",
+        "displayName": "WaitToKillServiceTimeout",
+        "category": "Escritorio",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Desktop",
+        "valueName": "WaitToKillServiceTimeout",
+        "valueKind": "String",
+        "valueData": "2000",
+        "requiresAdmin": false,
+        "rationale": "Reduce la espera máxima al detener servicios en apagado.",
+        "sourceAlignment": "Optimización de tiempos de apagado"
+      },
+      {
+        "id": "mouse-trails-off",
+        "displayName": "Rastro del puntero desactivado",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Mouse",
+        "valueName": "MouseTrails",
+        "valueKind": "String",
+        "valueData": "0",
+        "requiresAdmin": false,
+        "rationale": "Sin rastro visual del ratón (menos trabajo de composición).",
+        "sourceAlignment": "Rendimiento periféricos"
+      },
+      {
+        "id": "explorer-snap-flyout-off",
+        "displayName": "Desactivar sugerencias de Snap Assist",
+        "category": "Productividad",
+        "hive": "CurrentUser",
+        "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "valueName": "DisableSnapAssistFlyout",
+        "valueKind": "DWord",
+        "valueData": 1,
+        "requiresAdmin": false,
+        "rationale": "Menos interrupciones al acoplar ventanas (Windows 10/11).",
+        "sourceAlignment": "Flujo de trabajo sin distracciones"
       }
     ]
   },
@@ -154,7 +275,9 @@
         "valueData": 1,
         "requiresAdmin": true,
         "rationale": "ACKs más frecuentes inyectados en TODAS las interfaces activas de red (Leatrix-style).",
-        "sourceAlignment": "Scripts de red / guías gaming"
+        "sourceAlignment": "Scripts de red / guías gaming",
+        "isDanger": true,
+        "impactDescription": "Se aplica a cada interfaz TCP/IP. Puede aumentar tráfico de ACK y afectar Wi‑Fi/móvil o escenarios con muchas NIC. Revierte si notas inestabilidad."
       },
       {
         "id": "tcp-no-delay",
@@ -167,7 +290,9 @@
         "valueData": 1,
         "requiresAdmin": true,
         "rationale": "Desactiva Nagle (Nagle's Algorithm) bloqueando delay en colas de envío real.",
-        "sourceAlignment": "Guías de baja latencia / Esports"
+        "sourceAlignment": "Guías de baja latencia / Esports",
+        "isDanger": true,
+        "impactDescription": "Afecta a todas las interfaces. Útil en juegos; en transferencias masivas puede cambiar el patrón de paquetes. Comprueba en tu red."
       },
       {
         "id": "tcp-del-ack-ticks",
@@ -232,10 +357,80 @@
         "valueData": 30,
         "requiresAdmin": true,
         "rationale": "Tiempo TIME_WAIT (segundos) reducido en algunos entornos de muchas conexiones.",
-        "sourceAlignment": "Scripts avanzados (uso con precaución)"
+        "sourceAlignment": "Scripts avanzados (uso con precaución)",
+        "isDanger": true,
+        "impactDescription": "Valores bajos pueden causar problemas con sockets en servidores o software que abre muchas conexiones cortas. Revierte ante errores raros de red."
+      },
+      {
+        "id": "tcp-disable-icmp-redirect",
+        "displayName": "EnableICMPRedirect (deshabilitar)",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+        "valueName": "EnableICMPRedirect",
+        "valueKind": "DWord",
+        "valueData": 0,
+        "requiresAdmin": true,
+        "rationale": "Evita seguir redirecciones ICMP para rutas (endurecimiento / estabilidad en algunas redes).",
+        "sourceAlignment": "Guías de endurecimiento TCP/IP"
+      },
+      {
+        "id": "tcp-disable-ip-source-routing",
+        "displayName": "DisableIPSourceRouting",
+        "category": "Network",
+        "hive": "LocalMachine",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
+        "valueName": "DisableIPSourceRouting",
+        "valueKind": "DWord",
+        "valueData": 2,
+        "requiresAdmin": true,
+        "rationale": "2 = no reenvío de tráfico con opciones de enrutamiento de origen (recomendación de seguridad Microsoft).",
+        "sourceAlignment": "Documentación Microsoft / hardening"
       }
     ]
   },
+  "networkQuickActions": [
+    {
+      "id": "dns-flush",
+      "displayLabel": "Vaciar caché DNS local",
+      "description": "Ejecuta ipconfig /flushdns. Seguro y reversible; útil tras cambiar DNS o resolver nombres obsoletos.",
+      "action": "flushDns",
+      "isDanger": false,
+      "impactDescription": ""
+    },
+    {
+      "id": "dns-cloudflare",
+      "displayLabel": "DNS Cloudflare (1.1.1.1) en adaptadores activos",
+      "description": "Aplica DNS 1.1.1.1 y 1.0.0.1 en interfaces físicas activas (PowerShell). Suele requerir ejecutar la app como administrador.",
+      "action": "dnsCloudflare",
+      "isDanger": false,
+      "impactDescription": "Sustituye DNS manual en adaptadores activos. Tu ISP o VPN pueden verse afectados hasta que restaures DHCP."
+    },
+    {
+      "id": "dns-google",
+      "displayLabel": "DNS Google (8.8.8.8) en adaptadores activos",
+      "description": "Aplica DNS públicos de Google en interfaces físicas activas.",
+      "action": "dnsGoogle",
+      "isDanger": false,
+      "impactDescription": "Igual que otros presets DNS: cambio en todas las NIC físicas activas."
+    },
+    {
+      "id": "dns-adguard",
+      "displayLabel": "DNS AdGuard (filtrado)",
+      "description": "Usa los resolvers DNS públicos de AdGuard (94.140.14.14 / 15.15).",
+      "action": "dnsAdGuard",
+      "isDanger": false,
+      "impactDescription": "Filtrado DNS del proveedor AdGuard; revisa políticas de privacidad del servicio."
+    },
+    {
+      "id": "dns-dhcp-reset",
+      "displayLabel": "Restaurar DNS automático (DHCP)",
+      "description": "Resetea DNS a DHCP en todas las interfaces activas (Set-DnsClientServerAddress -ResetServerAddresses).",
+      "action": "dnsDhcpReset",
+      "isDanger": true,
+      "impactDescription": "Quita DNS estáticos en interfaces activas. Si dependes de DNS corporativos fijos, anota los valores antes."
+    }
+  ],
   "registryTweaks": [
     {
       "id": "policy-allow-telemetry",
@@ -669,6 +864,292 @@
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
       "userDescription": "Tableta/táctil; no deshabilitar en Surface o equipos táctiles."
+    },
+    {
+      "id": "pcasvc",
+      "serviceName": "PcaSvc",
+      "displayLabel": "Asistente de compatibilidad de programas",
+      "group": "Sistema",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Sugerencias de compatibilidad; seguro desactivar en muchos equipos fijos."
+    },
+    {
+      "id": "smsrouter",
+      "serviceName": "SmsRouter",
+      "displayLabel": "Enrutador de mensajes SMS",
+      "group": "Telemetría",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Relacionado con telefonía móvil en PC; raramente necesario en sobremesa."
+    },
+    {
+      "id": "phonesvc",
+      "serviceName": "PhoneSvc",
+      "displayLabel": "Servicio de teléfono",
+      "group": "Telemetría",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Vinculación con móvil; deshabilitar si no usas «Tu teléfono»."
+    },
+    {
+      "id": "shpamsvc",
+      "serviceName": "shpamsvc",
+      "displayLabel": "Cuenta compartida (Shared PC)",
+      "group": "Sistema",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Escenarios de PC compartido en educación; innecesario en uso doméstico típico."
+    },
+    {
+      "id": "retaildemo",
+      "serviceName": "RetailDemo",
+      "displayLabel": "Modo demostración retail",
+      "group": "Sistema",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Solo en imágenes demo; si no existe, el motor lo omitirá."
+    },
+    {
+      "id": "sharedaccess",
+      "serviceName": "SharedAccess",
+      "displayLabel": "Conexión compartida a Internet (ICS)",
+      "group": "Red",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Compartir conexión como router; deshabilitar si no hospedas ICS."
+    },
+    {
+      "id": "winrm",
+      "serviceName": "WinRM",
+      "displayLabel": "Administración remota de Windows (WS-Management)",
+      "group": "Red",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "PowerShell remoto / Ansible. Mantén activo si administras el equipo a distancia."
+    },
+    {
+      "id": "lmhosts",
+      "serviceName": "Lmhosts",
+      "displayLabel": "Ayudante NetBIOS sobre TCP/IP",
+      "group": "Red",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Resolución NetBIOS legacy; muchas redes modernas no lo necesitan."
+    },
+    {
+      "id": "sessionenv",
+      "serviceName": "SessionEnv",
+      "displayLabel": "Configuración de Escritorio remoto",
+      "group": "Red",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Preparación de sesiones RDP. Deshabilitar solo si no usas Escritorio remoto."
+    },
+    {
+      "id": "termservice",
+      "serviceName": "TermService",
+      "displayLabel": "Servicios de Escritorio remoto",
+      "group": "Red",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Servidor RDP entrante. No deshabilitar en servidores o si te conectas remotamente."
+    },
+    {
+      "id": "umrdpservice",
+      "serviceName": "UmRdpService",
+      "displayLabel": "Redirección de Portapapeles RDP",
+      "group": "Red",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Mejoras de sesión RDP; opcional si no usas RDP."
+    },
+    {
+      "id": "wbiosrvc",
+      "serviceName": "WbioSrvc",
+      "displayLabel": "Servicio biométrico de Windows",
+      "group": "Entrada",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Windows Hello / huella. No deshabilitar en portátiles con biometría."
+    },
+    {
+      "id": "btagservice",
+      "serviceName": "BTAGService",
+      "displayLabel": "Servicio de puerta de enlace de audio Bluetooth",
+      "group": "Dispositivos",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Audio BT avanzado; mantener si usas auriculares BT como audio principal."
+    },
+    {
+      "id": "bthserv",
+      "serviceName": "bthserv",
+      "displayLabel": "Soporte técnico Bluetooth",
+      "group": "Dispositivos",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Bluetooth del sistema; deshabilitar solo si no usas ningún dispositivo BT."
+    },
+    {
+      "id": "cdpsvc",
+      "serviceName": "CDPSvc",
+      "displayLabel": "Plataforma de dispositivos conectados",
+      "group": "Sistema",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Funciones entre dispositivos (Continuidad, etc.). Puede afectar sincronización."
+    },
+    {
+      "id": "wpnservice",
+      "serviceName": "WpnService",
+      "displayLabel": "Sistema de notificaciones push de Windows",
+      "group": "Sistema",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Notificaciones de UWP/Store. Deshabilitar reduce notificaciones de apps modernas."
+    },
+    {
+      "id": "scdeviceenum",
+      "serviceName": "ScDeviceEnum",
+      "displayLabel": "Enumeración de dispositivos de tarjeta inteligente",
+      "group": "Seguridad",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Tarjetas inteligentes; deshabilitar si no usas PKI física."
+    },
+    {
+      "id": "scardsvr",
+      "serviceName": "SCardSvr",
+      "displayLabel": "Tarjeta inteligente",
+      "group": "Seguridad",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Lector de smart cards; omitir si no tienes hardware."
+    },
+    {
+      "id": "semgrsvc",
+      "serviceName": "SEMgrSvc",
+      "displayLabel": "Pagos y NFC/SE",
+      "group": "Seguridad",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Escenarios de elementos seguros y pagos; poco usado en PC de escritorio."
+    },
+    {
+      "id": "walletservice",
+      "serviceName": "WalletService",
+      "displayLabel": "Servicio Cartera",
+      "group": "Sistema",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Cartera / pagos integrados; deshabilitar si no usas la función."
+    },
+    {
+      "id": "embeddedmode",
+      "serviceName": "EmbeddedMode",
+      "displayLabel": "Modo integrado",
+      "group": "Sistema",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Escenarios IoT/kiosko; innecesario en PCs estándar."
+    }
+  ],
+  "serviceProfiles": [
+    {
+      "id": "gaming",
+      "label": "Gaming / baja latencia",
+      "description": "Telemetría, Xbox en Store, indexación y prefetch agresivo. Revisa si usas Xbox Live en PC.",
+      "disableServiceIds": [
+        "diagtrack",
+        "dmwappushservice",
+        "sensrsvc",
+        "wisvc",
+        "mapsbroker",
+        "wmpnetworksvc",
+        "sysmain",
+        "wsearch",
+        "xblauthmanager",
+        "xblgamesave",
+        "wersvc",
+        "pcasvc",
+        "phonesvc",
+        "smsrouter"
+      ]
+    },
+    {
+      "id": "productivity",
+      "label": "Productividad (ligero)",
+      "description": "Solo telemetría y sugerencias evidentes; mantiene búsqueda e impresión.",
+      "disableServiceIds": [
+        "diagtrack",
+        "dmwappushservice",
+        "mapsbroker",
+        "wisvc",
+        "fax",
+        "retaildemo",
+        "embeddedmode"
+      ]
+    },
+    {
+      "id": "balanced",
+      "label": "Equilibrado (CTT-style)",
+      "description": "Conjunto habitual de scripts abiertos: telemetría, Insider, mapas, fax, WAP.",
+      "disableServiceIds": [
+        "diagtrack",
+        "dmwappushservice",
+        "sensrsvc",
+        "fax",
+        "wisvc",
+        "mapsbroker",
+        "remoteregistry",
+        "remoteaccess",
+        "trkwks",
+        "nettcpportsharing",
+        "wmpnetworksvc",
+        "pcasvc",
+        "shpamsvc",
+        "semgrsvc",
+        "walletservice"
+      ]
+    },
+    {
+      "id": "battery",
+      "label": "Bajo consumo / portátil",
+      "description": "Reduce indexación, prefetch y telemetría en segundo plano. No desactiva Wi‑Fi.",
+      "disableServiceIds": [
+        "diagtrack",
+        "dmwappushservice",
+        "sysmain",
+        "wsearch",
+        "mapsbroker",
+        "wisvc",
+        "wmpnetworksvc",
+        "wersvc",
+        "xblauthmanager",
+        "xblgamesave"
+      ]
     }
   ],
   "powerPlanVisionary": {
@@ -757,6 +1238,48 @@
         "description": "Limpia Descargas, Documentos, Música y Videos.",
         "defaultRecommended": false,
         "isDanger": true
+      },
+      {
+        "id": "thumbcache",
+        "displayLabel": "Miniaturas (thumbcache)",
+        "description": "Elimina thumbcache_*.db del perfil; Windows las regenera al navegar carpetas.",
+        "defaultRecommended": true,
+        "isDanger": false
+      },
+      {
+        "id": "delivery-opt",
+        "displayLabel": "Caché Delivery Optimization",
+        "description": "Vacia la caché de optimización de entrega de actualizaciones (se reconstruye sola).",
+        "defaultRecommended": true,
+        "isDanger": false
+      },
+      {
+        "id": "icon-cache",
+        "displayLabel": "Caché de iconos del Explorador",
+        "description": "Borra IconCache.db e iconcache*.db locales. Puede requerir reinicio para ver iconos perfectos.",
+        "defaultRecommended": false,
+        "isDanger": false
+      },
+      {
+        "id": "d3d-shader-cache",
+        "displayLabel": "Caché de sombreadores DirectX",
+        "description": "Vacía %LOCALAPPDATA%\\D3DSCache (juegos recompilarán sombreadores).",
+        "defaultRecommended": false,
+        "isDanger": false
+      },
+      {
+        "id": "wer-reports",
+        "displayLabel": "Informes de error (WER)",
+        "description": "Elimina volcados y reportes antiguos en ProgramData\\Microsoft\\Windows\\WER.",
+        "defaultRecommended": true,
+        "isDanger": false
+      },
+      {
+        "id": "inet-cache",
+        "displayLabel": "Caché INet (IE/Edge legado)",
+        "description": "Limpia Microsoft\\Windows\\INetCache del usuario actual.",
+        "defaultRecommended": true,
+        "isDanger": false
       }
     ]
   }
