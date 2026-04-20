@@ -13,7 +13,6 @@ public sealed partial class MainViewModel : ViewModelBase
     private readonly IOptimizationDataProvider _dataProvider;
     private readonly IOptimizationEngine _engine;
     private readonly WingetProgramService _wingetService;
-    private readonly InstalledProgramsService _installedProgramsService = new();
     private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcher;
 
     public MainViewModel(IOptimizationDataProvider dataProvider, IOptimizationEngine engine)
@@ -212,17 +211,6 @@ public sealed partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private string _cleanerStateText = "Memoria no calculada";
 
-    [ObservableProperty]
-    private string _uninstallerSearchText = string.Empty;
-    partial void OnUninstallerSearchTextChanged(string value)
-    {
-        if (SelectedTag == "uninstaller")
-        {
-            RefreshCurrentModuleView();
-            OnPropertyChanged(nameof(CurrentModuleSummaryText));
-        }
-    }
-
     // COLECCIONES UI
     public ObservableCollection<ServiceToggleViewModel> ServiceToggles { get; } = new();
     public ObservableCollection<RegistryTweakViewModel> InputTweakItems { get; } = new();
@@ -231,7 +219,6 @@ public sealed partial class MainViewModel : ViewModelBase
     public ObservableCollection<ServiceTweakModel> ServiceTweakItems { get; } = new();
     public ObservableCollection<CleanerTweakModel> CleanerTweakItems { get; } = new();
     public ObservableCollection<ProgramPackageViewModel> ProgramPackageItems { get; } = new();
-    public ObservableCollection<InstalledProgramViewModel> InstalledProgramItems { get; } = new();
     public ObservableCollection<TweakItemViewModel> CurrentModuleItems { get; } = new();
 
     [ObservableProperty]
@@ -251,8 +238,7 @@ public sealed partial class MainViewModel : ViewModelBase
         new("network", "Red inteligente", "\uE701"),
         new("services", "Servicios y telemetría", "\uE9D9"),
         new("cleaner", "Limpieza profunda", "\uE7FC"),
-        new("programs", "Gestión de programas", "\uEA37"),
-        new("uninstaller", "Desinstalador avanzado", "\uE74D")
+        new("programs", "Gestión de programas", "\uEA37")
     ];
 
     partial void OnSelectedTagChanged(string value)
@@ -265,7 +251,6 @@ public sealed partial class MainViewModel : ViewModelBase
             "services" => "Control granular de servicios",
             "cleaner" => "Mantenimiento y recuperación de espacio",
             "programs" => "Instalación, actualización y desinstalación con winget",
-            "uninstaller" => "Desinstalación oficial y avanzada",
             _ => StatusMessage,
         };
         OnPropertyChanged(nameof(IsSectionHome));
@@ -277,20 +262,11 @@ public sealed partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(ServiceProfilesVisibility));
         OnPropertyChanged(nameof(IsCleanerModule));
         OnPropertyChanged(nameof(IsProgramsModule));
-        OnPropertyChanged(nameof(IsUninstallerModule));
-        OnPropertyChanged(nameof(UninstallerModuleVisibility));
-        OnPropertyChanged(nameof(NonUninstallerModuleVisibility));
-        OnPropertyChanged(nameof(UninstallerFilterText));
 
         if (value == "home")
         {
             _ = LoadSystemInfoAsync();
         }
-        if (value == "uninstaller")
-        {
-            _ = LoadInstalledProgramsAsync();
-        }
-
         RefreshCurrentModuleView();
         ResetModuleTransientUiOnSwitch();
         OnPropertyChanged(nameof(CurrentModuleSummaryText));
@@ -305,7 +281,6 @@ public sealed partial class MainViewModel : ViewModelBase
         "services" => "Servicios",
         "cleaner" => "Limpieza",
         "programs" => "Programas",
-        "uninstaller" => "Desinstalador",
         _ => "Inicio"
     };
 
@@ -316,7 +291,6 @@ public sealed partial class MainViewModel : ViewModelBase
         "services" => "services",
         "cleaner" => "cleaner",
         "programs" => "programs",
-        "uninstaller" => "uninstaller",
         _ => "input"
     };
 
@@ -327,31 +301,10 @@ public sealed partial class MainViewModel : ViewModelBase
         "services" => "Permite deshabilitar servicios no esenciales para aligerar el sistema. Los elementos bloqueados por Wi‑Fi no se modifican para no cortar la conectividad.",
         "cleaner" => "Libera espacio eliminando temporales, cachés y datos prescindibles. Algunas acciones borran archivos de forma permanente; revísalas antes de ejecutar.",
         "programs" => "Instala, actualiza o desinstala programas usando winget (identificadores de paquete). Útil para despliegue y mantenimiento desde soporte técnico.",
-        "uninstaller" => "Lista programas instalados y permite ejecutar su desinstalador oficial o una desinstalación avanzada con escaneo de residuos (carpetas, registro, servicios y tareas).",
         _ => "Resumen del equipo y punto de partida. Desde aquí navega a cada módulo para aplicar optimizaciones concretas con reglas claras y registro de actividad."
     };
     public bool IsCleanerModule => SelectedTag == "cleaner";
     public bool IsProgramsModule => SelectedTag == "programs";
-    public bool IsUninstallerModule => SelectedTag == "uninstaller";
-
-    public Microsoft.UI.Xaml.Visibility UninstallerModuleVisibility =>
-        IsUninstallerModule ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
-
-    public Microsoft.UI.Xaml.Visibility NonUninstallerModuleVisibility =>
-        IsUninstallerModule ? Microsoft.UI.Xaml.Visibility.Collapsed : Microsoft.UI.Xaml.Visibility.Visible;
-
-    [ObservableProperty]
-    private bool _uninstallerIncludeSystemPrograms;
-    partial void OnUninstallerIncludeSystemProgramsChanged(bool value)
-    {
-        if (SelectedTag == "uninstaller")
-        {
-            RefreshCurrentModuleView();
-            OnPropertyChanged(nameof(CurrentModuleSummaryText));
-        }
-    }
-
-    public string UninstallerFilterText => UninstallerIncludeSystemPrograms ? "Sistema" : "Normales";
 
     public string SelectedModuleDisplayName => SelectedModuleItem?.DisplayName ?? "Selecciona una función";
     public string SelectedModuleDetail => SelectedModuleItem?.Description ?? CurrentModuleDescription;
@@ -366,7 +319,6 @@ public sealed partial class MainViewModel : ViewModelBase
             "services" => ServiceTweakItems,
             "cleaner" => CleanerTweakItems,
             "programs" => ProgramPackageItems,
-            "uninstaller" => FilterInstalledPrograms(InstalledProgramItems, UninstallerSearchText, UninstallerIncludeSystemPrograms),
             _ => Array.Empty<TweakItemViewModel>()
         };
 
@@ -379,43 +331,6 @@ public sealed partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(CurrentModuleActionName));
         OnPropertyChanged(nameof(CurrentModuleDescription));
         OnPropertyChanged(nameof(CurrentModuleSummaryText));
-    }
-
-    private static IEnumerable<InstalledProgramViewModel> FilterInstalledPrograms(
-        IEnumerable<InstalledProgramViewModel> source,
-        string query,
-        bool includeSystem)
-    {
-        var filtered = includeSystem ? source : source.Where(p => !p.Info.IsSystemComponent);
-
-        if (string.IsNullOrWhiteSpace(query))
-            return filtered;
-
-        query = query.Trim();
-        return filtered.Where(p =>
-            p.Info.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-            p.Info.Publisher.Contains(query, StringComparison.OrdinalIgnoreCase));
-    }
-
-    private async Task LoadInstalledProgramsAsync()
-    {
-        try
-        {
-            var list = await Task.Run(_installedProgramsService.GetInstalledPrograms).ConfigureAwait(true);
-            InstalledProgramItems.Clear();
-            foreach (var p in list.OrderBy(p => p.DisplayName))
-                InstalledProgramItems.Add(new InstalledProgramViewModel(p));
-
-            if (SelectedTag == "uninstaller")
-            {
-                RefreshCurrentModuleView();
-                OnPropertyChanged(nameof(CurrentModuleSummaryText));
-            }
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error cargando programas instalados: {ex.Message}";
-        }
     }
 
     private async Task LoadSystemInfoAsync()
@@ -688,9 +603,6 @@ public sealed partial class MainViewModel : ViewModelBase
         if (SelectedTag == "programs")
             return $"Programas disponibles: {ProgramPackageItems.Count}";
 
-        if (SelectedTag == "uninstaller")
-            return $"Programas disponibles: {CurrentModuleItems.Count}";
-
         var items = CurrentModuleItems.Where(IsCountableForSummary).ToArray();
         if (items.Length == 0) return "Sin funciones disponibles en este módulo.";
 
@@ -850,92 +762,6 @@ public sealed partial class MainViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
-    private async Task UninstallSelectedInstalledProgramsAsync(CancellationToken cancellationToken)
-    {
-        var selected = InstalledProgramItems.Where(p => p.IsSelected && p.IsSelectable).ToArray();
-        if (selected.Length == 0)
-        {
-            StatusMessage = "Selecciona al menos un programa instalado.";
-            return;
-        }
-
-        IsBusy = true;
-        IsCurrentModuleApplying = true;
-        CurrentModuleLastResultText = string.Empty;
-        StatusMessage = "Ejecutando desinstalador oficial…";
-
-        try
-        {
-            foreach (var program in selected)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                var outcome = await UninstallWorkflow.RunOfficialUninstallAsync(program.Info, cancellationToken).ConfigureAwait(true);
-                program.LastChangeText = outcome;
-                program.RefreshState();
-            }
-
-            CurrentModuleLastResultText = "Desinstalación oficial iniciada (puede requerir interacción del usuario).";
-            StatusMessage = "Finalizado.";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error: {ex.Message}";
-        }
-        finally
-        {
-            IsCurrentModuleApplying = false;
-            IsBusy = false;
-            OnPropertyChanged(nameof(CurrentModuleIsApplyingVisibility));
-            OnPropertyChanged(nameof(CurrentModuleLastResultVisibility));
-            OnPropertyChanged(nameof(CurrentModuleSummaryText));
-        }
-    }
-
-    [RelayCommand]
-    private async Task AdvancedUninstallSelectedInstalledProgramsAsync(CancellationToken cancellationToken)
-    {
-        var selected = InstalledProgramItems.Where(p => p.IsSelected && p.IsSelectable).ToArray();
-        if (selected.Length == 0)
-        {
-            StatusMessage = "Selecciona un programa instalado.";
-            return;
-        }
-
-        var target = selected[0];
-        IsBusy = true;
-        IsCurrentModuleApplying = true;
-        CurrentModuleLastResultText = string.Empty;
-        StatusMessage = $"Desinstalación avanzada: {target.DisplayName}…";
-
-        try
-        {
-            var scan = await UninstallWorkflow.RunAdvancedAsync(target.Info, cancellationToken).ConfigureAwait(true);
-            AdvancedUninstallReviewRequested?.Invoke(this, new AdvancedUninstallReviewEventArgs(scan));
-            CurrentModuleLastResultText = "Escaneo completado. Revisa los residuos encontrados.";
-            StatusMessage = "Escaneo completado.";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error: {ex.Message}";
-        }
-        finally
-        {
-            IsCurrentModuleApplying = false;
-            IsBusy = false;
-            OnPropertyChanged(nameof(CurrentModuleIsApplyingVisibility));
-            OnPropertyChanged(nameof(CurrentModuleLastResultVisibility));
-            OnPropertyChanged(nameof(CurrentModuleSummaryText));
-        }
-    }
-
-    public event EventHandler<AdvancedUninstallReviewEventArgs>? AdvancedUninstallReviewRequested;
-
-    public sealed class AdvancedUninstallReviewEventArgs(AdvancedUninstallScanResult result) : EventArgs
-    {
-        public AdvancedUninstallScanResult Result { get; } = result;
-    }
-
     public readonly record struct NavItem(string Tag, string Label, string Glyph);
 
     [RelayCommand]
@@ -958,17 +784,7 @@ public sealed partial class MainViewModel : ViewModelBase
             case "programs":
                 SelectAllPrograms = !AreAllSelected(ProgramPackageItems);
                 break;
-            case "uninstaller":
-                ToggleAllInstalledPrograms();
-                break;
         }
-    }
-
-    private void ToggleAllInstalledPrograms()
-    {
-        bool all = InstalledProgramItems.Any() && InstalledProgramItems.All(p => p.IsSelected);
-        foreach (var p in InstalledProgramItems)
-            p.IsSelected = !all;
     }
 
     private static bool AreAllSelected<T>(IEnumerable<T> items) where T : TweakItemViewModel =>

@@ -1,6 +1,5 @@
 App.xbf
 Controls\ModuleStatusBadgeControl.xbf
-Controls\ResidueReviewDialog.xbf
 Controls\TrafficLightBulb.xbf
 Controls\TrafficLightStatusControl.xbf
 Shell\MainShellWindow.xbf

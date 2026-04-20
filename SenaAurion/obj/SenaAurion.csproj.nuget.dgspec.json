@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\SenaAurion.csproj": {}
+    "C:\\Users\\Will\\Desktop\\Proyecto\\SENA-Aurion\\SenaAurion\\SenaAurion.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\SenaAurion.csproj": {
+    "C:\\Users\\Will\\Desktop\\Proyecto\\SENA-Aurion\\SenaAurion\\SenaAurion.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\SenaAurion.csproj",
+        "projectUniqueName": "C:\\Users\\Will\\Desktop\\Proyecto\\SENA-Aurion\\SenaAurion\\SenaAurion.csproj",
         "projectName": "SenaAurion",
-        "projectPath": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\SenaAurion.csproj",
+        "projectPath": "C:\\Users\\Will\\Desktop\\Proyecto\\SENA-Aurion\\SenaAurion\\SenaAurion.csproj",
         "packagesPath": "C:\\Users\\Will\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Will\\Documents\\SENA-Aurion\\SenaAurion\\obj\\",
+        "outputPath": "C:\\Users\\Will\\Desktop\\Proyecto\\SENA-Aurion\\SenaAurion\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -29,8 +29,7 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0-windows10.0.19041.0": {
-            "framework": "net8.0-windows10.0.19041",
+          "net8.0-windows10.0.19041": {
             "targetAlias": "net8.0-windows10.0.19041.0",
             "projectReferences": {}
           }
@@ -48,8 +47,7 @@
         "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
-        "net8.0-windows10.0.19041.0": {
-          "framework": "net8.0-windows10.0.19041",
+        "net8.0-windows10.0.19041": {
           "targetAlias": "net8.0-windows10.0.19041.0",
           "dependencies": {
             "CommunityToolkit.Mvvm": {

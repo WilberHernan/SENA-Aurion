@@ -133,77 +133,7 @@
                                 <TextBlock Grid.Column="0"
                                            Text="{x:Bind ViewModel.CurrentModuleTitle, Mode=OneWay}"
                                            Style="{StaticResource PageTitleStyle}"
-                                           VerticalAlignment="Center"
-                                           Visibility="{x:Bind ViewModel.NonUninstallerModuleVisibility, Mode=OneWay}"/>
-
-                                <!-- Uninstaller title with subtle chevron + filter flyout -->
-                                <Button Grid.Column="0"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Padding="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Visibility="{x:Bind ViewModel.UninstallerModuleVisibility, Mode=OneWay}">
-                                    <Button.Flyout>
-                                        <MenuFlyout Placement="Bottom">
-                                            <MenuFlyoutItem Text="Programas Normales" Click="FilterNormalPrograms_Click" FontSize="12" Height="32"/>
-                                            <MenuFlyoutItem Text="Aplicaciones del Sistema" Click="FilterIncludeSystemPrograms_Click" FontSize="12" Height="32"/>
-                                        </MenuFlyout>
-                                    </Button.Flyout>
-                                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                                        <TextBlock Text="Desinstalador" Style="{StaticResource PageTitleStyle}" />
-                                        <TextBlock Text="▾" FontSize="14" Foreground="#8CFFFFFF" Margin="0,1,0,0"/>
-                                        <TextBlock Text="{x:Bind ViewModel.UninstallerFilterText, Mode=OneWay}" FontSize="11" Foreground="#66FFFFFF" Margin="6,4,0,0"/>
-                                    </StackPanel>
-                                </Button>
-
-                                <!-- Search (only uninstaller) - Simplified -->
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,3,0" Visibility="{x:Bind ViewModel.UninstallerModuleVisibility, Mode=OneWay}">
-                                    <Button x:Name="SearchToggleButton"
-                                            Style="{StaticResource NeoActionButtonStyle}"
-                                            Width="40" Height="34" Padding="0"
-                                            Click="SearchToggleButton_Click"
-                                            ToolTipService.ToolTip="Buscar Programas">
-                                        <FontIcon Glyph="&#xE721;" FontSize="14" Foreground="#E6FFFFFF" />
-                                    </Button>
-
-                                    <Border x:Name="SearchBoxHost"
-                                            CornerRadius="10"
-                                            Background="#0AFFFFFF"
-                                            BorderBrush="#10FFFFFF"
-                                            BorderThickness="1"
-                                            Height="34"
-                                            Width="260"
-                                            Visibility="Collapsed"
-                                            VerticalAlignment="Center">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBox x:Name="SearchBox"
-                                                     Grid.Column="0"
-                                                     Text="{x:Bind ViewModel.UninstallerSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     PlaceholderText="Buscar por nombre o editor..."
-                                                     BorderThickness="0"
-                                                     Background="Transparent"
-                                                     Foreground="#E6FFFFFF"
-                                                     FontSize="12"
-                                                     Padding="10,6,10,6"
-                                                     VerticalAlignment="Center"
-                                                     HorizontalAlignment="Stretch"/>
-                                            <Button Grid.Column="1"
-                                                    Style="{StaticResource NeoActionButtonStyle}"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Width="34" Height="34" Padding="0" Margin="0"
-                                                    Click="SearchToggleCloseButton_Click"
-                                                    ToolTipService.ToolTip="Cerrar Búsqueda">
-                                                <FontIcon Glyph="&#xE7A6;" FontSize="12" Foreground="#8CFFFFFF" />
-                                            </Button>
-                                        </Grid>
-                                    </Border>
-                                </StackPanel>
+                                           VerticalAlignment="Center"/>
 
                                 <Button Grid.Column="3" Style="{StaticResource NeoActionButtonStyle}" Width="40" Height="34" Padding="0"
                                         Command="{x:Bind ViewModel.ToggleSelectAllCurrentModuleCommand}" ToolTipService.ToolTip="Seleccionar todo / deseleccionar todo">
@@ -326,13 +256,6 @@
                     <TextBlock Text="{x:Bind ViewModel.CurrentModuleTitle, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" TextWrapping="Wrap" />
                     <TextBlock Text="{x:Bind ViewModel.CurrentModuleDescription, Mode=OneWay}" FontSize="11" Foreground="#B3FFFFFF" LineHeight="17" Margin="0,8,0,0" TextWrapping="Wrap" />
 
-                    <TextBlock Text="⚠️ Se recomienda ejecutar el programa como administrador para este módulo. Algunos procesos pueden presentar errores si no se cuentan con los permisos adecuados."
-                               FontSize="11"
-                               Foreground="#FF6B6B"
-                               Margin="0,8,0,0"
-                               TextWrapping="WrapWholeWords"
-                               Visibility="{x:Bind ViewModel.UninstallerModuleVisibility, Mode=OneWay}"/>
-
                     <Grid Margin="0,12,0,0" ColumnSpacing="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -404,10 +327,6 @@
                         <Button Content="Desinstalar" Click="UninstallProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}"/>
                     </StackPanel>
 
-                    <StackPanel x:Name="UninstallerActionsPanel" Visibility="Collapsed">
-                        <Button Content="Desinstalar" Click="UninstallInstalledProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button Content="Desinstalación avanzada" Click="AdvancedUninstallInstalledProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}" />
-                    </StackPanel>
                 </StackPanel>
             </Border>
         </Grid>
@@ -464,12 +383,6 @@
                         </Grid>
                     </Button>
 
-                    <Button Click="TabButton_Click" CommandParameter="uninstaller" Background="Transparent" BorderThickness="0" Padding="0" CornerRadius="18" Width="38" Height="38" ToolTipService.ToolTip="Desinstalador">
-                        <Grid>
-                            <Border Width="38" Height="38" CornerRadius="19" Background="Transparent" />
-                            <FontIcon Glyph="&#xE74D;" FontSize="16" Foreground="#4DFFFFFF" />
-                        </Grid>
-                    </Button>
                 </StackPanel>
             </Grid>
         </Border>

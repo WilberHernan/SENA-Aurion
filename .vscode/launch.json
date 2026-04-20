@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug SenaAurion (F5)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/SenaAurion/bin/x64/Debug/net8.0-windows10.0.19041.0/SenaAurion.exe",
+      "cwd": "${workspaceFolder}/SenaAurion",
+      "preLaunchTask": "build SenaAurion (Debug x64)",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    }
+  ]
+}

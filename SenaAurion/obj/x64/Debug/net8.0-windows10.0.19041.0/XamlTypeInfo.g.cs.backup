@@ -226,7 +226,7 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
         
         private void InitTypeTables()
         {
-            _typeNameTable = new string[41];
+            _typeNameTable = new string[49];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -249,27 +249,35 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
             _typeNameTable[19] = "Microsoft.UI.Xaml.Controls.UserControl";
             _typeNameTable[20] = "SenaAurion.Controls.TrafficLightState";
             _typeNameTable[21] = "String";
-            _typeNameTable[22] = "SenaAurion.Controls.TrafficLightBulb";
-            _typeNameTable[23] = "SenaAurion.Controls.TrafficLightBulbColor";
-            _typeNameTable[24] = "SenaAurion.Controls.TrafficLightStatusControl";
-            _typeNameTable[25] = "Microsoft.UI.Xaml.Media.AcrylicBrush";
-            _typeNameTable[26] = "System.Nullable`1<Double>";
-            _typeNameTable[27] = "TimeSpan";
-            _typeNameTable[28] = "Microsoft.UI.Xaml.Controls.ProgressRing";
-            _typeNameTable[29] = "Microsoft.UI.Xaml.Controls.Control";
-            _typeNameTable[30] = "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings";
-            _typeNameTable[31] = "Microsoft.UI.Xaml.DependencyObject";
-            _typeNameTable[32] = "Microsoft.UI.Xaml.Controls.ListViewItem";
-            _typeNameTable[33] = "SenaAurion.Shell.MainShellWindow";
-            _typeNameTable[34] = "Microsoft.UI.Xaml.Window";
-            _typeNameTable[35] = "SenaAurion.ViewModels.MainViewModel";
-            _typeNameTable[36] = "SenaAurion.ViewModels.ViewModelBase";
-            _typeNameTable[37] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
-            _typeNameTable[38] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[39] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
-            _typeNameTable[40] = "Int32";
+            _typeNameTable[22] = "SenaAurion.Controls.ResidueReviewDialog";
+            _typeNameTable[23] = "System.Collections.ObjectModel.ObservableCollection`1<SenaAurion.Controls.ResidueGroup>";
+            _typeNameTable[24] = "System.Collections.ObjectModel.Collection`1<SenaAurion.Controls.ResidueGroup>";
+            _typeNameTable[25] = "SenaAurion.Controls.ResidueGroup";
+            _typeNameTable[26] = "System.Collections.ObjectModel.ObservableCollection`1<SenaAurion.Controls.ResidueItemViewModel>";
+            _typeNameTable[27] = "System.Collections.ObjectModel.Collection`1<SenaAurion.Controls.ResidueItemViewModel>";
+            _typeNameTable[28] = "SenaAurion.Controls.ResidueItemViewModel";
+            _typeNameTable[29] = "SenaAurion.Services.ResidueItem";
+            _typeNameTable[30] = "Int32";
+            _typeNameTable[31] = "SenaAurion.Controls.TrafficLightBulb";
+            _typeNameTable[32] = "SenaAurion.Controls.TrafficLightBulbColor";
+            _typeNameTable[33] = "SenaAurion.Controls.TrafficLightStatusControl";
+            _typeNameTable[34] = "Microsoft.UI.Xaml.Media.AcrylicBrush";
+            _typeNameTable[35] = "System.Nullable`1<Double>";
+            _typeNameTable[36] = "TimeSpan";
+            _typeNameTable[37] = "Microsoft.UI.Xaml.Controls.ProgressRing";
+            _typeNameTable[38] = "Microsoft.UI.Xaml.Controls.Control";
+            _typeNameTable[39] = "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings";
+            _typeNameTable[40] = "Microsoft.UI.Xaml.DependencyObject";
+            _typeNameTable[41] = "Microsoft.UI.Xaml.Controls.ListViewItem";
+            _typeNameTable[42] = "SenaAurion.Shell.MainShellWindow";
+            _typeNameTable[43] = "Microsoft.UI.Xaml.Window";
+            _typeNameTable[44] = "SenaAurion.ViewModels.MainViewModel";
+            _typeNameTable[45] = "SenaAurion.ViewModels.ViewModelBase";
+            _typeNameTable[46] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
+            _typeNameTable[47] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[48] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
 
-            _typeTable = new global::System.Type[41];
+            _typeTable = new global::System.Type[49];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -292,25 +300,33 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
             _typeTable[19] = typeof(global::Microsoft.UI.Xaml.Controls.UserControl);
             _typeTable[20] = typeof(global::SenaAurion.Controls.TrafficLightState);
             _typeTable[21] = typeof(global::System.String);
-            _typeTable[22] = typeof(global::SenaAurion.Controls.TrafficLightBulb);
-            _typeTable[23] = typeof(global::SenaAurion.Controls.TrafficLightBulbColor);
-            _typeTable[24] = typeof(global::SenaAurion.Controls.TrafficLightStatusControl);
-            _typeTable[25] = typeof(global::Microsoft.UI.Xaml.Media.AcrylicBrush);
-            _typeTable[26] = typeof(global::System.Nullable<global::System.Double>);
-            _typeTable[27] = typeof(global::System.TimeSpan);
-            _typeTable[28] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing);
-            _typeTable[29] = typeof(global::Microsoft.UI.Xaml.Controls.Control);
-            _typeTable[30] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings);
-            _typeTable[31] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
-            _typeTable[32] = typeof(global::Microsoft.UI.Xaml.Controls.ListViewItem);
-            _typeTable[33] = typeof(global::SenaAurion.Shell.MainShellWindow);
-            _typeTable[34] = typeof(global::Microsoft.UI.Xaml.Window);
-            _typeTable[35] = typeof(global::SenaAurion.ViewModels.MainViewModel);
-            _typeTable[36] = typeof(global::SenaAurion.ViewModels.ViewModelBase);
-            _typeTable[37] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
-            _typeTable[38] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[39] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
-            _typeTable[40] = typeof(global::System.Int32);
+            _typeTable[22] = typeof(global::SenaAurion.Controls.ResidueReviewDialog);
+            _typeTable[23] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::SenaAurion.Controls.ResidueGroup>);
+            _typeTable[24] = typeof(global::System.Collections.ObjectModel.Collection<global::SenaAurion.Controls.ResidueGroup>);
+            _typeTable[25] = typeof(global::SenaAurion.Controls.ResidueGroup);
+            _typeTable[26] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::SenaAurion.Controls.ResidueItemViewModel>);
+            _typeTable[27] = typeof(global::System.Collections.ObjectModel.Collection<global::SenaAurion.Controls.ResidueItemViewModel>);
+            _typeTable[28] = typeof(global::SenaAurion.Controls.ResidueItemViewModel);
+            _typeTable[29] = typeof(global::SenaAurion.Services.ResidueItem);
+            _typeTable[30] = typeof(global::System.Int32);
+            _typeTable[31] = typeof(global::SenaAurion.Controls.TrafficLightBulb);
+            _typeTable[32] = typeof(global::SenaAurion.Controls.TrafficLightBulbColor);
+            _typeTable[33] = typeof(global::SenaAurion.Controls.TrafficLightStatusControl);
+            _typeTable[34] = typeof(global::Microsoft.UI.Xaml.Media.AcrylicBrush);
+            _typeTable[35] = typeof(global::System.Nullable<global::System.Double>);
+            _typeTable[36] = typeof(global::System.TimeSpan);
+            _typeTable[37] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing);
+            _typeTable[38] = typeof(global::Microsoft.UI.Xaml.Controls.Control);
+            _typeTable[39] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings);
+            _typeTable[40] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
+            _typeTable[41] = typeof(global::Microsoft.UI.Xaml.Controls.ListViewItem);
+            _typeTable[42] = typeof(global::SenaAurion.Shell.MainShellWindow);
+            _typeTable[43] = typeof(global::Microsoft.UI.Xaml.Window);
+            _typeTable[44] = typeof(global::SenaAurion.ViewModels.MainViewModel);
+            _typeTable[45] = typeof(global::SenaAurion.ViewModels.ViewModelBase);
+            _typeTable[46] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
+            _typeTable[47] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[48] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -348,12 +364,18 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
         private object Activate_0_XamlControlsResources() { return new global::Microsoft.UI.Xaml.Controls.XamlControlsResources(); }
         private object Activate_8_RadialGradientBrush() { return new global::Microsoft.UI.Xaml.Media.RadialGradientBrush(); }
         private object Activate_18_ModuleStatusBadgeControl() { return new global::SenaAurion.Controls.ModuleStatusBadgeControl(); }
-        private object Activate_22_TrafficLightBulb() { return new global::SenaAurion.Controls.TrafficLightBulb(); }
-        private object Activate_24_TrafficLightStatusControl() { return new global::SenaAurion.Controls.TrafficLightStatusControl(); }
-        private object Activate_25_AcrylicBrush() { return new global::Microsoft.UI.Xaml.Media.AcrylicBrush(); }
-        private object Activate_28_ProgressRing() { return new global::Microsoft.UI.Xaml.Controls.ProgressRing(); }
-        private object Activate_33_MainShellWindow() { return new global::SenaAurion.Shell.MainShellWindow(); }
-        private object Activate_38_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_22_ResidueReviewDialog() { return new global::SenaAurion.Controls.ResidueReviewDialog(); }
+        private object Activate_23_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::SenaAurion.Controls.ResidueGroup>(); }
+        private object Activate_24_Collection() { return new global::System.Collections.ObjectModel.Collection<global::SenaAurion.Controls.ResidueGroup>(); }
+        private object Activate_26_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::SenaAurion.Controls.ResidueItemViewModel>(); }
+        private object Activate_27_Collection() { return new global::System.Collections.ObjectModel.Collection<global::SenaAurion.Controls.ResidueItemViewModel>(); }
+        private object Activate_29_ResidueItem() { return new global::SenaAurion.Services.ResidueItem(); }
+        private object Activate_31_TrafficLightBulb() { return new global::SenaAurion.Controls.TrafficLightBulb(); }
+        private object Activate_33_TrafficLightStatusControl() { return new global::SenaAurion.Controls.TrafficLightStatusControl(); }
+        private object Activate_34_AcrylicBrush() { return new global::Microsoft.UI.Xaml.Media.AcrylicBrush(); }
+        private object Activate_37_ProgressRing() { return new global::Microsoft.UI.Xaml.Controls.ProgressRing(); }
+        private object Activate_42_MainShellWindow() { return new global::SenaAurion.Shell.MainShellWindow(); }
+        private object Activate_47_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void StaticInitializer_0_XamlControlsResources() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources).TypeHandle);
         private void StaticInitializer_4_Color() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Windows.UI.Color).TypeHandle);
         private void StaticInitializer_5_ValueType() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.ValueType).TypeHandle);
@@ -364,20 +386,28 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
         private void StaticInitializer_15_Enum() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Enum).TypeHandle);
         private void StaticInitializer_18_ModuleStatusBadgeControl() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.ModuleStatusBadgeControl).TypeHandle);
         private void StaticInitializer_20_TrafficLightState() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.TrafficLightState).TypeHandle);
-        private void StaticInitializer_22_TrafficLightBulb() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.TrafficLightBulb).TypeHandle);
-        private void StaticInitializer_23_TrafficLightBulbColor() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.TrafficLightBulbColor).TypeHandle);
-        private void StaticInitializer_24_TrafficLightStatusControl() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.TrafficLightStatusControl).TypeHandle);
-        private void StaticInitializer_25_AcrylicBrush() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Media.AcrylicBrush).TypeHandle);
-        private void StaticInitializer_26_Nullable() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Nullable<global::System.Double>).TypeHandle);
-        private void StaticInitializer_27_TimeSpan() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.TimeSpan).TypeHandle);
-        private void StaticInitializer_28_ProgressRing() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing).TypeHandle);
-        private void StaticInitializer_30_ProgressRingTemplateSettings() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings).TypeHandle);
-        private void StaticInitializer_33_MainShellWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Shell.MainShellWindow).TypeHandle);
-        private void StaticInitializer_35_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.ViewModels.MainViewModel).TypeHandle);
-        private void StaticInitializer_36_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.ViewModels.ViewModelBase).TypeHandle);
-        private void StaticInitializer_37_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
-        private void StaticInitializer_38_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
-        private void StaticInitializer_39_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
+        private void StaticInitializer_22_ResidueReviewDialog() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.ResidueReviewDialog).TypeHandle);
+        private void StaticInitializer_23_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::SenaAurion.Controls.ResidueGroup>).TypeHandle);
+        private void StaticInitializer_24_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::SenaAurion.Controls.ResidueGroup>).TypeHandle);
+        private void StaticInitializer_25_ResidueGroup() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.ResidueGroup).TypeHandle);
+        private void StaticInitializer_26_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::SenaAurion.Controls.ResidueItemViewModel>).TypeHandle);
+        private void StaticInitializer_27_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::SenaAurion.Controls.ResidueItemViewModel>).TypeHandle);
+        private void StaticInitializer_28_ResidueItemViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.ResidueItemViewModel).TypeHandle);
+        private void StaticInitializer_29_ResidueItem() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Services.ResidueItem).TypeHandle);
+        private void StaticInitializer_31_TrafficLightBulb() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.TrafficLightBulb).TypeHandle);
+        private void StaticInitializer_32_TrafficLightBulbColor() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.TrafficLightBulbColor).TypeHandle);
+        private void StaticInitializer_33_TrafficLightStatusControl() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Controls.TrafficLightStatusControl).TypeHandle);
+        private void StaticInitializer_34_AcrylicBrush() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Media.AcrylicBrush).TypeHandle);
+        private void StaticInitializer_35_Nullable() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Nullable<global::System.Double>).TypeHandle);
+        private void StaticInitializer_36_TimeSpan() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.TimeSpan).TypeHandle);
+        private void StaticInitializer_37_ProgressRing() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing).TypeHandle);
+        private void StaticInitializer_39_ProgressRingTemplateSettings() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings).TypeHandle);
+        private void StaticInitializer_42_MainShellWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.Shell.MainShellWindow).TypeHandle);
+        private void StaticInitializer_44_MainViewModel() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.ViewModels.MainViewModel).TypeHandle);
+        private void StaticInitializer_45_ViewModelBase() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::SenaAurion.ViewModels.ViewModelBase).TypeHandle);
+        private void StaticInitializer_46_ObservableObject() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject).TypeHandle);
+        private void StaticInitializer_47_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
+        private void StaticInitializer_48_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -391,7 +421,31 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
             var newItem = (global::Microsoft.UI.Xaml.Media.GradientStop)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_39_IList(object instance, object item)
+        private void VectorAdd_23_ObservableCollection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::SenaAurion.Controls.ResidueGroup>)instance;
+            var newItem = (global::SenaAurion.Controls.ResidueGroup)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_24_Collection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::SenaAurion.Controls.ResidueGroup>)instance;
+            var newItem = (global::SenaAurion.Controls.ResidueGroup)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_26_ObservableCollection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::SenaAurion.Controls.ResidueItemViewModel>)instance;
+            var newItem = (global::SenaAurion.Controls.ResidueItemViewModel)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_27_Collection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::SenaAurion.Controls.ResidueItemViewModel>)instance;
+            var newItem = (global::SenaAurion.Controls.ResidueItemViewModel)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_48_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -549,19 +603,96 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 22:   //  SenaAurion.Controls.TrafficLightBulb
+            case 22:   //  SenaAurion.Controls.ResidueReviewDialog
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.UserControl"));
-                userType.Activator = Activate_22_TrafficLightBulb;
-                userType.StaticInitializer = StaticInitializer_22_TrafficLightBulb;
+                userType.Activator = Activate_22_ResidueReviewDialog;
+                userType.StaticInitializer = StaticInitializer_22_ResidueReviewDialog;
+                userType.AddMemberName("Groups");
+                userType.AddMemberName("HeaderText");
+                userType.AddMemberName("SelectionSummaryText");
+                userType.AddMemberName("TotalCount");
+                userType.AddMemberName("SelectedCount");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 23:   //  System.Collections.ObjectModel.ObservableCollection`1<SenaAurion.Controls.ResidueGroup>
+                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Collections.ObjectModel.Collection`1<SenaAurion.Controls.ResidueGroup>"));
+                userType.StaticInitializer = StaticInitializer_23_ObservableCollection;
+                userType.CollectionAdd = VectorAdd_23_ObservableCollection;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 24:   //  System.Collections.ObjectModel.Collection`1<SenaAurion.Controls.ResidueGroup>
+                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_24_Collection;
+                userType.StaticInitializer = StaticInitializer_24_Collection;
+                userType.CollectionAdd = VectorAdd_24_Collection;
+                xamlType = userType;
+                break;
+
+            case 25:   //  SenaAurion.Controls.ResidueGroup
+                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.StaticInitializer = StaticInitializer_25_ResidueGroup;
+                userType.AddMemberName("Name");
+                userType.AddMemberName("Items");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 26:   //  System.Collections.ObjectModel.ObservableCollection`1<SenaAurion.Controls.ResidueItemViewModel>
+                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Collections.ObjectModel.Collection`1<SenaAurion.Controls.ResidueItemViewModel>"));
+                userType.StaticInitializer = StaticInitializer_26_ObservableCollection;
+                userType.CollectionAdd = VectorAdd_26_ObservableCollection;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 27:   //  System.Collections.ObjectModel.Collection`1<SenaAurion.Controls.ResidueItemViewModel>
+                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_27_Collection;
+                userType.StaticInitializer = StaticInitializer_27_Collection;
+                userType.CollectionAdd = VectorAdd_27_Collection;
+                xamlType = userType;
+                break;
+
+            case 28:   //  SenaAurion.Controls.ResidueItemViewModel
+                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.StaticInitializer = StaticInitializer_28_ResidueItemViewModel;
+                userType.AddMemberName("Item");
+                userType.AddMemberName("Path");
+                userType.AddMemberName("TypeText");
+                userType.AddMemberName("IsSelected");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 29:   //  SenaAurion.Services.ResidueItem
+                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.StaticInitializer = StaticInitializer_29_ResidueItem;
+                userType.SetIsReturnTypeStub();
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 30:   //  Int32
+                xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 31:   //  SenaAurion.Controls.TrafficLightBulb
+                userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.UserControl"));
+                userType.Activator = Activate_31_TrafficLightBulb;
+                userType.StaticInitializer = StaticInitializer_31_TrafficLightBulb;
                 userType.AddMemberName("Color");
                 userType.AddMemberName("IsOn");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 23:   //  SenaAurion.Controls.TrafficLightBulbColor
+            case 32:   //  SenaAurion.Controls.TrafficLightBulbColor
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Enum"));
-                userType.StaticInitializer = StaticInitializer_23_TrafficLightBulbColor;
+                userType.StaticInitializer = StaticInitializer_32_TrafficLightBulbColor;
                 userType.AddEnumValue("Red", global::SenaAurion.Controls.TrafficLightBulbColor.Red);
                 userType.AddEnumValue("Amber", global::SenaAurion.Controls.TrafficLightBulbColor.Amber);
                 userType.AddEnumValue("Green", global::SenaAurion.Controls.TrafficLightBulbColor.Green);
@@ -569,10 +700,10 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 24:   //  SenaAurion.Controls.TrafficLightStatusControl
+            case 33:   //  SenaAurion.Controls.TrafficLightStatusControl
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.UserControl"));
-                userType.Activator = Activate_24_TrafficLightStatusControl;
-                userType.StaticInitializer = StaticInitializer_24_TrafficLightStatusControl;
+                userType.Activator = Activate_33_TrafficLightStatusControl;
+                userType.StaticInitializer = StaticInitializer_33_TrafficLightStatusControl;
                 userType.AddMemberName("State");
                 userType.AddMemberName("IsRedOn");
                 userType.AddMemberName("IsAmberOn");
@@ -584,10 +715,10 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 25:   //  Microsoft.UI.Xaml.Media.AcrylicBrush
+            case 34:   //  Microsoft.UI.Xaml.Media.AcrylicBrush
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Media.XamlCompositionBrushBase"));
-                userType.Activator = Activate_25_AcrylicBrush;
-                userType.StaticInitializer = StaticInitializer_25_AcrylicBrush;
+                userType.Activator = Activate_34_AcrylicBrush;
+                userType.StaticInitializer = StaticInitializer_34_AcrylicBrush;
                 userType.AddMemberName("TintColor");
                 userType.AddMemberName("TintOpacity");
                 userType.AddMemberName("AlwaysUseFallback");
@@ -596,26 +727,26 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 26:   //  System.Nullable`1<Double>
+            case 35:   //  System.Nullable`1<Double>
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
                 userType.SetBoxedType(GetXamlTypeByName("Double"));
                 userType.BoxInstance = userType.BoxType<global::System.Double>;
-                userType.StaticInitializer = StaticInitializer_26_Nullable;
+                userType.StaticInitializer = StaticInitializer_35_Nullable;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 27:   //  TimeSpan
+            case 36:   //  TimeSpan
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
-                userType.StaticInitializer = StaticInitializer_27_TimeSpan;
+                userType.StaticInitializer = StaticInitializer_36_TimeSpan;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 28:   //  Microsoft.UI.Xaml.Controls.ProgressRing
+            case 37:   //  Microsoft.UI.Xaml.Controls.ProgressRing
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
-                userType.Activator = Activate_28_ProgressRing;
-                userType.StaticInitializer = StaticInitializer_28_ProgressRing;
+                userType.Activator = Activate_37_ProgressRing;
+                userType.StaticInitializer = StaticInitializer_37_ProgressRing;
                 userType.AddMemberName("IsActive");
                 userType.AddMemberName("IsIndeterminate");
                 userType.AddMemberName("Maximum");
@@ -625,63 +756,63 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 29:   //  Microsoft.UI.Xaml.Controls.Control
+            case 38:   //  Microsoft.UI.Xaml.Controls.Control
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 30:   //  Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings
+            case 39:   //  Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.StaticInitializer = StaticInitializer_30_ProgressRingTemplateSettings;
+                userType.StaticInitializer = StaticInitializer_39_ProgressRingTemplateSettings;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 31:   //  Microsoft.UI.Xaml.DependencyObject
+            case 40:   //  Microsoft.UI.Xaml.DependencyObject
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 32:   //  Microsoft.UI.Xaml.Controls.ListViewItem
+            case 41:   //  Microsoft.UI.Xaml.Controls.ListViewItem
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 33:   //  SenaAurion.Shell.MainShellWindow
+            case 42:   //  SenaAurion.Shell.MainShellWindow
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_33_MainShellWindow;
-                userType.StaticInitializer = StaticInitializer_33_MainShellWindow;
+                userType.Activator = Activate_42_MainShellWindow;
+                userType.StaticInitializer = StaticInitializer_42_MainShellWindow;
                 userType.AddMemberName("ViewModel");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 34:   //  Microsoft.UI.Xaml.Window
+            case 43:   //  Microsoft.UI.Xaml.Window
                 xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 35:   //  SenaAurion.ViewModels.MainViewModel
+            case 44:   //  SenaAurion.ViewModels.MainViewModel
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("SenaAurion.ViewModels.ViewModelBase"));
-                userType.StaticInitializer = StaticInitializer_35_MainViewModel;
+                userType.StaticInitializer = StaticInitializer_44_MainViewModel;
                 userType.SetIsReturnTypeStub();
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 36:   //  SenaAurion.ViewModels.ViewModelBase
+            case 45:   //  SenaAurion.ViewModels.ViewModelBase
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("CommunityToolkit.Mvvm.ComponentModel.ObservableObject"));
-                userType.StaticInitializer = StaticInitializer_36_ViewModelBase;
+                userType.StaticInitializer = StaticInitializer_45_ViewModelBase;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 37:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
+            case 46:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.StaticInitializer = StaticInitializer_37_ObservableObject;
+                userType.StaticInitializer = StaticInitializer_46_ObservableObject;
                 xamlType = userType;
                 break;
 
-            case 38:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 47:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_38_TreeViewNode;
-                userType.StaticInitializer = StaticInitializer_38_TreeViewNode;
+                userType.Activator = Activate_47_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_47_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -693,16 +824,12 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 39:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 48:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_39_IList;
-                userType.CollectionAdd = VectorAdd_39_IList;
+                userType.StaticInitializer = StaticInitializer_48_IList;
+                userType.CollectionAdd = VectorAdd_48_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
-                break;
-
-            case 40:   //  Int32
-                xamlType = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
             }
             return xamlType;
@@ -908,222 +1035,282 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
             var that = (global::SenaAurion.Controls.ModuleStatusBadgeControl)instance;
             that.Text = (global::System.String)Value;
         }
-        private object get_15_TrafficLightBulb_Color(object instance)
+        private object get_15_ResidueReviewDialog_Groups(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueReviewDialog)instance;
+            return that.Groups;
+        }
+        private object get_16_ResidueGroup_Name(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueGroup)instance;
+            return that.Name;
+        }
+        private object get_17_ResidueGroup_Items(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueGroup)instance;
+            return that.Items;
+        }
+        private object get_18_ResidueItemViewModel_Item(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueItemViewModel)instance;
+            return that.Item;
+        }
+        private object get_19_ResidueItemViewModel_Path(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueItemViewModel)instance;
+            return that.Path;
+        }
+        private object get_20_ResidueItemViewModel_TypeText(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueItemViewModel)instance;
+            return that.TypeText;
+        }
+        private object get_21_ResidueItemViewModel_IsSelected(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueItemViewModel)instance;
+            return that.IsSelected;
+        }
+        private void set_21_ResidueItemViewModel_IsSelected(object instance, object Value)
+        {
+            var that = (global::SenaAurion.Controls.ResidueItemViewModel)instance;
+            that.IsSelected = (global::System.Boolean)Value;
+        }
+        private object get_22_ResidueReviewDialog_HeaderText(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueReviewDialog)instance;
+            return that.HeaderText;
+        }
+        private object get_23_ResidueReviewDialog_SelectionSummaryText(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueReviewDialog)instance;
+            return that.SelectionSummaryText;
+        }
+        private object get_24_ResidueReviewDialog_TotalCount(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueReviewDialog)instance;
+            return that.TotalCount;
+        }
+        private object get_25_ResidueReviewDialog_SelectedCount(object instance)
+        {
+            var that = (global::SenaAurion.Controls.ResidueReviewDialog)instance;
+            return that.SelectedCount;
+        }
+        private object get_26_TrafficLightBulb_Color(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightBulb)instance;
             return that.Color;
         }
-        private void set_15_TrafficLightBulb_Color(object instance, object Value)
+        private void set_26_TrafficLightBulb_Color(object instance, object Value)
         {
             var that = (global::SenaAurion.Controls.TrafficLightBulb)instance;
             that.Color = (global::SenaAurion.Controls.TrafficLightBulbColor)Value;
         }
-        private object get_16_TrafficLightBulb_IsOn(object instance)
+        private object get_27_TrafficLightBulb_IsOn(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightBulb)instance;
             return that.IsOn;
         }
-        private void set_16_TrafficLightBulb_IsOn(object instance, object Value)
+        private void set_27_TrafficLightBulb_IsOn(object instance, object Value)
         {
             var that = (global::SenaAurion.Controls.TrafficLightBulb)instance;
             that.IsOn = (global::System.Boolean)Value;
         }
-        private object get_17_TrafficLightStatusControl_State(object instance)
+        private object get_28_TrafficLightStatusControl_State(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightStatusControl)instance;
             return that.State;
         }
-        private void set_17_TrafficLightStatusControl_State(object instance, object Value)
+        private void set_28_TrafficLightStatusControl_State(object instance, object Value)
         {
             var that = (global::SenaAurion.Controls.TrafficLightStatusControl)instance;
             that.State = (global::SenaAurion.Controls.TrafficLightState)Value;
         }
-        private object get_18_TrafficLightStatusControl_IsRedOn(object instance)
+        private object get_29_TrafficLightStatusControl_IsRedOn(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightStatusControl)instance;
             return that.IsRedOn;
         }
-        private object get_19_TrafficLightStatusControl_IsAmberOn(object instance)
+        private object get_30_TrafficLightStatusControl_IsAmberOn(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightStatusControl)instance;
             return that.IsAmberOn;
         }
-        private object get_20_TrafficLightStatusControl_IsGreenOn(object instance)
+        private object get_31_TrafficLightStatusControl_IsGreenOn(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightStatusControl)instance;
             return that.IsGreenOn;
         }
-        private object get_21_TrafficLightStatusControl_RedTooltip(object instance)
+        private object get_32_TrafficLightStatusControl_RedTooltip(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightStatusControl)instance;
             return that.RedTooltip;
         }
-        private object get_22_TrafficLightStatusControl_AmberTooltip(object instance)
+        private object get_33_TrafficLightStatusControl_AmberTooltip(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightStatusControl)instance;
             return that.AmberTooltip;
         }
-        private object get_23_TrafficLightStatusControl_GreenTooltip(object instance)
+        private object get_34_TrafficLightStatusControl_GreenTooltip(object instance)
         {
             var that = (global::SenaAurion.Controls.TrafficLightStatusControl)instance;
             return that.GreenTooltip;
         }
-        private object get_24_AcrylicBrush_TintColor(object instance)
+        private object get_35_AcrylicBrush_TintColor(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             return that.TintColor;
         }
-        private void set_24_AcrylicBrush_TintColor(object instance, object Value)
+        private void set_35_AcrylicBrush_TintColor(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             that.TintColor = (global::Windows.UI.Color)Value;
         }
-        private object get_25_AcrylicBrush_TintOpacity(object instance)
+        private object get_36_AcrylicBrush_TintOpacity(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             return that.TintOpacity;
         }
-        private void set_25_AcrylicBrush_TintOpacity(object instance, object Value)
+        private void set_36_AcrylicBrush_TintOpacity(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             that.TintOpacity = (global::System.Double)Value;
         }
-        private object get_26_AcrylicBrush_AlwaysUseFallback(object instance)
+        private object get_37_AcrylicBrush_AlwaysUseFallback(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             return that.AlwaysUseFallback;
         }
-        private void set_26_AcrylicBrush_AlwaysUseFallback(object instance, object Value)
+        private void set_37_AcrylicBrush_AlwaysUseFallback(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             that.AlwaysUseFallback = (global::System.Boolean)Value;
         }
-        private object get_27_AcrylicBrush_TintLuminosityOpacity(object instance)
+        private object get_38_AcrylicBrush_TintLuminosityOpacity(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             return that.TintLuminosityOpacity;
         }
-        private void set_27_AcrylicBrush_TintLuminosityOpacity(object instance, object Value)
+        private void set_38_AcrylicBrush_TintLuminosityOpacity(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             that.TintLuminosityOpacity = (global::System.Nullable<global::System.Double>)Value;
         }
-        private object get_28_AcrylicBrush_TintTransitionDuration(object instance)
+        private object get_39_AcrylicBrush_TintTransitionDuration(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             return that.TintTransitionDuration;
         }
-        private void set_28_AcrylicBrush_TintTransitionDuration(object instance, object Value)
+        private void set_39_AcrylicBrush_TintTransitionDuration(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Media.AcrylicBrush)instance;
             that.TintTransitionDuration = (global::System.TimeSpan)Value;
         }
-        private object get_29_ProgressRing_IsActive(object instance)
+        private object get_40_ProgressRing_IsActive(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.IsActive;
         }
-        private void set_29_ProgressRing_IsActive(object instance, object Value)
+        private void set_40_ProgressRing_IsActive(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.IsActive = (global::System.Boolean)Value;
         }
-        private object get_30_ProgressRing_IsIndeterminate(object instance)
+        private object get_41_ProgressRing_IsIndeterminate(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.IsIndeterminate;
         }
-        private void set_30_ProgressRing_IsIndeterminate(object instance, object Value)
+        private void set_41_ProgressRing_IsIndeterminate(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.IsIndeterminate = (global::System.Boolean)Value;
         }
-        private object get_31_ProgressRing_Maximum(object instance)
+        private object get_42_ProgressRing_Maximum(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.Maximum;
         }
-        private void set_31_ProgressRing_Maximum(object instance, object Value)
+        private void set_42_ProgressRing_Maximum(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.Maximum = (global::System.Double)Value;
         }
-        private object get_32_ProgressRing_Minimum(object instance)
+        private object get_43_ProgressRing_Minimum(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.Minimum;
         }
-        private void set_32_ProgressRing_Minimum(object instance, object Value)
+        private void set_43_ProgressRing_Minimum(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.Minimum = (global::System.Double)Value;
         }
-        private object get_33_ProgressRing_TemplateSettings(object instance)
+        private object get_44_ProgressRing_TemplateSettings(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.TemplateSettings;
         }
-        private object get_34_ProgressRing_Value(object instance)
+        private object get_45_ProgressRing_Value(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.Value;
         }
-        private void set_34_ProgressRing_Value(object instance, object Value)
+        private void set_45_ProgressRing_Value(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.Value = (global::System.Double)Value;
         }
-        private object get_35_MainShellWindow_ViewModel(object instance)
+        private object get_46_MainShellWindow_ViewModel(object instance)
         {
             var that = (global::SenaAurion.Shell.MainShellWindow)instance;
             return that.ViewModel;
         }
-        private object get_36_TreeViewNode_Children(object instance)
+        private object get_47_TreeViewNode_Children(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Children;
         }
-        private object get_37_TreeViewNode_Content(object instance)
+        private object get_48_TreeViewNode_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Content;
         }
-        private void set_37_TreeViewNode_Content(object instance, object Value)
+        private void set_48_TreeViewNode_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_38_TreeViewNode_Depth(object instance)
+        private object get_49_TreeViewNode_Depth(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Depth;
         }
-        private object get_39_TreeViewNode_HasChildren(object instance)
+        private object get_50_TreeViewNode_HasChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasChildren;
         }
-        private object get_40_TreeViewNode_HasUnrealizedChildren(object instance)
+        private object get_51_TreeViewNode_HasUnrealizedChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasUnrealizedChildren;
         }
-        private void set_40_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
+        private void set_51_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.HasUnrealizedChildren = (global::System.Boolean)Value;
         }
-        private object get_41_TreeViewNode_IsExpanded(object instance)
+        private object get_52_TreeViewNode_IsExpanded(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.IsExpanded;
         }
-        private void set_41_TreeViewNode_IsExpanded(object instance, object Value)
+        private void set_52_TreeViewNode_IsExpanded(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.IsExpanded = (global::System.Boolean)Value;
         }
-        private object get_42_TreeViewNode_Parent(object instance)
+        private object get_53_TreeViewNode_Parent(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Parent;
@@ -1236,189 +1423,255 @@ namespace SenaAurion.SenaAurion_XamlTypeInfo
                 xamlMember.Getter = get_14_ModuleStatusBadgeControl_Text;
                 xamlMember.Setter = set_14_ModuleStatusBadgeControl_Text;
                 break;
+            case "SenaAurion.Controls.ResidueReviewDialog.Groups":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueReviewDialog");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Groups", "System.Collections.ObjectModel.ObservableCollection`1<SenaAurion.Controls.ResidueGroup>");
+                xamlMember.Getter = get_15_ResidueReviewDialog_Groups;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueGroup.Name":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueGroup");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Name", "String");
+                xamlMember.Getter = get_16_ResidueGroup_Name;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueGroup.Items":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueGroup");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Items", "System.Collections.ObjectModel.ObservableCollection`1<SenaAurion.Controls.ResidueItemViewModel>");
+                xamlMember.Getter = get_17_ResidueGroup_Items;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueItemViewModel.Item":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueItemViewModel");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Item", "SenaAurion.Services.ResidueItem");
+                xamlMember.Getter = get_18_ResidueItemViewModel_Item;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueItemViewModel.Path":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueItemViewModel");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Path", "String");
+                xamlMember.Getter = get_19_ResidueItemViewModel_Path;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueItemViewModel.TypeText":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueItemViewModel");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "TypeText", "String");
+                xamlMember.Getter = get_20_ResidueItemViewModel_TypeText;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueItemViewModel.IsSelected":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueItemViewModel");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsSelected", "Boolean");
+                xamlMember.Getter = get_21_ResidueItemViewModel_IsSelected;
+                xamlMember.Setter = set_21_ResidueItemViewModel_IsSelected;
+                break;
+            case "SenaAurion.Controls.ResidueReviewDialog.HeaderText":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueReviewDialog");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "HeaderText", "String");
+                xamlMember.Getter = get_22_ResidueReviewDialog_HeaderText;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueReviewDialog.SelectionSummaryText":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueReviewDialog");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "SelectionSummaryText", "String");
+                xamlMember.Getter = get_23_ResidueReviewDialog_SelectionSummaryText;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueReviewDialog.TotalCount":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueReviewDialog");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "TotalCount", "Int32");
+                xamlMember.Getter = get_24_ResidueReviewDialog_TotalCount;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "SenaAurion.Controls.ResidueReviewDialog.SelectedCount":
+                userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.ResidueReviewDialog");
+                xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "SelectedCount", "Int32");
+                xamlMember.Getter = get_25_ResidueReviewDialog_SelectedCount;
+                xamlMember.SetIsReadOnly();
+                break;
             case "SenaAurion.Controls.TrafficLightBulb.Color":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightBulb");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Color", "SenaAurion.Controls.TrafficLightBulbColor");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_15_TrafficLightBulb_Color;
-                xamlMember.Setter = set_15_TrafficLightBulb_Color;
+                xamlMember.Getter = get_26_TrafficLightBulb_Color;
+                xamlMember.Setter = set_26_TrafficLightBulb_Color;
                 break;
             case "SenaAurion.Controls.TrafficLightBulb.IsOn":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightBulb");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsOn", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_16_TrafficLightBulb_IsOn;
-                xamlMember.Setter = set_16_TrafficLightBulb_IsOn;
+                xamlMember.Getter = get_27_TrafficLightBulb_IsOn;
+                xamlMember.Setter = set_27_TrafficLightBulb_IsOn;
                 break;
             case "SenaAurion.Controls.TrafficLightStatusControl.State":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightStatusControl");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "State", "SenaAurion.Controls.TrafficLightState");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_17_TrafficLightStatusControl_State;
-                xamlMember.Setter = set_17_TrafficLightStatusControl_State;
+                xamlMember.Getter = get_28_TrafficLightStatusControl_State;
+                xamlMember.Setter = set_28_TrafficLightStatusControl_State;
                 break;
             case "SenaAurion.Controls.TrafficLightStatusControl.IsRedOn":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightStatusControl");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsRedOn", "Boolean");
-                xamlMember.Getter = get_18_TrafficLightStatusControl_IsRedOn;
+                xamlMember.Getter = get_29_TrafficLightStatusControl_IsRedOn;
                 xamlMember.SetIsReadOnly();
                 break;
             case "SenaAurion.Controls.TrafficLightStatusControl.IsAmberOn":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightStatusControl");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsAmberOn", "Boolean");
-                xamlMember.Getter = get_19_TrafficLightStatusControl_IsAmberOn;
+                xamlMember.Getter = get_30_TrafficLightStatusControl_IsAmberOn;
                 xamlMember.SetIsReadOnly();
                 break;
             case "SenaAurion.Controls.TrafficLightStatusControl.IsGreenOn":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightStatusControl");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsGreenOn", "Boolean");
-                xamlMember.Getter = get_20_TrafficLightStatusControl_IsGreenOn;
+                xamlMember.Getter = get_31_TrafficLightStatusControl_IsGreenOn;
                 xamlMember.SetIsReadOnly();
                 break;
             case "SenaAurion.Controls.TrafficLightStatusControl.RedTooltip":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightStatusControl");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "RedTooltip", "String");
-                xamlMember.Getter = get_21_TrafficLightStatusControl_RedTooltip;
+                xamlMember.Getter = get_32_TrafficLightStatusControl_RedTooltip;
                 xamlMember.SetIsReadOnly();
                 break;
             case "SenaAurion.Controls.TrafficLightStatusControl.AmberTooltip":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightStatusControl");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "AmberTooltip", "String");
-                xamlMember.Getter = get_22_TrafficLightStatusControl_AmberTooltip;
+                xamlMember.Getter = get_33_TrafficLightStatusControl_AmberTooltip;
                 xamlMember.SetIsReadOnly();
                 break;
             case "SenaAurion.Controls.TrafficLightStatusControl.GreenTooltip":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Controls.TrafficLightStatusControl");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "GreenTooltip", "String");
-                xamlMember.Getter = get_23_TrafficLightStatusControl_GreenTooltip;
+                xamlMember.Getter = get_34_TrafficLightStatusControl_GreenTooltip;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Media.AcrylicBrush.TintColor":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "TintColor", "Windows.UI.Color");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_24_AcrylicBrush_TintColor;
-                xamlMember.Setter = set_24_AcrylicBrush_TintColor;
+                xamlMember.Getter = get_35_AcrylicBrush_TintColor;
+                xamlMember.Setter = set_35_AcrylicBrush_TintColor;
                 break;
             case "Microsoft.UI.Xaml.Media.AcrylicBrush.TintOpacity":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "TintOpacity", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_25_AcrylicBrush_TintOpacity;
-                xamlMember.Setter = set_25_AcrylicBrush_TintOpacity;
+                xamlMember.Getter = get_36_AcrylicBrush_TintOpacity;
+                xamlMember.Setter = set_36_AcrylicBrush_TintOpacity;
                 break;
             case "Microsoft.UI.Xaml.Media.AcrylicBrush.AlwaysUseFallback":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "AlwaysUseFallback", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_26_AcrylicBrush_AlwaysUseFallback;
-                xamlMember.Setter = set_26_AcrylicBrush_AlwaysUseFallback;
+                xamlMember.Getter = get_37_AcrylicBrush_AlwaysUseFallback;
+                xamlMember.Setter = set_37_AcrylicBrush_AlwaysUseFallback;
                 break;
             case "Microsoft.UI.Xaml.Media.AcrylicBrush.TintLuminosityOpacity":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "TintLuminosityOpacity", "System.Nullable`1<Double>");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_27_AcrylicBrush_TintLuminosityOpacity;
-                xamlMember.Setter = set_27_AcrylicBrush_TintLuminosityOpacity;
+                xamlMember.Getter = get_38_AcrylicBrush_TintLuminosityOpacity;
+                xamlMember.Setter = set_38_AcrylicBrush_TintLuminosityOpacity;
                 break;
             case "Microsoft.UI.Xaml.Media.AcrylicBrush.TintTransitionDuration":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Media.AcrylicBrush");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "TintTransitionDuration", "TimeSpan");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_28_AcrylicBrush_TintTransitionDuration;
-                xamlMember.Setter = set_28_AcrylicBrush_TintTransitionDuration;
+                xamlMember.Getter = get_39_AcrylicBrush_TintTransitionDuration;
+                xamlMember.Setter = set_39_AcrylicBrush_TintTransitionDuration;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.IsActive":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsActive", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_29_ProgressRing_IsActive;
-                xamlMember.Setter = set_29_ProgressRing_IsActive;
+                xamlMember.Getter = get_40_ProgressRing_IsActive;
+                xamlMember.Setter = set_40_ProgressRing_IsActive;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.IsIndeterminate":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsIndeterminate", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_30_ProgressRing_IsIndeterminate;
-                xamlMember.Setter = set_30_ProgressRing_IsIndeterminate;
+                xamlMember.Getter = get_41_ProgressRing_IsIndeterminate;
+                xamlMember.Setter = set_41_ProgressRing_IsIndeterminate;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.Maximum":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Maximum", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_31_ProgressRing_Maximum;
-                xamlMember.Setter = set_31_ProgressRing_Maximum;
+                xamlMember.Getter = get_42_ProgressRing_Maximum;
+                xamlMember.Setter = set_42_ProgressRing_Maximum;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.Minimum":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Minimum", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_32_ProgressRing_Minimum;
-                xamlMember.Setter = set_32_ProgressRing_Minimum;
+                xamlMember.Getter = get_43_ProgressRing_Minimum;
+                xamlMember.Setter = set_43_ProgressRing_Minimum;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.TemplateSettings":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "TemplateSettings", "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings");
-                xamlMember.Getter = get_33_ProgressRing_TemplateSettings;
+                xamlMember.Getter = get_44_ProgressRing_TemplateSettings;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.Value":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Value", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_34_ProgressRing_Value;
-                xamlMember.Setter = set_34_ProgressRing_Value;
+                xamlMember.Getter = get_45_ProgressRing_Value;
+                xamlMember.Setter = set_45_ProgressRing_Value;
                 break;
             case "SenaAurion.Shell.MainShellWindow.ViewModel":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("SenaAurion.Shell.MainShellWindow");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "ViewModel", "SenaAurion.ViewModels.MainViewModel");
-                xamlMember.Getter = get_35_MainShellWindow_ViewModel;
+                xamlMember.Getter = get_46_MainShellWindow_ViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Children":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Children", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>");
-                xamlMember.Getter = get_36_TreeViewNode_Children;
+                xamlMember.Getter = get_47_TreeViewNode_Children;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Content":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_37_TreeViewNode_Content;
-                xamlMember.Setter = set_37_TreeViewNode_Content;
+                xamlMember.Getter = get_48_TreeViewNode_Content;
+                xamlMember.Setter = set_48_TreeViewNode_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Depth":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Depth", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_38_TreeViewNode_Depth;
+                xamlMember.Getter = get_49_TreeViewNode_Depth;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasChildren":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "HasChildren", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_39_TreeViewNode_HasChildren;
+                xamlMember.Getter = get_50_TreeViewNode_HasChildren;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasUnrealizedChildren":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "HasUnrealizedChildren", "Boolean");
-                xamlMember.Getter = get_40_TreeViewNode_HasUnrealizedChildren;
-                xamlMember.Setter = set_40_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Getter = get_51_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Setter = set_51_TreeViewNode_HasUnrealizedChildren;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.IsExpanded":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_41_TreeViewNode_IsExpanded;
-                xamlMember.Setter = set_41_TreeViewNode_IsExpanded;
+                xamlMember.Getter = get_52_TreeViewNode_IsExpanded;
+                xamlMember.Setter = set_52_TreeViewNode_IsExpanded;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Parent":
                 userType = (global::SenaAurion.SenaAurion_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::SenaAurion.SenaAurion_XamlTypeInfo.XamlMember(this, "Parent", "Microsoft.UI.Xaml.Controls.TreeViewNode");
-                xamlMember.Getter = get_42_TreeViewNode_Parent;
+                xamlMember.Getter = get_53_TreeViewNode_Parent;
                 xamlMember.SetIsReadOnly();
                 break;
             }
