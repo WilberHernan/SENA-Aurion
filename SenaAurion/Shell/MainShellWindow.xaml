@@ -40,8 +40,8 @@
             </Style>
 
             <Style x:Key="ModuleProgressRingStyle" TargetType="ProgressRing">
-                <Setter Property="Width" Value="20" />
-                <Setter Property="Height" Value="20" />
+                <Setter Property="Width" Value="16" />
+                <Setter Property="Height" Value="16" />
                 <Setter Property="IsActive" Value="True" />
                 <Setter Property="Foreground" Value="#E6FFFFFF" />
             </Style>
@@ -264,12 +264,30 @@
 
                         <ProgressRing Grid.Column="0"
                                       Style="{StaticResource ModuleProgressRingStyle}"
-                                      Visibility="{x:Bind ViewModel.CurrentModuleIsApplyingVisibility, Mode=OneWay}" />
+                                      Visibility="{x:Bind ViewModel.CurrentModuleProgressVisibility, Mode=OneWay}" />
 
                         <StackPanel Grid.Column="1" Spacing="6">
                             <TextBlock Text="{x:Bind ViewModel.CurrentModuleSummaryText, Mode=OneWay}"
                                        FontSize="11"
                                        Foreground="#8CFFFFFF"
+                                       TextWrapping="WrapWholeWords" />
+
+                            <TextBlock Text="{x:Bind ViewModel.WingetProbeText, Mode=OneWay}"
+                                       FontSize="11"
+                                       Foreground="#99FFFFFF"
+                                       Visibility="{x:Bind ViewModel.WingetProbeTextVisibility, Mode=OneWay}"
+                                       TextWrapping="WrapWholeWords" />
+
+                            <TextBlock Text="{x:Bind ViewModel.BackgroundOperationNoticeText, Mode=OneWay}"
+                                       FontSize="11"
+                                       Foreground="#99FFFFFF"
+                                       Visibility="{x:Bind ViewModel.BackgroundOperationNoticeVisibility, Mode=OneWay}"
+                                       TextWrapping="WrapWholeWords" />
+
+                            <TextBlock Text="{x:Bind ViewModel.CurrentModuleLastResultText, Mode=OneWay}"
+                                       FontSize="11"
+                                       Foreground="#B3FFFFFF"
+                                       Visibility="{x:Bind ViewModel.CurrentModuleLastResultVisibility, Mode=OneWay}"
                                        TextWrapping="WrapWholeWords" />
 
                             <StackPanel Margin="0,10,0,0" Spacing="6" Visibility="{x:Bind ViewModel.ServiceProfilesVisibility, Mode=OneWay}">
@@ -295,11 +313,7 @@
                                 </ItemsControl>
                             </StackPanel>
 
-                            <TextBlock Text="{x:Bind ViewModel.CurrentModuleLastResultText, Mode=OneWay}"
-                                       FontSize="11"
-                                       Foreground="#B3FFFFFF"
-                                       TextWrapping="WrapWholeWords"
-                                       Visibility="{x:Bind ViewModel.CurrentModuleLastResultVisibility, Mode=OneWay}" />
+                            
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -318,10 +332,6 @@
                     </StackPanel>
 
                     <StackPanel x:Name="ProgramsActionsPanel" Visibility="Collapsed">
-                        <Button Content="Comprobar winget"
-                                Command="{x:Bind ViewModel.ProbeWingetCommand, Mode=OneWay}"
-                                Style="{StaticResource NeoActionButtonStyle}"
-                                Margin="0,0,0,8"/>
                         <Button Content="Instalar" Click="InstallProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
                         <Button Content="Actualizar" Click="UpdateProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
                         <Button Content="Desinstalar" Click="UninstallProgramsButton_Click" Style="{StaticResource NeoActionButtonStyle}"/>

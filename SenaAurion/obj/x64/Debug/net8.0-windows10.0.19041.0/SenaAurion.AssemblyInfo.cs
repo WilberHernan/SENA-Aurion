@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SenaAurion")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+355c7c7a65f99c5c4885f80a2a2dc13dc3b6f523")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a24d3a405d79c336883159a4b1dd56c0d90c689")]
 [assembly: System.Reflection.AssemblyProductAttribute("SenaAurion")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SenaAurion")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

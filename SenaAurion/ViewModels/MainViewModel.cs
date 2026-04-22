@@ -14,6 +14,10 @@ public sealed partial class MainViewModel : ViewModelBase
     private readonly IOptimizationEngine _engine;
     private readonly WingetProgramService _wingetService;
     private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcher;
+    private CancellationTokenSource? _wingetProbeCts;
+    private CancellationTokenSource? _wingetProbeHideCts;
+    private string _activeOperationModuleTag = string.Empty;
+    private readonly Dictionary<string, string> _moduleResultTextByTag = new(StringComparer.OrdinalIgnoreCase);
 
     public MainViewModel(IOptimizationDataProvider dataProvider, IOptimizationEngine engine)
     {
@@ -116,16 +120,98 @@ public sealed partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isCurrentModuleApplying;
 
+    [ObservableProperty]
+    private bool _isWingetProbeRunning;
+
     public Microsoft.UI.Xaml.Visibility CurrentModuleIsApplyingVisibility =>
         IsCurrentModuleApplying ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
 
+    public Microsoft.UI.Xaml.Visibility CurrentModuleProgressVisibility =>
+        IsCurrentModuleApplying && !IsWingetProbeRunning
+        && string.Equals(SelectedTag, _activeOperationModuleTag, StringComparison.OrdinalIgnoreCase)
+            ? Microsoft.UI.Xaml.Visibility.Visible
+            : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    public Microsoft.UI.Xaml.Visibility BackgroundOperationNoticeVisibility =>
+        IsCurrentModuleApplying && !IsWingetProbeRunning && !string.IsNullOrWhiteSpace(_activeOperationModuleTag)
+        && !string.Equals(SelectedTag, _activeOperationModuleTag, StringComparison.OrdinalIgnoreCase)
+            ? Microsoft.UI.Xaml.Visibility.Visible
+            : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    public string BackgroundOperationNoticeText =>
+        string.IsNullOrWhiteSpace(_activeOperationModuleTag)
+            ? string.Empty
+            : $"Procesando «{MapModuleTagToLabel(_activeOperationModuleTag)}» en segundo plano…";
+
+    private static string MapModuleTagToLabel(string tag) => tag switch
+    {
+        "input" => "Entrada",
+        "network" => "Red",
+        "services" => "Servicios",
+        "cleaner" => "Limpieza",
+        "programs" => "Programas",
+        _ => tag
+    };
+
+    private void BeginModuleOperation(string moduleTag)
+    {
+        _activeOperationModuleTag = moduleTag;
+        IsCurrentModuleApplying = true;
+        OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeText));
+    }
+
+    private void EndModuleOperation()
+    {
+        IsCurrentModuleApplying = false;
+        _activeOperationModuleTag = string.Empty;
+        OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeText));
+    }
+
+    private static bool IsProgramOperationName(string? moduleTagOrName) =>
+        string.Equals(moduleTagOrName, "programs", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(moduleTagOrName, "Programas", StringComparison.OrdinalIgnoreCase);
+
+    private void SetModuleResult(string moduleTag, string result)
+    {
+        if (string.IsNullOrWhiteSpace(moduleTag)) return;
+        _moduleResultTextByTag[moduleTag] = result;
+        if (string.Equals(SelectedTag, moduleTag, StringComparison.OrdinalIgnoreCase))
+            CurrentModuleLastResultText = result;
+    }
+
+    private void ClearModuleResult(string moduleTag)
+    {
+        if (string.IsNullOrWhiteSpace(moduleTag)) return;
+        _moduleResultTextByTag.Remove(moduleTag);
+        if (string.Equals(SelectedTag, moduleTag, StringComparison.OrdinalIgnoreCase))
+            CurrentModuleLastResultText = string.Empty;
+    }
+
     [ObservableProperty]
     private string _currentModuleLastResultText = string.Empty;
+
+    [ObservableProperty]
+    private string _wingetProbeText = string.Empty;
+
+    [ObservableProperty]
+    private string _currentModuleLastResultLevel = "none";
 
     public Microsoft.UI.Xaml.Visibility CurrentModuleLastResultVisibility =>
         string.IsNullOrWhiteSpace(CurrentModuleLastResultText)
             ? Microsoft.UI.Xaml.Visibility.Collapsed
             : Microsoft.UI.Xaml.Visibility.Visible;
+
+    public Microsoft.UI.Xaml.Visibility WingetProbeTextVisibility =>
+        IsProgramsModule && !string.IsNullOrWhiteSpace(WingetProbeText)
+            ? Microsoft.UI.Xaml.Visibility.Visible
+            : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    public Microsoft.UI.Xaml.Media.Brush CurrentModuleLastResultBrush =>
+        new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 179, 179, 179));
 
     public string CurrentModuleSummaryText => ComputeCurrentModuleSummary();
 
@@ -262,13 +348,40 @@ public sealed partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(ServiceProfilesVisibility));
         OnPropertyChanged(nameof(IsCleanerModule));
         OnPropertyChanged(nameof(IsProgramsModule));
+        OnPropertyChanged(nameof(WingetProbeTextVisibility));
+        OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeText));
 
         if (value == "home")
         {
             _ = LoadSystemInfoAsync();
         }
+
         RefreshCurrentModuleView();
         ResetModuleTransientUiOnSwitch();
+
+        if (_moduleResultTextByTag.TryGetValue(value, out var moduleResult))
+            CurrentModuleLastResultText = moduleResult;
+        else
+            CurrentModuleLastResultText = string.Empty;
+
+        if (value == "programs")
+        {
+            // No iniciar probe si hay operación activa de otro módulo;
+            // evita pisar estado de progreso en curso.
+            if (!(IsCurrentModuleApplying
+                  && !string.IsNullOrWhiteSpace(_activeOperationModuleTag)
+                  && !string.Equals(_activeOperationModuleTag, "programs", StringComparison.OrdinalIgnoreCase)))
+            {
+                _ = AutoProbeWingetOnProgramsEntryAsync();
+            }
+        }
+        else
+        {
+            CancelWingetProbeFlows();
+        }
+
         OnPropertyChanged(nameof(CurrentModuleSummaryText));
         OnPropertyChanged(nameof(CurrentModuleIsApplyingVisibility));
         OnPropertyChanged(nameof(CurrentModuleLastResultVisibility));
@@ -407,19 +520,24 @@ public sealed partial class MainViewModel : ViewModelBase
             }
         }
 
+        // Programas esenciales para técnicos de sistemas
         ProgramPackageItems.Add(new ProgramPackageViewModel("Google Chrome", "Google.Chrome", "Navegador web"));
         ProgramPackageItems.Add(new ProgramPackageViewModel("Mozilla Firefox", "Mozilla.Firefox", "Navegador web"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("7-Zip", "7zip.7zip", "CompresiÃ³n de archivos"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("Notepad++", "Notepad++.Notepad++", "Editor de texto"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("VLC", "VideoLAN.VLC", "Reproductor multimedia"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("7-Zip", "7zip.7zip", "Compresión y extracción"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Notepad++", "Notepad++.Notepad++", "Editor de texto técnico"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Visual Studio Code", "Microsoft.VisualStudioCode", "Editor para scripts/configuración"));
         ProgramPackageItems.Add(new ProgramPackageViewModel("Git", "Git.Git", "Control de versiones"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("Microsoft PowerToys", "Microsoft.PowerToys", "Utilidades del sistema"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("Visual Studio Code", "Microsoft.VisualStudioCode", "Editor de código"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("Windows Terminal", "Microsoft.WindowsTerminal", "Terminal moderno"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("Discord", "Discord.Discord", "Comunicación"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("Steam", "Valve.Steam", "Plataforma de juegos"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("Spotify", "Spotify.Spotify", "Música en streaming"));
-        ProgramPackageItems.Add(new ProgramPackageViewModel("Python 3.12", "Python.Python.3.12", "Intérprete Python"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("PuTTY", "PuTTY.PuTTY", "SSH / Telnet"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("WinSCP", "WinSCP.WinSCP", "Transferencia SFTP / SCP"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Everything", "voidtools.Everything", "Búsqueda instantánea de archivos"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("CrystalDiskInfo", "CrystalDewWorld.CrystalDiskInfo", "Estado SMART de discos"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("CrystalDiskMark", "CrystalDewWorld.CrystalDiskMark", "Benchmark de discos"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("HWMonitor", "CPUID.HWMonitor", "Monitoreo de hardware"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("Rufus", "Rufus.Rufus", "USB booteable"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("balenaEtcher", "Balena.Etcher", "Creación de USB booteable"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("TeamViewer", "TeamViewer.TeamViewer", "Soporte remoto"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("AnyDesk", "AnyDesk.AnyDesk", "Soporte remoto"));
+        ProgramPackageItems.Add(new ProgramPackageViewModel("BleachBit", "BleachBit.BleachBit", "Limpieza de archivos temporales"));
 
         SelectAllInput = false;
         SelectAllNetwork = false;
@@ -512,13 +630,21 @@ public sealed partial class MainViewModel : ViewModelBase
     private async Task ApplySelectedModuleAsync(string moduleName, CancellationToken cancellationToken)
     {
         if (Data is null) return;
+
+        var selectedItems = CurrentModuleItems.Where(i => i.IsSelected && i.IsSelectable).ToArray();
+        if (selectedItems.Length == 0)
+        {
+            StatusMessage = "Selecciona al menos un elemento del módulo.";
+            return;
+        }
+
         IsBusy = true;
-        IsCurrentModuleApplying = true;
-        CurrentModuleLastResultText = string.Empty;
+        if (!IsProgramOperationName(moduleName))
+            BeginModuleOperation(moduleName);
+        ClearModuleResult(moduleName);
         StatusMessage = $"Aplicando selección en {CurrentModuleTitle}…";
         try
         {
-            var selectedItems = CurrentModuleItems.Where(i => i.IsSelected && i.IsSelectable).ToArray();
             var before = selectedItems.ToDictionary(i => i, i => i.CurrentStateText);
 
             if (moduleName == "input")
@@ -534,6 +660,11 @@ public sealed partial class MainViewModel : ViewModelBase
                 await _engine.ApplyServicesAsync(ServiceTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
             else if (moduleName == "cleaner")
                 await _engine.ApplyCleanerAsync(CleanerTweakItems.Where(t => t.IsSelected).Select(t => t.Definition), cancellationToken);
+            else
+            {
+                StatusMessage = $"Módulo no soportado: {moduleName}";
+                return;
+            }
 
             // Releer estados reales y generar "antes -> después" por ítem seleccionado.
             foreach (var item in selectedItems)
@@ -559,49 +690,158 @@ public sealed partial class MainViewModel : ViewModelBase
             }
 
             StatusMessage = $"Módulo {CurrentModuleTitle} aplicado correctamente.";
-            CurrentModuleLastResultText = moduleName switch
+            var resultText = moduleName switch
             {
                 "services" => "Servicios procesados: deshabilitación aplicada donde correspondía (y bloqueada si era crítica por Wi‑Fi).",
                 "cleaner" => "Limpieza finalizada correctamente.",
                 "network" => "Ajustes de registro y acciones de red (DNS/caché) ejecutadas según la selección.",
                 _ => "Cambios aplicados y verificados."
             };
+            SetModuleResult(moduleName, resultText);
         }
-        catch (Exception ex) { StatusMessage = $"Error: {ex.Message}"; }
+        catch (OperationCanceledException)
+        {
+            StatusMessage = "Operación cancelada.";
+            SetModuleResult(moduleName, "Operación cancelada.");
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error: {ex.Message}";
+            SetModuleResult(moduleName, "Error al aplicar cambios.");
+        }
         finally
         {
-            IsCurrentModuleApplying = false;
+            EndModuleOperation();
             IsBusy = false;
             OnPropertyChanged(nameof(CurrentModuleIsApplyingVisibility));
             OnPropertyChanged(nameof(CurrentModuleLastResultVisibility));
             OnPropertyChanged(nameof(CurrentModuleSummaryText));
+            OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeText));
         }
     }
 
     private void ResetModuleTransientUiOnSwitch()
     {
-        // Evita “información pegada” entre módulos
-        CurrentModuleLastResultText = string.Empty;
-        IsCurrentModuleApplying = false;
+        // Evita “información pegada” entre módulos, pero SIN pisar
+        // feedback/progreso de una operación activa en segundo plano.
+        if (!IsCurrentModuleApplying || string.IsNullOrWhiteSpace(_activeOperationModuleTag))
+        {
+            if (_moduleResultTextByTag.TryGetValue(SelectedTag, out var moduleResult))
+                CurrentModuleLastResultText = moduleResult;
+            else
+                CurrentModuleLastResultText = string.Empty;
+            CurrentModuleLastResultLevel = "none";
+        }
 
-        foreach (var item in InputTweakItems) item.LastChangeText = string.Empty;
-        foreach (var item in NetworkTweakItems) item.LastChangeText = string.Empty;
-        foreach (var item in ServiceTweakItems) item.LastChangeText = string.Empty;
-        foreach (var item in CleanerTweakItems) item.LastChangeText = string.Empty;
-        foreach (var item in ProgramPackageItems) item.LastChangeText = string.Empty;
-        foreach (var item in NetworkQuickActionItems) item.LastChangeText = string.Empty;
+        WingetProbeText = string.Empty;
+        // No forzar false aquí: si hay operación en curso en otro módulo, debe continuar.
+
+        // Limpiar solo el módulo visible; no borrar historial visual de otros módulos.
+        foreach (var item in CurrentModuleItems)
+            item.LastChangeText = string.Empty;
     }
 
-    partial void OnIsCurrentModuleApplyingChanged(bool value) =>
+    partial void OnIsCurrentModuleApplyingChanged(bool value)
+    {
         OnPropertyChanged(nameof(CurrentModuleIsApplyingVisibility));
+        OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeText));
+    }
+
+    partial void OnIsWingetProbeRunningChanged(bool value)
+    {
+        OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+        OnPropertyChanged(nameof(BackgroundOperationNoticeText));
+    }
 
     partial void OnCurrentModuleLastResultTextChanged(string value) =>
         OnPropertyChanged(nameof(CurrentModuleLastResultVisibility));
+
+    partial void OnWingetProbeTextChanged(string value) =>
+        OnPropertyChanged(nameof(WingetProbeTextVisibility));
+
+    partial void OnCurrentModuleLastResultLevelChanged(string value)
+    {
+        OnPropertyChanged(nameof(CurrentModuleLastResultBrush));
+    }
+
+    private void CancelWingetProbeFlows()
+    {
+        try { _wingetProbeCts?.Cancel(); } catch { }
+        try { _wingetProbeHideCts?.Cancel(); } catch { }
+    }
+
+    private async Task AutoProbeWingetOnProgramsEntryAsync()
+    {
+        CancelWingetProbeFlows();
+        _wingetProbeCts = new CancellationTokenSource();
+        await ProbeWingetInternalAsync(_wingetProbeCts.Token).ConfigureAwait(true);
+    }
+
+    private async Task HideWingetIndicatorAfterDelayAsync(TimeSpan delay, CancellationToken token)
+    {
+        try
+        {
+            await Task.Delay(delay, token).ConfigureAwait(true);
+            if (!token.IsCancellationRequested && SelectedTag == "programs")
+            {
+                CurrentModuleLastResultLevel = "none";
+                WingetProbeText = string.Empty;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // cancelado intencionalmente
+        }
+    }
+
+    private async Task ProbeWingetInternalAsync(CancellationToken cancellationToken)
+    {
+        IsWingetProbeRunning = true;
+        CurrentModuleLastResultText = string.Empty;
+        CurrentModuleLastResultLevel = "none";
+        WingetProbeText = string.Empty;
+        StatusMessage = "Comprobando winget…";
+        try
+        {
+            var msg = await WingetProgramService.ProbeAsync(cancellationToken).ConfigureAwait(true);
+            var ok = !string.IsNullOrWhiteSpace(msg)
+                     && !msg.Contains("no encontrado", StringComparison.OrdinalIgnoreCase)
+                     && !msg.StartsWith("Código", StringComparison.OrdinalIgnoreCase);
+
+            WingetProbeText = ok ? "winget instalado" : "winget no instalado";
+            StatusMessage = ok ? "winget instalado." : $"winget no instalado: {msg}";
+
+            _wingetProbeHideCts?.Cancel();
+            _wingetProbeHideCts = new CancellationTokenSource();
+            _ = HideWingetIndicatorAfterDelayAsync(TimeSpan.FromSeconds(15), _wingetProbeHideCts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            // cancelado por cambio de módulo
+        }
+        finally
+        {
+            IsWingetProbeRunning = false;
+        }
+    }
 
     private string ComputeCurrentModuleSummary()
     {
         if (SelectedTag == "programs")
             return $"Programas disponibles: {ProgramPackageItems.Count}";
+
+        if (SelectedTag == "cleaner")
+        {
+            var selectedCount = CleanerTweakItems.Count(c => c.IsSelected);
+            return selectedCount == 0
+                ? "Selecciona tareas de limpieza."
+                : $"Tareas seleccionadas: {selectedCount}";
+        }
 
         var items = CurrentModuleItems.Where(IsCountableForSummary).ToArray();
         if (items.Length == 0) return "Sin funciones disponibles en este módulo.";
@@ -632,7 +872,20 @@ public sealed partial class MainViewModel : ViewModelBase
     private async Task RevertSelectedModuleAsync(string moduleName, CancellationToken cancellationToken)
     {
         if (Data is null) return;
+
+        if (moduleName != "cleaner")
+        {
+            var selected = CurrentModuleItems.Where(i => i.IsSelected && i.IsSelectable).ToArray();
+            if (selected.Length == 0)
+            {
+                StatusMessage = "Selecciona al menos un elemento del módulo.";
+                return;
+            }
+        }
+
         IsBusy = true;
+        BeginModuleOperation(moduleName);
+        ClearModuleResult(moduleName);
         StatusMessage = $"Revirtiendo selección en {CurrentModuleTitle}…";
         try
         {
@@ -651,10 +904,29 @@ public sealed partial class MainViewModel : ViewModelBase
             if (moduleName != "cleaner")
             {
                 StatusMessage = $"Módulo {CurrentModuleTitle} revertido correctamente.";
+                SetModuleResult(moduleName, "Reversión completada.");
             }
         }
-        catch (Exception ex) { StatusMessage = $"Error: {ex.Message}"; }
-        finally { IsBusy = false; }
+        catch (OperationCanceledException)
+        {
+            StatusMessage = "Operación cancelada.";
+            SetModuleResult(moduleName, "Reversión cancelada.");
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error: {ex.Message}";
+            SetModuleResult(moduleName, "Error durante reversión.");
+        }
+        finally
+        {
+            if (!IsProgramOperationName(moduleName))
+                EndModuleOperation();
+            IsBusy = false;
+            OnPropertyChanged(nameof(CurrentModuleSummaryText));
+            OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeText));
+        }
     }
 
     [RelayCommand]
@@ -662,6 +934,8 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         if (Data is null) return;
         IsBusy = true;
+        BeginModuleOperation(moduleName);
+        ClearModuleResult(moduleName);
         StatusMessage = $"Restaurando configuración en {CurrentModuleTitle}…";
         try
         {
@@ -673,15 +947,34 @@ public sealed partial class MainViewModel : ViewModelBase
             {
                 await UpdateSelectedProgramsAsync(cancellationToken);
                 StatusMessage = "Programas seleccionados actualizados a su versión más reciente.";
+                SetModuleResult(moduleName, "Actualización de programas completada.");
             }
             else
             {
                 await _engine.RevertModuleAsync(moduleName, Data, cancellationToken);
                 StatusMessage = $"{CurrentModuleTitle} restaurado a su configuración original.";
+                SetModuleResult(moduleName, "Restauración completada.");
             }
         }
-        catch (Exception ex) { StatusMessage = $"Error: {ex.Message}"; }
-        finally { IsBusy = false; }
+        catch (OperationCanceledException)
+        {
+            StatusMessage = "Operación cancelada.";
+            SetModuleResult(moduleName, "Restauración cancelada.");
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error: {ex.Message}";
+            SetModuleResult(moduleName, "Error durante restauración.");
+        }
+        finally
+        {
+            EndModuleOperation();
+            IsBusy = false;
+            OnPropertyChanged(nameof(CurrentModuleSummaryText));
+            OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeText));
+        }
     }
 
     [RelayCommand]
@@ -695,18 +988,54 @@ public sealed partial class MainViewModel : ViewModelBase
         }
 
         IsBusy = true;
+        BeginModuleOperation("programs");
+        ClearModuleResult("programs");
+        CurrentModuleLastResultLevel = "none";
         try
         {
+            int ok = 0;
+            int fail = 0;
             foreach (var program in selected)
             {
                 var result = await _wingetService.InstallAsync(program.PackageId, cancellationToken);
                 program.CurrentStateText = result;
+                program.LastChangeText = result;
+                if (WingetProgramService.IsSuccessResult(result)) ok++; else fail++;
             }
-            StatusMessage = "Instalación finalizada.";
+
+            if (fail == 0)
+            {
+                StatusMessage = "Instalación finalizada.";
+                CurrentModuleLastResultLevel = "success";
+                SetModuleResult("programs", "Instalación completada.");
+            }
+            else
+            {
+                StatusMessage = "Instalación finalizada con incidencias.";
+                CurrentModuleLastResultLevel = "error";
+                SetModuleResult("programs", "Instalación con incidencias.");
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            StatusMessage = "Operación cancelada.";
+            SetModuleResult("programs", "Instalación cancelada.");
+            CurrentModuleLastResultLevel = "error";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error: {ex.Message}";
+            SetModuleResult("programs", "Error durante la instalación.");
+            CurrentModuleLastResultLevel = "error";
         }
         finally
         {
+            EndModuleOperation();
             IsBusy = false;
+            OnPropertyChanged(nameof(CurrentModuleSummaryText));
+            OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeText));
         }
     }
 
@@ -721,18 +1050,54 @@ public sealed partial class MainViewModel : ViewModelBase
         }
 
         IsBusy = true;
+        BeginModuleOperation("programs");
+        ClearModuleResult("programs");
+        CurrentModuleLastResultLevel = "none";
         try
         {
+            int ok = 0;
+            int fail = 0;
             foreach (var program in selected)
             {
                 var result = await _wingetService.UpgradeAsync(program.PackageId, cancellationToken);
                 program.CurrentStateText = result;
+                program.LastChangeText = result;
+                if (WingetProgramService.IsSuccessResult(result)) ok++; else fail++;
             }
-            StatusMessage = "Actualización finalizada.";
+
+            if (fail == 0)
+            {
+                StatusMessage = "Actualización finalizada.";
+                CurrentModuleLastResultLevel = "success";
+                SetModuleResult("programs", "Actualización completada.");
+            }
+            else
+            {
+                StatusMessage = "Actualización finalizada con incidencias.";
+                CurrentModuleLastResultLevel = "error";
+                SetModuleResult("programs", "Actualización con incidencias.");
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            StatusMessage = "Operación cancelada.";
+            SetModuleResult("programs", "Actualización cancelada.");
+            CurrentModuleLastResultLevel = "error";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error: {ex.Message}";
+            SetModuleResult("programs", "Error durante la actualización.");
+            CurrentModuleLastResultLevel = "error";
         }
         finally
         {
+            EndModuleOperation();
             IsBusy = false;
+            OnPropertyChanged(nameof(CurrentModuleSummaryText));
+            OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeText));
         }
     }
 
@@ -747,18 +1112,54 @@ public sealed partial class MainViewModel : ViewModelBase
         }
 
         IsBusy = true;
+        BeginModuleOperation("programs");
+        ClearModuleResult("programs");
+        CurrentModuleLastResultLevel = "none";
         try
         {
+            int ok = 0;
+            int fail = 0;
             foreach (var program in selected)
             {
                 var result = await _wingetService.UninstallAsync(program.PackageId, cancellationToken);
                 program.CurrentStateText = result;
+                program.LastChangeText = result;
+                if (WingetProgramService.IsSuccessResult(result)) ok++; else fail++;
             }
-            StatusMessage = "Desinstalación finalizada.";
+
+            if (fail == 0)
+            {
+                StatusMessage = "Desinstalación finalizada.";
+                CurrentModuleLastResultLevel = "success";
+                SetModuleResult("programs", "Desinstalación completada.");
+            }
+            else
+            {
+                StatusMessage = "Desinstalación finalizada con incidencias.";
+                CurrentModuleLastResultLevel = "error";
+                SetModuleResult("programs", "Desinstalación con incidencias.");
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            StatusMessage = "Operación cancelada.";
+            SetModuleResult("programs", "Desinstalación cancelada.");
+            CurrentModuleLastResultLevel = "error";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error: {ex.Message}";
+            SetModuleResult("programs", "Error durante la desinstalación.");
+            CurrentModuleLastResultLevel = "error";
         }
         finally
         {
+            EndModuleOperation();
             IsBusy = false;
+            OnPropertyChanged(nameof(CurrentModuleSummaryText));
+            OnPropertyChanged(nameof(CurrentModuleProgressVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeVisibility));
+            OnPropertyChanged(nameof(BackgroundOperationNoticeText));
         }
     }
 
@@ -857,17 +1258,7 @@ public sealed partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task ProbeWingetAsync(CancellationToken cancellationToken)
     {
-        IsBusy = true;
-        StatusMessage = "Comprobando winget…";
-        try
-        {
-            var msg = await WingetProgramService.ProbeAsync(cancellationToken).ConfigureAwait(true);
-            StatusMessage = $"winget: {msg}";
-        }
-        finally
-        {
-            IsBusy = false;
-        }
+        await ProbeWingetInternalAsync(cancellationToken).ConfigureAwait(true);
     }
 }
 

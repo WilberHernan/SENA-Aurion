@@ -40,8 +40,8 @@
             </Style>
 
             <Style x:Key="ModuleProgressRingStyle" TargetType="ProgressRing">
-                <Setter Property="Width" Value="20" />
-                <Setter Property="Height" Value="20" />
+                <Setter Property="Width" Value="16" />
+                <Setter Property="Height" Value="16" />
                 <Setter Property="IsActive" Value="True" />
                 <Setter Property="Foreground" Value="#E6FFFFFF" />
             </Style>
@@ -103,13 +103,13 @@
 
         <Grid Grid.Column="0">
             <!-- BARRA SUPERIOR OCULTA (Usada solo para arrastrar la ventana) -->
-            <Grid x:ConnectionId='43' x:Name="AppCustomTitleBar" VerticalAlignment="Top" Background="Transparent" Height="46" Margin="64,0,0,0" Canvas.ZIndex="20" />
+            <Grid x:ConnectionId='44' x:Name="AppCustomTitleBar" VerticalAlignment="Top" Background="Transparent" Height="46" Margin="64,0,0,0" Canvas.ZIndex="20" />
 
             <!-- AREA DE CONTENIDO (Expandida al máximo) -->
             <Grid Margin="0,0,0,0">
                 <Border Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Grid x:ConnectionId='44' x:Name="MainContainerContent">
-                        <Button x:ConnectionId='45' Background="Transparent" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="18" Padding="0" Width="36" Height="36"
+                    <Grid x:ConnectionId='45' x:Name="MainContainerContent">
+                        <Button x:ConnectionId='46' Background="Transparent" BorderBrush="#40FFFFFF" BorderThickness="1" CornerRadius="18" Padding="0" Width="36" Height="36"
                                 HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Canvas.ZIndex="30"                            ToolTipService.ToolTip="Volver al Splash">
                             <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Path Data="M 16,10 L 4,10 M 10,4 L 4,10 L 10,16" Stroke="#FFFFFF" StrokeThickness="1.5" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Width="12" Height="12" />
@@ -130,19 +130,19 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock x:ConnectionId='59' Grid.Column="0"
+                                <TextBlock x:ConnectionId='60' Grid.Column="0"
                                                                                                     
                                            Style="{StaticResource PageTitleStyle}"
                                            VerticalAlignment="Center"/>
 
-                                <Button x:ConnectionId='60' Grid.Column="3" Style="{StaticResource NeoActionButtonStyle}" Width="40" Height="34" Padding="0"
+                                <Button x:ConnectionId='61' Grid.Column="3" Style="{StaticResource NeoActionButtonStyle}" Width="40" Height="34" Padding="0"
                                                                                                          ToolTipService.ToolTip="Seleccionar todo / deseleccionar todo">
                                     <FontIcon Glyph="&#xE8FD;" FontSize="14" Foreground="#E6FFFFFF" />
                                 </Button>
                             </Grid>
 
                             <Grid Grid.Row="1">
-                                <ListView x:ConnectionId='46'                                                                 
+                                <ListView x:ConnectionId='47'                                                                 
                                                                                                           
                                          Background="Transparent"
                                          BorderThickness="0"
@@ -179,19 +179,19 @@
                                     </ListView.ItemContainerStyle>
                                     <ListView.ItemTemplate>
                                         <DataTemplate                                           >
-                                            <Grid x:ConnectionId='50' ColumnSpacing="10">
+                                            <Grid x:ConnectionId='51' ColumnSpacing="10">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <CheckBox x:ConnectionId='51' Grid.Column="0"
+                                                <CheckBox x:ConnectionId='52' Grid.Column="0"
                                                                                                       
                                                                                                         
                                                           VerticalAlignment="Center"/>
 
-                                                <Image x:ConnectionId='52' Grid.Column="1"
+                                                <Image x:ConnectionId='53' Grid.Column="1"
                                                        Width="20" Height="20"
                                                        Margin="2,0,2,0"
                                                                                                 
@@ -202,10 +202,10 @@
                                                 <StackPanel Grid.Column="2" Spacing="3">
                                                     <StackPanel Orientation="Horizontal" Spacing="8">
                                                         <TextBlock FontSize="14" Foreground="#F2FFFFFF" FontWeight="SemiBold">
-                                                            <Run x:ConnectionId='57'                                             />
-                                                            <Run x:ConnectionId='58'                                            Foreground="#FF6B6B"/>
+                                                            <Run x:ConnectionId='58'                                             />
+                                                            <Run x:ConnectionId='59'                                            Foreground="#FF6B6B"/>
                                                         </TextBlock>
-                                                        <TextBlock x:ConnectionId='56' Text="⚠"
+                                                        <TextBlock x:ConnectionId='57' Text="⚠"
                                                                    FontSize="12"
                                                                    Foreground="#FFC56A"
                                                                    VerticalAlignment="Center"
@@ -214,19 +214,19 @@
                                                     </StackPanel>
 
                                                     <!-- Descripción corta (especialmente útil en Servicios) -->
-                                                    <TextBlock x:ConnectionId='53'                                         
+                                                    <TextBlock x:ConnectionId='54'                                         
                                                                FontSize="11"
                                                                Foreground="#66FFFFFF"
                                                                TextWrapping="WrapWholeWords"
                                                                MaxLines="2"/>
 
                                                     <!-- Estado actual (una línea) -->
-                                                    <TextBlock x:ConnectionId='54'                                              
+                                                    <TextBlock x:ConnectionId='55'                                              
                                                                FontSize="11"
                                                                Foreground="#8CFFFFFF"
                                                                Margin="0,2,0,0"/>
 
-                                                    <TextBlock x:ConnectionId='55'                                            
+                                                    <TextBlock x:ConnectionId='56'                                            
                                                                FontSize="11"
                                                                Foreground="#B3FFFFFF"
                                                                                                                       />
@@ -253,8 +253,8 @@
             <!-- CARD SUPERIOR: qué hace el módulo seleccionado -->
             <Border Grid.Row="0" Background="{StaticResource GlassSurfaceBrush}" CornerRadius="14" Padding="16">
                 <StackPanel>
-                    <TextBlock x:ConnectionId='34'                                                           FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" TextWrapping="Wrap" />
-                    <TextBlock x:ConnectionId='35'                                                                 FontSize="11" Foreground="#B3FFFFFF" LineHeight="17" Margin="0,8,0,0" TextWrapping="Wrap" />
+                    <TextBlock x:ConnectionId='33'                                                           FontSize="15" FontWeight="SemiBold" Foreground="#F2FFFFFF" TextWrapping="Wrap" />
+                    <TextBlock x:ConnectionId='34'                                                                 FontSize="11" Foreground="#B3FFFFFF" LineHeight="17" Margin="0,8,0,0" TextWrapping="Wrap" />
 
                     <Grid Margin="0,12,0,0" ColumnSpacing="10">
                         <Grid.ColumnDefinitions>
@@ -262,20 +262,38 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <ProgressRing x:ConnectionId='36' Grid.Column="0"
+                        <ProgressRing x:ConnectionId='35' Grid.Column="0"
                                       Style="{StaticResource ModuleProgressRingStyle}"
-                                                                                                                     />
+                                                                                                                   />
 
                         <StackPanel Grid.Column="1" Spacing="6">
-                            <TextBlock x:ConnectionId='37'                                                                
+                            <TextBlock x:ConnectionId='36'                                                                
                                        FontSize="11"
                                        Foreground="#8CFFFFFF"
                                        TextWrapping="WrapWholeWords" />
 
-                            <StackPanel x:ConnectionId='38' Margin="0,10,0,0" Spacing="6"                                                                       >
+                            <TextBlock x:ConnectionId='37'                                                       
+                                       FontSize="11"
+                                       Foreground="#99FFFFFF"
+                                                                                                             
+                                       TextWrapping="WrapWholeWords" />
+
+                            <TextBlock x:ConnectionId='38'                                                                     
+                                       FontSize="11"
+                                       Foreground="#99FFFFFF"
+                                                                                                                       
+                                       TextWrapping="WrapWholeWords" />
+
+                            <TextBlock x:ConnectionId='39'                                                                   
+                                       FontSize="11"
+                                       Foreground="#B3FFFFFF"
+                                                                                                                     
+                                       TextWrapping="WrapWholeWords" />
+
+                            <StackPanel x:ConnectionId='40' Margin="0,10,0,0" Spacing="6"                                                                       >
                                 <TextBlock Text="Perfiles de servicios (marcan la selección; luego pulsa Aplicar)"
                                            FontSize="11" Foreground="#99FFFFFF" TextWrapping="WrapWholeWords" />
-                                <ItemsControl x:ConnectionId='40'                                                                        >
+                                <ItemsControl x:ConnectionId='41'                                                                        >
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Vertical" Spacing="6" />
@@ -283,7 +301,7 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate                                             >
-                                            <Button x:ConnectionId='42' Style="{StaticResource NeoActionButtonStyle}"
+                                            <Button x:ConnectionId='43' Style="{StaticResource NeoActionButtonStyle}"
                                                     HorizontalAlignment="Stretch"
                                                     Padding="10,6"
                                                                             
@@ -295,11 +313,7 @@
                                 </ItemsControl>
                             </StackPanel>
 
-                            <TextBlock x:ConnectionId='39'                                                                   
-                                       FontSize="11"
-                                       Foreground="#B3FFFFFF"
-                                       TextWrapping="WrapWholeWords"
-                                                                                                                      />
+                            
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -312,19 +326,15 @@
                                Visibility="Collapsed"/>
 
                     <StackPanel x:ConnectionId='25' x:Name="DefaultActionsPanel">
-                        <Button x:ConnectionId='31' x:Name="PrimaryActionButton" Content="Aplicar"                                   Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='32' x:Name="SecondaryActionButton" Content="Revertir"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='33' x:Name="TertiaryActionButton" Content="Restaurar de fabrica"                                    Style="{StaticResource NeoActionButtonStyle}"/>
+                        <Button x:ConnectionId='30' x:Name="PrimaryActionButton" Content="Aplicar"                                   Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='31' x:Name="SecondaryActionButton" Content="Revertir"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='32' x:Name="TertiaryActionButton" Content="Restaurar de fabrica"                                    Style="{StaticResource NeoActionButtonStyle}"/>
                     </StackPanel>
 
                     <StackPanel x:ConnectionId='26' x:Name="ProgramsActionsPanel" Visibility="Collapsed">
-                        <Button x:ConnectionId='27' Content="Comprobar winget"
-                                                                                            
-                                Style="{StaticResource NeoActionButtonStyle}"
-                                Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='28' Content="Instalar"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='29' Content="Actualizar"                                    Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
-                        <Button x:ConnectionId='30' Content="Desinstalar"                                       Style="{StaticResource NeoActionButtonStyle}"/>
+                        <Button x:ConnectionId='27' Content="Instalar"                                     Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='28' Content="Actualizar"                                    Style="{StaticResource NeoActionButtonStyle}" Margin="0,0,0,8"/>
+                        <Button x:ConnectionId='29' Content="Desinstalar"                                       Style="{StaticResource NeoActionButtonStyle}"/>
                     </StackPanel>
 
                 </StackPanel>
