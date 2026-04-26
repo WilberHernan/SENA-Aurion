@@ -32,7 +32,9 @@ public sealed class RegistryService
                 { "MouseSpeed", "10" },
                 { "MouseHoverTime", "400" },
                 { "MouseDataQueueSize", 100 },
-                { "KeyboardDataQueueSize", 100 }
+                { "KeyboardDataQueueSize", 100 },
+                { "WheelScrollLines", "3" },
+                { "MouseTrails", "0" }
             };
 
             foreach (var tweak in tweaks)
@@ -67,9 +69,8 @@ public sealed class RegistryService
             var defaults = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
             {
                 { "NetworkThrottlingIndex", 10 },
-                { "SystemResponsiveness", 20 },
-                { "MaxUserPort", 65534 },
-                { "TcpTimedWaitDelay", 30 } // default varies 30-120
+                { "Tcp1323Opts", 3 },
+                { "EnableLMHosts", 1 }
             };
 
             foreach (var tweak in tweaks)

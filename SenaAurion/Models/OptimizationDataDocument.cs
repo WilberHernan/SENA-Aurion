@@ -28,6 +28,14 @@ public sealed class OptimizationDataDocument
     [JsonPropertyName("services")]
     public IList<ServiceDefinition> Services { get; init; } = new List<ServiceDefinition>();
 
+    /// <summary>Perfiles predefinidos de entrada: lista de ids de tweaks a marcar.</summary>
+    [JsonPropertyName("inputProfiles")]
+    public IList<InputProfileDefinition> InputProfiles { get; init; } = new List<InputProfileDefinition>();
+
+    /// <summary>Perfiles predefinidos de red: lista de ids de tweaks a marcar.</summary>
+    [JsonPropertyName("networkProfiles")]
+    public IList<NetworkProfileDefinition> NetworkProfiles { get; init; } = new List<NetworkProfileDefinition>();
+
     /// <summary>Perfiles predefinidos: lista de ids de servicio a marcar para deshabilitar.</summary>
     [JsonPropertyName("serviceProfiles")]
     public IList<ServiceProfileDefinition> ServiceProfiles { get; init; } = new List<ServiceProfileDefinition>();
@@ -44,10 +52,13 @@ public sealed class NetworkQuickActionDefinition
     [JsonPropertyName("displayLabel")]
     public string DisplayLabel { get; init; } = "";
 
+    [JsonPropertyName("group")]
+    public string Group { get; init; } = "Diagnostico";
+
     [JsonPropertyName("description")]
     public string Description { get; init; } = "";
 
-    /// <summary>flushDns | dnsCloudflare | dnsGoogle | dnsAdGuard | dnsDhcpReset</summary>
+    /// <summary>flushDns | dnsDhcpReset | releaseRenew | resetWinsock | resetTcpIp</summary>
     [JsonPropertyName("action")]
     public string Action { get; init; } = "";
 
@@ -71,6 +82,36 @@ public sealed class ServiceProfileDefinition
 
     [JsonPropertyName("disableServiceIds")]
     public IList<string> DisableServiceIds { get; init; } = new List<string>();
+}
+
+public sealed class InputProfileDefinition
+{
+    [JsonPropertyName("id")]
+    public string Id { get; init; } = "";
+
+    [JsonPropertyName("label")]
+    public string Label { get; init; } = "";
+
+    [JsonPropertyName("description")]
+    public string Description { get; init; } = "";
+
+    [JsonPropertyName("enableTweakIds")]
+    public IList<string> EnableTweakIds { get; init; } = new List<string>();
+}
+
+public sealed class NetworkProfileDefinition
+{
+    [JsonPropertyName("id")]
+    public string Id { get; init; } = "";
+
+    [JsonPropertyName("label")]
+    public string Label { get; init; } = "";
+
+    [JsonPropertyName("description")]
+    public string Description { get; init; } = "";
+
+    [JsonPropertyName("enableTweakIds")]
+    public IList<string> EnableTweakIds { get; init; } = new List<string>();
 }
 
 public sealed class CleanerSection

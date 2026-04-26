@@ -182,5 +182,10 @@ public sealed class OptimizationEngine : IOptimizationEngine
             await _networkQuick.ApplyAsync(a, token).ConfigureAwait(false);
         }
     }
+
+    public async Task ApplyNetworkQuickActionAsync(NetworkQuickActionDefinition action, CancellationToken token = default)
+    {
+        await _networkQuick.ApplyAsync(action, token).ConfigureAwait(false);
+    }
 }
 

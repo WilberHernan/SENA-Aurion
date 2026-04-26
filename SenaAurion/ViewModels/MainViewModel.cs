@@ -44,6 +44,9 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         InputStateText = SystemStateMonitor.GetInputState();
         NetworkStateText = SystemStateMonitor.GetNetworkState();
+        ServicesStateText = Data?.Services != null
+            ? SystemStateMonitor.GetServicesState(Data.Services.Select(s => s.ServiceName))
+            : "Sin datos de servicios";
 
         foreach (var item in InputTweakItems) item.RefreshState();
         foreach (var item in NetworkTweakItems) item.RefreshState();
@@ -85,6 +88,22 @@ public sealed partial class MainViewModel : ViewModelBase
 
     public Microsoft.UI.Xaml.Visibility ServiceProfilesVisibility =>
         IsServicesModule ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    public bool IsInputModule => SelectedTag == "input";
+
+    public IReadOnlyList<InputProfileDefinition> InputProfileDefinitions =>
+        Data?.InputProfiles?.ToArray() ?? Array.Empty<InputProfileDefinition>();
+
+    public Microsoft.UI.Xaml.Visibility InputProfilesVisibility =>
+        IsInputModule ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    public bool IsNetworkModule => SelectedTag == "network";
+
+    public IReadOnlyList<NetworkProfileDefinition> NetworkProfileDefinitions =>
+        Data?.NetworkProfiles?.ToArray() ?? Array.Empty<NetworkProfileDefinition>();
+
+    public Microsoft.UI.Xaml.Visibility NetworkProfilesVisibility =>
+        IsNetworkModule ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsSectionHome))]
@@ -295,6 +314,9 @@ public sealed partial class MainViewModel : ViewModelBase
     private string _networkStateText = "Cargando...";
 
     [ObservableProperty]
+    private string _servicesStateText = "Cargando...";
+
+    [ObservableProperty]
     private string _cleanerStateText = "Memoria no calculada";
 
     // COLECCIONES UI
@@ -302,6 +324,8 @@ public sealed partial class MainViewModel : ViewModelBase
     public ObservableCollection<RegistryTweakViewModel> InputTweakItems { get; } = new();
     public ObservableCollection<RegistryTweakViewModel> NetworkTweakItems { get; } = new();
     public ObservableCollection<NetworkQuickActionViewModel> NetworkQuickActionItems { get; } = new();
+    public ObservableCollection<NetworkQuickActionViewModel> NetworkQuickDiagnosticItems { get; } = new();
+    public ObservableCollection<NetworkQuickActionViewModel> NetworkQuickTechnicalItems { get; } = new();
     public ObservableCollection<ServiceTweakModel> ServiceTweakItems { get; } = new();
     public ObservableCollection<CleanerTweakModel> CleanerTweakItems { get; } = new();
     public ObservableCollection<ProgramPackageViewModel> ProgramPackageItems { get; } = new();
@@ -334,7 +358,7 @@ public sealed partial class MainViewModel : ViewModelBase
             "home" => "Visión general · Optimizador SENA Aurion",
             "input" => "Teclado, ratón y menús · baja latencia",
             "network" => "Red · detección de Wi‑Fi activa",
-            "services" => "Control granular de servicios",
+            "services" => "Gestión de servicios del sistema · perfiles SENA",
             "cleaner" => "Mantenimiento y recuperación de espacio",
             "programs" => "Instalación, actualización y desinstalación con winget",
             _ => StatusMessage,
@@ -346,6 +370,10 @@ public sealed partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsSectionCleaner));
         OnPropertyChanged(nameof(IsServicesModule));
         OnPropertyChanged(nameof(ServiceProfilesVisibility));
+        OnPropertyChanged(nameof(IsInputModule));
+        OnPropertyChanged(nameof(InputProfilesVisibility));
+        OnPropertyChanged(nameof(IsNetworkModule));
+        OnPropertyChanged(nameof(NetworkProfilesVisibility));
         OnPropertyChanged(nameof(IsCleanerModule));
         OnPropertyChanged(nameof(IsProgramsModule));
         OnPropertyChanged(nameof(WingetProbeTextVisibility));
@@ -411,7 +439,7 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         "input" => "Ajusta el registro para mejorar la respuesta del teclado, el ratón y los menús (latencia más baja). Los cambios son reversibles desde la propia aplicación.",
         "network" => "Aplica ajustes TCP/IP para mayor estabilidad y menor latencia en el tráfico de red. El motor respeta servicios críticos cuando hay Wi‑Fi activa.",
-        "services" => "Permite deshabilitar servicios no esenciales para aligerar el sistema. Los elementos bloqueados por Wi‑Fi no se modifican para no cortar la conectividad.",
+        "services" => "Gestiona servicios no esenciales para reducir consumo de recursos y mejorar tiempos de arranque. Incluye perfiles predefinidos para el contexto institucional del SENA (estándar, aulas, oficinas, portátiles). Cada cambio es reversible y se documenta en el log.",
         "cleaner" => "Libera espacio eliminando temporales, cachés y datos prescindibles. Algunas acciones borran archivos de forma permanente; revísalas antes de ejecutar.",
         "programs" => "Instala, actualiza o desinstala programas usando winget (identificadores de paquete). Útil para despliegue y mantenimiento desde soporte técnico.",
         _ => "Resumen del equipo y punto de partida. Desde aquí navega a cada módulo para aplicar optimizaciones concretas con reglas claras y registro de actividad."
@@ -428,7 +456,7 @@ public sealed partial class MainViewModel : ViewModelBase
         IEnumerable<TweakItemViewModel> source = SelectedTag switch
         {
             "input" => InputTweakItems,
-            "network" => NetworkTweakItems.Cast<TweakItemViewModel>().Concat(NetworkQuickActionItems),
+            "network" => NetworkTweakItems,
             "services" => ServiceTweakItems,
             "cleaner" => CleanerTweakItems,
             "programs" => ProgramPackageItems,
@@ -501,10 +529,19 @@ public sealed partial class MainViewModel : ViewModelBase
 
         foreach (var t in Data.InputLatency.Tweaks) InputTweakItems.Add(new RegistryTweakViewModel(t));
         foreach (var t in Data.NetworkTcp.Tweaks) NetworkTweakItems.Add(new RegistryTweakViewModel(t));
+        NetworkQuickDiagnosticItems.Clear();
+        NetworkQuickTechnicalItems.Clear();
         if (Data.NetworkQuickActions is { Count: > 0 })
         {
             foreach (var a in Data.NetworkQuickActions)
-                NetworkQuickActionItems.Add(new NetworkQuickActionViewModel(a));
+            {
+                var vm = new NetworkQuickActionViewModel(a);
+                NetworkQuickActionItems.Add(vm);
+                if (string.Equals(a.Group, "Tecnico", StringComparison.OrdinalIgnoreCase))
+                    NetworkQuickTechnicalItems.Add(vm);
+                else
+                    NetworkQuickDiagnosticItems.Add(vm);
+            }
         }
         
         if (Data.Cleaner?.Tasks != null)
@@ -1216,6 +1253,93 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         var safe = InputTweakItems.Where(t => !t.IsDanger).ToArray();
         return safe.Length > 0 && safe.All(i => i.IsSelected);
+    }
+
+    /// <summary>Aplica un perfil de entrada (solo marca casillas; usa «Aplicar» para ejecutar).</summary>
+    [RelayCommand]
+    private void ApplyInputProfile(string? profileId)
+    {
+        if (Data is null || string.IsNullOrWhiteSpace(profileId)) return;
+        var profile = Data.InputProfiles.FirstOrDefault(p =>
+            string.Equals(p.Id, profileId, StringComparison.OrdinalIgnoreCase));
+        if (profile is null)
+        {
+            StatusMessage = $"Perfil de entrada no encontrado: {profileId}";
+            return;
+        }
+
+        var enable = new HashSet<string>(profile.EnableTweakIds, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var item in InputTweakItems)
+        {
+            item.IsSelected = enable.Contains(item.Definition.Id);
+        }
+
+        StatusMessage = $"Perfil «{profile.Label}»: selección actualizada. Pulsa Aplicar para ejecutar los ajustes de entrada.";
+        OnPropertyChanged(nameof(CurrentModuleSummaryText));
+    }
+
+    /// <summary>Aplica un perfil de red (solo marca casillas; usa «Aplicar» para ejecutar).</summary>
+    [RelayCommand]
+    private void ApplyNetworkProfile(string? profileId)
+    {
+        if (Data is null || string.IsNullOrWhiteSpace(profileId)) return;
+        var profile = Data.NetworkProfiles.FirstOrDefault(p =>
+            string.Equals(p.Id, profileId, StringComparison.OrdinalIgnoreCase));
+        if (profile is null)
+        {
+            StatusMessage = $"Perfil de red no encontrado: {profileId}";
+            return;
+        }
+
+        var enable = new HashSet<string>(profile.EnableTweakIds, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var item in NetworkTweakItems)
+        {
+            item.IsSelected = enable.Contains(item.Definition.Id);
+        }
+
+        StatusMessage = $"Perfil «{profile.Label}»: selección actualizada. Pulsa Aplicar para ejecutar los ajustes de red.";
+        OnPropertyChanged(nameof(CurrentModuleSummaryText));
+    }
+
+    /// <summary>Ejecuta una acción rápida de red directamente (flush DNS, release/renew, etc.).</summary>
+    [RelayCommand]
+    private async Task ExecuteNetworkQuickAction(string? actionId, CancellationToken cancellationToken)
+    {
+        if (Data is null || string.IsNullOrWhiteSpace(actionId)) return;
+        var action = Data.NetworkQuickActions.FirstOrDefault(a =>
+            string.Equals(a.Id, actionId, StringComparison.OrdinalIgnoreCase));
+        if (action is null)
+        {
+            StatusMessage = $"Acción de red no encontrada: {actionId}";
+            return;
+        }
+
+        IsBusy = true;
+        StatusMessage = $"Ejecutando {action.DisplayLabel}…";
+        try
+        {
+            var engine = _engine as Services.OptimizationEngine;
+            if (engine is not null)
+            {
+                await engine.ApplyNetworkQuickActionAsync(action, cancellationToken).ConfigureAwait(true);
+                StatusMessage = $"{action.DisplayLabel}: completado.";
+            }
+            else
+            {
+                StatusMessage = "Motor de optimización no disponible.";
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error en {action.DisplayLabel}: {ex.Message}";
+        }
+        finally
+        {
+            IsBusy = false;
+            SystemStateMonitor.NotifyStateChanged();
+        }
     }
 
     /// <summary>Aplica un perfil de servicios (solo marca casillas; usa «Aplicar» para ejecutar).</summary>

@@ -313,7 +313,98 @@
                                 </ItemsControl>
                             </StackPanel>
 
-                            
+                            <StackPanel Margin="0,10,0,0" Spacing="6" Visibility="{x:Bind ViewModel.NetworkProfilesVisibility, Mode=OneWay}">
+                                <TextBlock Text="Perfiles de red (marcan la selección; luego pulsa Aplicar)"
+                                           FontSize="11" Foreground="#99FFFFFF" TextWrapping="WrapWholeWords" />
+                                <ItemsControl ItemsSource="{x:Bind ViewModel.NetworkProfileDefinitions, Mode=OneWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" Spacing="6" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="models:NetworkProfileDefinition">
+                                            <Button Style="{StaticResource NeoActionButtonStyle}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Padding="10,6"
+                                                    Content="{x:Bind Label}"
+                                                    ToolTipService.ToolTip="{x:Bind Description}"
+                                                    Tag="{x:Bind Id}"
+                                                    Click="NetworkProfile_Click" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0" Spacing="6" Visibility="{x:Bind ViewModel.NetworkProfilesVisibility, Mode=OneWay}">
+                                <TextBlock Text="Diagnóstico de red"
+                                           FontSize="11" Foreground="#99FFFFFF" TextWrapping="WrapWholeWords" />
+                                <ItemsControl ItemsSource="{x:Bind ViewModel.NetworkQuickDiagnosticItems, Mode=OneWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" Spacing="6" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="viewmodels:NetworkQuickActionViewModel">
+                                            <Button Style="{StaticResource NeoActionButtonStyle}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Padding="10,6"
+                                                    Content="{x:Bind DisplayName}"
+                                                    ToolTipService.ToolTip="{x:Bind Description}"
+                                                    Tag="{x:Bind Definition.Id}"
+                                                    Click="NetworkQuickAction_Click" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0" Spacing="6" Visibility="{x:Bind ViewModel.NetworkProfilesVisibility, Mode=OneWay}">
+                                <TextBlock Text="Funciones técnicas"
+                                           FontSize="11" Foreground="#FF6B6B" TextWrapping="WrapWholeWords" />
+                                <ItemsControl ItemsSource="{x:Bind ViewModel.NetworkQuickTechnicalItems, Mode=OneWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" Spacing="6" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="viewmodels:NetworkQuickActionViewModel">
+                                            <Button Style="{StaticResource NeoActionButtonStyle}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Padding="10,6"
+                                                    Content="{x:Bind DisplayName}"
+                                                    ToolTipService.ToolTip="{x:Bind DangerTooltip}"
+                                                    Tag="{x:Bind Definition.Id}"
+                                                    Click="NetworkQuickAction_Click" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0" Spacing="6" Visibility="{x:Bind ViewModel.InputProfilesVisibility, Mode=OneWay}">
+                                <TextBlock Text="Perfiles de entrada (marcan la selección; luego pulsa Aplicar)"
+                                           FontSize="11" Foreground="#99FFFFFF" TextWrapping="WrapWholeWords" />
+                                <ItemsControl ItemsSource="{x:Bind ViewModel.InputProfileDefinitions, Mode=OneWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" Spacing="6" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="models:InputProfileDefinition">
+                                            <Button Style="{StaticResource NeoActionButtonStyle}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Padding="10,6"
+                                                    Content="{x:Bind Label}"
+                                                    ToolTipService.ToolTip="{x:Bind Description}"
+                                                    Tag="{x:Bind Id}"
+                                                    Click="InputProfile_Click" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
                         </StackPanel>
                     </Grid>
                 </StackPanel>

@@ -13,11 +13,11 @@
     ]
   },
   "inputLatency": {
-    "description": "Respuesta de teclado/ratón y menús: valores típicos en scripts de baja latencia y utilidades de optimización.",
+    "description": "Respuesta de teclado, ratón y menús optimizada para entornos institucionales SENA. Los valores priorizan productividad real sin sacrificar estabilidad ni usabilidad para usuarios de diferentes niveles.",
     "tweaks": [
       {
         "id": "kbd-delay",
-        "displayName": "KeyboardDelay",
+        "displayName": "Retraso inicial de repetición de teclas (KeyboardDelay)",
         "category": "Input",
         "hive": "CurrentUser",
         "subKey": "Control Panel\\Keyboard",
@@ -25,12 +25,12 @@
         "valueKind": "String",
         "valueData": "0",
         "requiresAdmin": false,
-        "rationale": "Mínimo retraso antes de repetición de tecla (panel clásico).",
+        "rationale": "Mínimo retraso antes de repetición (~250 ms). Mejora la respuesta percibida al mantener una tecla pulsada.",
         "sourceAlignment": "CTT / Sophia / guías de latencia"
       },
       {
         "id": "kbd-speed",
-        "displayName": "KeyboardSpeed",
+        "displayName": "Velocidad de repetición de teclas (KeyboardSpeed)",
         "category": "Input",
         "hive": "CurrentUser",
         "subKey": "Control Panel\\Keyboard",
@@ -38,25 +38,40 @@
         "valueKind": "String",
         "valueData": "31",
         "requiresAdmin": false,
-        "rationale": "Repetición de teclas al máximo de la escala 0–31.",
+        "rationale": "Repetición al máximo de la escala 0–31 (~30 repeticiones/seg).",
         "sourceAlignment": "Productividad estándar"
       },
       {
         "id": "mouse-speed",
-        "displayName": "MouseSpeed",
+        "displayName": "Velocidad del puntero (MouseSpeed)",
         "category": "Input",
         "hive": "CurrentUser",
         "subKey": "Control Panel\\Mouse",
         "valueName": "MouseSpeed",
         "valueKind": "String",
-        "valueData": "20",
+        "valueData": "12",
         "requiresAdmin": false,
-        "rationale": "Velocidad del puntero elevada (1–20); ajuste común en perfiles rápidos.",
-        "sourceAlignment": "Scripts de escritorio / CTT"
+        "rationale": "Velocidad de puntero incrementada (default 10, máximo 20). 12 ofrece mayor agilidad sin perder precisión en usuarios noveles.",
+        "sourceAlignment": "Ajuste institucional SENA",
+        "impactDescription": "El puntero se desplaza más rápido que el valor de fábrica. Usuarios con movilidad reducida pueden preferir dejarlo en 10."
+      },
+      {
+        "id": "wheel-scroll-lines",
+        "displayName": "Líneas de scroll con la rueda del ratón",
+        "category": "Input",
+        "hive": "CurrentUser",
+        "subKey": "Control Panel\\Desktop",
+        "valueName": "WheelScrollLines",
+        "valueKind": "String",
+        "valueData": "6",
+        "requiresAdmin": false,
+        "rationale": "Aumenta la cantidad de líneas desplazadas por clic de rueda (default 3). Mejora productividad al navegar documentos y páginas web.",
+        "sourceAlignment": "Ajuste institucional SENA",
+        "impactDescription": "El scroll será más rápido. Si usas aplicaciones con zoom sensible a la rueda, verifica el comportamiento."
       },
       {
         "id": "mouse-hover",
-        "displayName": "MouseHoverTime",
+        "displayName": "Tiempo de respuesta al hover (MouseHoverTime)",
         "category": "Input",
         "hive": "CurrentUser",
         "subKey": "Control Panel\\Mouse",
@@ -64,12 +79,12 @@
         "valueKind": "String",
         "valueData": "100",
         "requiresAdmin": false,
-        "rationale": "Hover más rápido que el valor por defecto (400 ms).",
+        "rationale": "Reduce el tiempo necesario para que una ventana/tooltip reaccione al pasar el ratón (default 400 ms).",
         "sourceAlignment": "Fr33thy-style / comunidad latencia"
       },
       {
         "id": "mouse-hover-height",
-        "displayName": "MouseHoverHeight",
+        "displayName": "Altura del rectángulo de hover (MouseHoverHeight)",
         "category": "Input",
         "hive": "CurrentUser",
         "subKey": "Control Panel\\Mouse",
@@ -82,7 +97,7 @@
       },
       {
         "id": "mouse-hover-width",
-        "displayName": "MouseHoverWidth",
+        "displayName": "Ancho del rectángulo de hover (MouseHoverWidth)",
         "category": "Input",
         "hive": "CurrentUser",
         "subKey": "Control Panel\\Mouse",
@@ -95,20 +110,21 @@
       },
       {
         "id": "menu-show-delay",
-        "displayName": "MenuShowDelay",
+        "displayName": "Retraso de visualización de menús (MenuShowDelay)",
         "category": "Input",
         "hive": "CurrentUser",
         "subKey": "Control Panel\\Desktop",
         "valueName": "MenuShowDelay",
         "valueKind": "String",
-        "valueData": "0",
+        "valueData": "50",
         "requiresAdmin": false,
-        "rationale": "Sin retardo artificial en menús en cascada.",
-        "sourceAlignment": "CTT / Sophia / optimizadores clásicos"
+        "rationale": "Reduce el retardo artificial en menús en cascada a 50 ms (default 400 ms). Elimina la sensación de lentitud sin provocar aperturas accidentales como con 0 ms.",
+        "sourceAlignment": "Ajuste institucional SENA",
+        "impactDescription": "Los menús contextuales y en cascada se abrirán casi instantáneamente. 50 ms es un punto medio seguro entre 0 (agresivo) y 400 (lento)."
       },
       {
         "id": "mouclass-queue",
-        "displayName": "MouseDataQueueSize (mouclass)",
+        "displayName": "Cola de eventos del ratón (mouclass)",
         "category": "Input",
         "hive": "LocalMachine",
         "subKey": "SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters",
@@ -116,12 +132,13 @@
         "valueKind": "DWord",
         "valueData": 16,
         "requiresAdmin": true,
-        "rationale": "Cola de eventos de ratón; 16 es un valor citado en guías de latencia (efecto pleno puede requerir reinicio).",
-        "sourceAlignment": "Comunidad mouclass / guías gaming"
+        "rationale": "Aumenta la cola de eventos de ratón para evitar pérdida de inputs en movimientos rápidos. Requiere reinicio para efecto completo.",
+        "sourceAlignment": "Comunidad mouclass / guías gaming",
+        "impactDescription": "Requiere reinicio. No afecta la estabilidad del sistema; solo reserva más buffer para eventos de ratón."
       },
       {
         "id": "kbdclass-queue",
-        "displayName": "KeyboardDataQueueSize (kbdclass)",
+        "displayName": "Cola de eventos del teclado (kbdclass)",
         "category": "Input",
         "hive": "LocalMachine",
         "subKey": "SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters",
@@ -129,101 +146,9 @@
         "valueKind": "DWord",
         "valueData": 20,
         "requiresAdmin": true,
-        "rationale": "Cola de teclado; 20 es un valor habitual en scripts de latencia (si la clave no existe, el motor omite).",
-        "sourceAlignment": "Paridad con ajustes kbdclass en scripts públicos"
-      },
-      {
-        "id": "explorer-launch-thispc",
-        "displayName": "Explorador: abrir en Este equipo",
-        "category": "Productividad",
-        "hive": "CurrentUser",
-        "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
-        "valueName": "LaunchTo",
-        "valueKind": "DWord",
-        "valueData": 1,
-        "requiresAdmin": false,
-        "rationale": "Win+E y ventanas nuevas enfocan «Este equipo» en lugar de accesos rápidos.",
-        "sourceAlignment": "Preferencias de productividad / WinUtil-style"
-      },
-      {
-        "id": "explorer-show-hidden",
-        "displayName": "Explorador: mostrar archivos ocultos",
-        "category": "Productividad",
-        "hive": "CurrentUser",
-        "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
-        "valueName": "Hidden",
-        "valueKind": "DWord",
-        "valueData": 1,
-        "requiresAdmin": false,
-        "rationale": "Visibilidad de archivos y carpetas ocultos del sistema.",
-        "sourceAlignment": "Soporte técnico / power users"
-      },
-      {
-        "id": "explorer-show-extensions",
-        "displayName": "Explorador: mostrar extensiones",
-        "category": "Productividad",
-        "hive": "CurrentUser",
-        "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
-        "valueName": "HideFileExt",
-        "valueKind": "DWord",
-        "valueData": 0,
-        "requiresAdmin": false,
-        "rationale": "Evita confusiones entre .txt, .exe, etc.",
-        "sourceAlignment": "Buenas prácticas de seguridad básica"
-      },
-      {
-        "id": "desktop-autoendtasks",
-        "displayName": "Cerrar apps automáticamente al apagar",
-        "category": "Escritorio",
-        "hive": "CurrentUser",
-        "subKey": "Control Panel\\Desktop",
-        "valueName": "AutoEndTasks",
-        "valueKind": "String",
-        "valueData": "1",
-        "requiresAdmin": false,
-        "rationale": "Apagado más rápido; puede cerrar aplicaciones sin confirmación explícita.",
-        "sourceAlignment": "Scripts de escritorio",
-        "isDanger": true,
-        "impactDescription": "Windows puede terminar procesos colgados o con datos sin guardar al apagar o reiniciar. No recomendado en equipos de trabajo crítico."
-      },
-      {
-        "id": "desktop-hung-timeout",
-        "displayName": "HungAppTimeout (apps colgadas)",
-        "category": "Escritorio",
-        "hive": "CurrentUser",
-        "subKey": "Control Panel\\Desktop",
-        "valueName": "HungAppTimeout",
-        "valueKind": "String",
-        "valueData": "1000",
-        "requiresAdmin": false,
-        "rationale": "Tiempo más corto antes de considerar una app colgada (ms).",
-        "sourceAlignment": "Tweaks de respuesta del escritorio"
-      },
-      {
-        "id": "desktop-wait-kill-app",
-        "displayName": "WaitToKillAppTimeout",
-        "category": "Escritorio",
-        "hive": "CurrentUser",
-        "subKey": "Control Panel\\Desktop",
-        "valueName": "WaitToKillAppTimeout",
-        "valueKind": "String",
-        "valueData": "2000",
-        "requiresAdmin": false,
-        "rationale": "Menos espera al cerrar aplicaciones durante el apagado.",
-        "sourceAlignment": "Optimización de tiempos de apagado"
-      },
-      {
-        "id": "desktop-wait-kill-service",
-        "displayName": "WaitToKillServiceTimeout",
-        "category": "Escritorio",
-        "hive": "CurrentUser",
-        "subKey": "Control Panel\\Desktop",
-        "valueName": "WaitToKillServiceTimeout",
-        "valueKind": "String",
-        "valueData": "2000",
-        "requiresAdmin": false,
-        "rationale": "Reduce la espera máxima al detener servicios en apagado.",
-        "sourceAlignment": "Optimización de tiempos de apagado"
+        "rationale": "Aumenta la cola de eventos de teclado para evitar pérdida de pulsaciones en tipeo rápido. Requiere reinicio.",
+        "sourceAlignment": "Paridad con ajustes kbdclass en scripts públicos",
+        "impactDescription": "Requiere reinicio. Valor conservador y seguro; el default de Windows es 100, pero scripts de baja latencia suelen reducirlo o ajustarlo según hardware."
       },
       {
         "id": "mouse-trails-off",
@@ -235,26 +160,49 @@
         "valueKind": "String",
         "valueData": "0",
         "requiresAdmin": false,
-        "rationale": "Sin rastro visual del ratón (menos trabajo de composición).",
+        "rationale": "Desactiva el rastro visual del puntero, reduciendo carga de composición del escritorio.",
         "sourceAlignment": "Rendimiento periféricos"
-      },
-      {
-        "id": "explorer-snap-flyout-off",
-        "displayName": "Desactivar sugerencias de Snap Assist",
-        "category": "Productividad",
-        "hive": "CurrentUser",
-        "subKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
-        "valueName": "DisableSnapAssistFlyout",
-        "valueKind": "DWord",
-        "valueData": 1,
-        "requiresAdmin": false,
-        "rationale": "Menos interrupciones al acoplar ventanas (Windows 10/11).",
-        "sourceAlignment": "Flujo de trabajo sin distracciones"
       }
     ]
   },
+  "inputProfiles": [
+    {
+      "id": "sena-standard",
+      "label": "Estándar SENA",
+      "description": "Perfil recomendado para equipos institucionales (aulas y oficinas). Mejora la respuesta de teclado, ratón y menús sin cambios que requieran reinicio.",
+      "enableTweakIds": [
+        "kbd-delay",
+        "kbd-speed",
+        "mouse-speed",
+        "wheel-scroll-lines",
+        "mouse-hover",
+        "mouse-hover-height",
+        "mouse-hover-width",
+        "menu-show-delay",
+        "mouse-trails-off"
+      ]
+    },
+    {
+      "id": "low-latency",
+      "label": "Baja latencia total",
+      "description": "Incluye tweaks de kernel (mouclass/kbdclass) que requieren reinicio. Orientado a soporte técnico o usuarios avanzados que buscan la máxima respuesta.",
+      "enableTweakIds": [
+        "kbd-delay",
+        "kbd-speed",
+        "mouse-speed",
+        "wheel-scroll-lines",
+        "mouse-hover",
+        "mouse-hover-height",
+        "mouse-hover-width",
+        "menu-show-delay",
+        "mouse-trails-off",
+        "mouclass-queue",
+        "kbdclass-queue"
+      ]
+    }
+  ],
   "networkTcp": {
-    "description": "TCP/IP global (HKLM). Aplicar solo elevado; revisar en portátiles con Wi‑Fi si hay efectos en batería.",
+    "description": "Optimización TCP/IP y conectividad para entornos institucionales SENA. Ajustes de baja latencia, desactivación de limitaciones de red en segundo plano y reducción de tráfico legacy. Requiere permisos de administrador.",
     "wifiCriticalServices": [
       "WlanSvc",
       "NlaSvc",
@@ -266,7 +214,7 @@
     "tweaks": [
       {
         "id": "tcp-ack-frequency",
-        "displayName": "TcpAckFrequency",
+        "displayName": "Frecuencia de ACK (TcpAckFrequency)",
         "category": "Network",
         "hive": "LocalMachine",
         "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces",
@@ -274,14 +222,14 @@
         "valueKind": "DWord",
         "valueData": 1,
         "requiresAdmin": true,
-        "rationale": "ACKs más frecuentes inyectados en TODAS las interfaces activas de red (Leatrix-style).",
-        "sourceAlignment": "Scripts de red / guías gaming",
+        "rationale": "Envía confirmaciones (ACK) más frecuentes en cada interfaz activa, reduciendo la latencia percibida en aplicaciones interactivas (navegación, terminales, videoconferencias).",
+        "sourceAlignment": "Scripts de red / guías de latencia",
         "isDanger": true,
-        "impactDescription": "Se aplica a cada interfaz TCP/IP. Puede aumentar tráfico de ACK y afectar Wi‑Fi/móvil o escenarios con muchas NIC. Revierte si notas inestabilidad."
+        "impactDescription": "Aumenta ligeramente el tráfico de ACK en la red institucional. En Wi‑Fi masiva o redes saturadas, podría afectar el rendimiento agregado. Revierte si notas inestabilidad."
       },
       {
         "id": "tcp-no-delay",
-        "displayName": "TCPNoDelay",
+        "displayName": "Desactivar Nagle (TCPNoDelay)",
         "category": "Network",
         "hive": "LocalMachine",
         "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces",
@@ -289,27 +237,14 @@
         "valueKind": "DWord",
         "valueData": 1,
         "requiresAdmin": true,
-        "rationale": "Desactiva Nagle (Nagle's Algorithm) bloqueando delay en colas de envío real.",
-        "sourceAlignment": "Guías de baja latencia / Esports",
+        "rationale": "Elimina el algoritmo de Nagle que retrasa el envío de paquetes pequeños en cola. Mejora la respuesta de aplicaciones interactivas (navegadores, RDP, SSH, VoIP).",
+        "sourceAlignment": "Guías de baja latencia / aplicaciones interactivas",
         "isDanger": true,
-        "impactDescription": "Afecta a todas las interfaces. Útil en juegos; en transferencias masivas puede cambiar el patrón de paquetes. Comprueba en tu red."
-      },
-      {
-        "id": "tcp-del-ack-ticks",
-        "displayName": "TcpDelAckTicks",
-        "category": "Network",
-        "hive": "LocalMachine",
-        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
-        "valueName": "TcpDelAckTicks",
-        "valueKind": "DWord",
-        "valueData": 0,
-        "requiresAdmin": true,
-        "rationale": "Retraso diferido de ACK en 0 donde aplica.",
-        "sourceAlignment": "Tuning TCP común en scripts"
+        "impactDescription": "En transferencias masivas de archivos locales o por red corporativa, puede aumentar la cantidad de paquetes pequeños. Evaluar en escenarios de alto throughput."
       },
       {
         "id": "tcp-1323opts",
-        "displayName": "Tcp1323Opts",
+        "displayName": "Extensiones RFC 1323 (timestamps + ventana escalada)",
         "category": "Network",
         "hive": "LocalMachine",
         "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
@@ -317,118 +252,108 @@
         "valueKind": "DWord",
         "valueData": 1,
         "requiresAdmin": true,
-        "rationale": "RFC 1323 (timestamps / ventana escalada).",
-        "sourceAlignment": "Documentación TCP/IP"
+        "rationale": "Habilita timestamps TCP y ventana de recepción escalada, mejorando el rendimiento en conexiones de alta latencia (redes WAN, servidores remotos).",
+        "sourceAlignment": "Documentación TCP/IP Microsoft"
       },
       {
-        "id": "tcp-default-ttl",
-        "displayName": "DefaultTTL",
+        "id": "network-throttling-index",
+        "displayName": "Desactivar limitación de ancho de banda multimedia",
         "category": "Network",
         "hive": "LocalMachine",
-        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
-        "valueName": "DefaultTTL",
+        "subKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+        "valueName": "NetworkThrottlingIndex",
         "valueKind": "DWord",
-        "valueData": 64,
+        "valueData": -1,
         "requiresAdmin": true,
-        "rationale": "TTL IPv4 conservador frecuente en scripts.",
-        "sourceAlignment": "Referencias de tuning"
+        "rationale": "Windows limita el ancho de banda de red para aplicaciones multimedia en segundo plano. Desactivar esta limitación mejora la velocidad de descarga y la latencia en aplicaciones de red.",
+        "sourceAlignment": "Guías gaming / MSDN perfil multimedia",
+        "impactDescription": "Las aplicaciones multimedia en segundo plano (reproductores, transmisiones) podrían consumir más ancho de banda. En un entorno institucional con gestión de red, el efecto es mínimo."
       },
       {
-        "id": "tcp-max-user-port",
-        "displayName": "MaxUserPort",
+        "id": "disable-lmhosts",
+        "displayName": "Deshabilitar búsqueda LMHOSTS",
         "category": "Network",
         "hive": "LocalMachine",
-        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
-        "valueName": "MaxUserPort",
-        "valueKind": "DWord",
-        "valueData": 65534,
-        "requiresAdmin": true,
-        "rationale": "Rango efímero amplio; usado en algunos scripts de servidor/workstation.",
-        "sourceAlignment": "Microsoft KB / scripts de rendimiento"
-      },
-      {
-        "id": "tcp-timed-wait-delay",
-        "displayName": "TcpTimedWaitDelay",
-        "category": "Network",
-        "hive": "LocalMachine",
-        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
-        "valueName": "TcpTimedWaitDelay",
-        "valueKind": "DWord",
-        "valueData": 30,
-        "requiresAdmin": true,
-        "rationale": "Tiempo TIME_WAIT (segundos) reducido en algunos entornos de muchas conexiones.",
-        "sourceAlignment": "Scripts avanzados (uso con precaución)",
-        "isDanger": true,
-        "impactDescription": "Valores bajos pueden causar problemas con sockets en servidores o software que abre muchas conexiones cortas. Revierte ante errores raros de red."
-      },
-      {
-        "id": "tcp-disable-icmp-redirect",
-        "displayName": "EnableICMPRedirect (deshabilitar)",
-        "category": "Network",
-        "hive": "LocalMachine",
-        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
-        "valueName": "EnableICMPRedirect",
+        "subKey": "SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters",
+        "valueName": "EnableLMHosts",
         "valueKind": "DWord",
         "valueData": 0,
         "requiresAdmin": true,
-        "rationale": "Evita seguir redirecciones ICMP para rutas (endurecimiento / estabilidad en algunas redes).",
-        "sourceAlignment": "Guías de endurecimiento TCP/IP"
-      },
-      {
-        "id": "tcp-disable-ip-source-routing",
-        "displayName": "DisableIPSourceRouting",
-        "category": "Network",
-        "hive": "LocalMachine",
-        "subKey": "SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters",
-        "valueName": "DisableIPSourceRouting",
-        "valueKind": "DWord",
-        "valueData": 2,
-        "requiresAdmin": true,
-        "rationale": "2 = no reenvío de tráfico con opciones de enrutamiento de origen (recomendación de seguridad Microsoft).",
-        "sourceAlignment": "Documentación Microsoft / hardening"
+        "rationale": "LMHOSTS es un mecanismo legacy de resolución de nombres NetBIOS. Deshabilitarlo elimina intentos de resolución innecesarios y reduce tráfico de broadcast en la red institucional.",
+        "sourceAlignment": "Hardening redes corporativas / Microsoft",
+        "impactDescription": "Si la red institucional aún depende de nombres NetBIOS legacy para compartir archivos o impresoras, la resolución podría fallar. Verificar con el equipo de redes antes de aplicar."
       }
     ]
   },
+  "networkProfiles": [
+    {
+      "id": "sena-network-standard",
+      "label": "Estándar SENA",
+      "description": "Perfil recomendado para equipos institucionales. Mejora el rendimiento de red sin tweaks de baja latencia agresivos ni riesgo de inestabilidad.",
+      "enableTweakIds": [
+        "tcp-1323opts",
+        "network-throttling-index",
+        "disable-lmhosts"
+      ]
+    },
+    {
+      "id": "low-latency-tcp",
+      "label": "Baja latencia TCP",
+      "description": "Incluye tweaks de interfaz (ACK frecuente y desactivación de Nagle) para máxima respuesta en aplicaciones interactivas. Requiere evaluación en redes corporativas.",
+      "enableTweakIds": [
+        "tcp-ack-frequency",
+        "tcp-no-delay",
+        "tcp-1323opts",
+        "network-throttling-index",
+        "disable-lmhosts"
+      ]
+    }
+  ],
   "networkQuickActions": [
     {
       "id": "dns-flush",
       "displayLabel": "Vaciar caché DNS local",
-      "description": "Ejecuta ipconfig /flushdns. Seguro y reversible; útil tras cambiar DNS o resolver nombres obsoletos.",
+      "group": "Diagnostico",
+      "description": "Ejecuta ipconfig /flushdns. Seguro y reversible; útil para resolver nombres obsoletos o problemas de resolución tras cambios de DNS.",
       "action": "flushDns",
       "isDanger": false,
       "impactDescription": ""
     },
     {
-      "id": "dns-cloudflare",
-      "displayLabel": "DNS Cloudflare (1.1.1.1) en adaptadores activos",
-      "description": "Aplica DNS 1.1.1.1 y 1.0.0.1 en interfaces físicas activas (PowerShell). Suele requerir ejecutar la app como administrador.",
-      "action": "dnsCloudflare",
-      "isDanger": false,
-      "impactDescription": "Sustituye DNS manual en adaptadores activos. Tu ISP o VPN pueden verse afectados hasta que restaures DHCP."
-    },
-    {
-      "id": "dns-google",
-      "displayLabel": "DNS Google (8.8.8.8) en adaptadores activos",
-      "description": "Aplica DNS públicos de Google en interfaces físicas activas.",
-      "action": "dnsGoogle",
-      "isDanger": false,
-      "impactDescription": "Igual que otros presets DNS: cambio en todas las NIC físicas activas."
-    },
-    {
-      "id": "dns-adguard",
-      "displayLabel": "DNS AdGuard (filtrado)",
-      "description": "Usa los resolvers DNS públicos de AdGuard (94.140.14.14 / 15.15).",
-      "action": "dnsAdGuard",
-      "isDanger": false,
-      "impactDescription": "Filtrado DNS del proveedor AdGuard; revisa políticas de privacidad del servicio."
-    },
-    {
       "id": "dns-dhcp-reset",
       "displayLabel": "Restaurar DNS automático (DHCP)",
-      "description": "Resetea DNS a DHCP en todas las interfaces activas (Set-DnsClientServerAddress -ResetServerAddresses).",
+      "group": "Diagnostico",
+      "description": "Resetea DNS a DHCP en todas las interfaces activas. Útil para revertir cambios manuales de DNS.",
       "action": "dnsDhcpReset",
+      "isDanger": false,
+      "impactDescription": "Restaura la configuración DNS original asignada por DHCP. No afecta la conectividad; es la acción recomendada para revertir DNS modificados."
+    },
+    {
+      "id": "net-release-renew",
+      "displayLabel": "Liberar y renovar IP (DHCP)",
+      "group": "Diagnostico",
+      "description": "Ejecuta ipconfig /release seguido de ipconfig /renew en todas las interfaces activas. Útil para resolver conflictos de IP o problemas de conectividad DHCP.",
+      "action": "releaseRenew",
+      "isDanger": false,
+      "impactDescription": "La conexión de red se interrumpirá brevemente mientras se renueva la IP. No afecta la configuración permanente."
+    },
+    {
+      "id": "net-reset-winsock",
+      "displayLabel": "Restaurar Winsock",
+      "group": "Tecnico",
+      "description": "Ejecuta netsh winsock reset. Soluciona problemas de conectividad causados por aplicaciones que modifican la pila TCP/IP.",
+      "action": "resetWinsock",
       "isDanger": true,
-      "impactDescription": "Quita DNS estáticos en interfaces activas. Si dependes de DNS corporativos fijos, anota los valores antes."
+      "impactDescription": "Requiere reinicio del equipo para surtir efecto completo. Restaura la configuración de Winsock a su estado original. Puede afectar aplicaciones que dependen de LSPs (Layered Service Providers)."
+    },
+    {
+      "id": "net-reset-tcpip",
+      "displayLabel": "Restaurar pila TCP/IP",
+      "group": "Tecnico",
+      "description": "Ejecuta netsh int ip reset. Reconstruye la configuración de TCP/IP a su estado original. Útil cuando persisten problemas de conectividad tras restaurar Winsock.",
+      "action": "resetTcpIp",
+      "isDanger": true,
+      "impactDescription": "Requiere reinicio. Reconstruye la configuración de TCP/IP. Úsalo solo si Reset Winsock no resolvió el problema."
     }
   ],
   "registryTweaks": [
@@ -563,19 +488,6 @@
       "sourceAlignment": "Scripts mixtos (probar según preferencia)"
     },
     {
-      "id": "mmcs-network-throttling",
-      "displayName": "NetworkThrottlingIndex (multimedia)",
-      "category": "Performance",
-      "hive": "LocalMachine",
-      "subKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
-      "valueName": "NetworkThrottlingIndex",
-      "valueKind": "DWord",
-      "valueData": -1,
-      "requiresAdmin": true,
-      "rationale": "0xFFFFFFFF desactiva limitación de ancho de banda de red en segundo plano (perfil multimedia).",
-      "sourceAlignment": "Guías gaming / MSDN perfil multimedia"
-    },
-    {
       "id": "mmcs-system-responsiveness",
       "displayName": "SystemResponsiveness (multimedia)",
       "category": "Performance",
@@ -676,44 +588,34 @@
       "userDescription": "Mensajería push WAP; poco útil en sobremesa."
     },
     {
-      "id": "diagsvc",
-      "serviceName": "DiagSvc",
-      "displayLabel": "Servicio de diagnóstico (DiagSvc)",
-      "group": "Telemetría",
-      "defaultRecommended": false,
-      "neverDisableWhenWifi": false,
-      "requiresAdmin": true,
-      "userDescription": "Diagnóstico automatizado; deshabilitar puede afectar solución de problemas (CTT a veces lo marca opcional)."
-    },
-    {
       "id": "wsearch",
       "serviceName": "WSearch",
       "displayLabel": "Windows Search (indexación)",
       "group": "Productividad",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Indexación; desactivar mejora I/O en algunos discos pero degrada búsqueda."
+      "userDescription": "Indexación de archivos. En aulas de aprendizaje con SSD no es crítica; desactivar mejora I/O y reduce uso de disco. En oficinas con muchos documentos, considerar mantenerla."
     },
     {
       "id": "sysmain",
       "serviceName": "SysMain",
       "displayLabel": "SysMain (Superfetch)",
       "group": "Rendimiento",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Prefetch/Superfetch; muchos scripts gaming lo desactivan en SSD; en HDD puede ayudar dejarlo."
+      "userDescription": "Prefetch/Superfetch. En equipos modernos con SSD aporta poco valor y consume RAM/CPU en segundo plano. Seguro deshabilitar en aulas."
     },
     {
       "id": "spooler",
       "serviceName": "Spooler",
       "displayLabel": "Cola de impresión",
       "group": "Impresión",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Impresión y PDF virtual; solo deshabilitar si no imprime."
+      "userDescription": "Gestión de impresión y PDF virtual. En aulas de aprendizaje no se usan impresoras locales. En oficinas administrativas, mantener activo."
     },
     {
       "id": "sensrsvc",
@@ -770,20 +672,20 @@
       "serviceName": "lfsvc",
       "displayLabel": "Servicio de geolocalización",
       "group": "Privacidad",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Ubicación del sistema; deshabilitar rompe apps que dependen de GPS/ubicación."
+      "userDescription": "Ubicación del sistema. En PCs fijos de aula no tiene utilidad; solo necesario en portátiles con GPS o apps de mapas."
     },
     {
       "id": "remoteregistry",
       "serviceName": "RemoteRegistry",
       "displayLabel": "Registro remoto",
       "group": "Seguridad",
-      "defaultRecommended": true,
+      "defaultRecommended": false,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Acceso remoto al registro; CTT/Sophia suelen deshabilitarlo en estaciones."
+      "userDescription": "Permite el acceso remoto al registro. En redes corporativas del SENA puede ser requerido por herramientas de gestión centralizada. Solo deshabilitar con autorización del área de sistemas."
     },
     {
       "id": "remoteaccess",
@@ -820,30 +722,50 @@
       "serviceName": "XblAuthManager",
       "displayLabel": "Xbox Live Auth Manager",
       "group": "Gaming",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Xbox Live en PC; deshabilitar si no usa juegos Microsoft Store/Xbox."
+      "userDescription": "Autenticación Xbox Live. No aplica en equipos institucionales del SENA; deshabilitar por defecto."
     },
     {
       "id": "xblgamesave",
       "serviceName": "XblGameSave",
       "displayLabel": "Xbox Live Game Save",
       "group": "Gaming",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
       "userDescription": "Guardado en nube Xbox; deshabilitar si no usa ecosistema Xbox."
+    },
+    {
+      "id": "xboxgipsvc",
+      "serviceName": "XboxGipSvc",
+      "displayLabel": "Xbox Accessory Management",
+      "group": "Gaming",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Gestión de accesorios Xbox (mandos, auriculares). Innecesario en entornos institucionales."
+    },
+    {
+      "id": "xboxnetapisvc",
+      "serviceName": "XboxNetApiSvc",
+      "displayLabel": "Xbox Live Networking",
+      "group": "Gaming",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Red Xbox Live y multijugador. No aplica en equipos de trabajo o aulas."
     },
     {
       "id": "wersvc",
       "serviceName": "WerSvc",
       "displayLabel": "Informes de errores de Windows",
       "group": "Telemetría",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "WER; deshabilitar reduce telemetría de fallos pero dificulta diagnósticos automáticos."
+      "userDescription": "Windows Error Reporting (WER). Envía telemetría de fallos a Microsoft. En entornos institucionales reduce privacidad y consume ancho de banda; deshabilitar por defecto."
     },
     {
       "id": "wmpnetworksvc",
@@ -900,10 +822,10 @@
       "serviceName": "shpamsvc",
       "displayLabel": "Cuenta compartida (Shared PC)",
       "group": "Sistema",
-      "defaultRecommended": true,
+      "defaultRecommended": false,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Escenarios de PC compartido en educación; innecesario en uso doméstico típico."
+      "userDescription": "Gestión de cuentas compartidas en aulas (escenarios multiusuario). Solo deshabilitar si el equipo no se comparte entre aprendices."
     },
     {
       "id": "retaildemo",
@@ -950,50 +872,50 @@
       "serviceName": "SessionEnv",
       "displayLabel": "Configuración de Escritorio remoto",
       "group": "Red",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Preparación de sesiones RDP. Deshabilitar solo si no usas Escritorio remoto."
+      "userDescription": "Preparación de sesiones RDP. En aulas de aprendizaje no se usa escritorio remoto; deshabilitar por defecto. En servidores o equipos de soporte técnico, mantener activo."
     },
     {
       "id": "termservice",
       "serviceName": "TermService",
       "displayLabel": "Servicios de Escritorio remoto",
       "group": "Red",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Servidor RDP entrante. No deshabilitar en servidores o si te conectas remotamente."
+      "userDescription": "Servidor RDP entrante. En aulas de aprendizaje no aplica; deshabilitar por defecto. En servidores o equipos administrados remotamente, mantener activo."
     },
     {
       "id": "umrdpservice",
       "serviceName": "UmRdpService",
       "displayLabel": "Redirección de Portapapeles RDP",
       "group": "Red",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Mejoras de sesión RDP; opcional si no usas RDP."
+      "userDescription": "Mejoras de sesión RDP (portapapeles, unidades). En aulas no se usa; deshabilitar por defecto."
     },
     {
       "id": "wbiosrvc",
       "serviceName": "WbioSrvc",
       "displayLabel": "Servicio biométrico de Windows",
       "group": "Entrada",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Windows Hello / huella. No deshabilitar en portátiles con biometría."
+      "userDescription": "Windows Hello / lector de huella. La mayoría de equipos de aula no tienen hardware biométrico; deshabilitar por defecto. En portátiles con Windows Hello, mantener activo."
     },
     {
       "id": "btagservice",
       "serviceName": "BTAGService",
       "displayLabel": "Servicio de puerta de enlace de audio Bluetooth",
       "group": "Dispositivos",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Audio BT avanzado; mantener si usas auriculares BT como audio principal."
+      "userDescription": "Audio Bluetooth avanzado (A2DP). En aulas de aprendizaje no se usan auriculares BT; deshabilitar por defecto."
     },
     {
       "id": "bthserv",
@@ -1020,10 +942,10 @@
       "serviceName": "WpnService",
       "displayLabel": "Sistema de notificaciones push de Windows",
       "group": "Sistema",
-      "defaultRecommended": false,
+      "defaultRecommended": true,
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
-      "userDescription": "Notificaciones de UWP/Store. Deshabilitar reduce notificaciones de apps modernas."
+      "userDescription": "Notificaciones push de apps modernas (UWP/Store). En aulas de aprendizaje generan distracciones y consumen recursos en segundo plano; deshabilitar por defecto."
     },
     {
       "id": "scdeviceenum",
@@ -1074,81 +996,194 @@
       "neverDisableWhenWifi": false,
       "requiresAdmin": true,
       "userDescription": "Escenarios IoT/kiosko; innecesario en PCs estándar."
+    },
+    {
+      "id": "dosvc",
+      "serviceName": "DoSvc",
+      "displayLabel": "Optimización de entrega (Delivery Optimization)",
+      "group": "Sistema",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Descarga actualizaciones de Windows desde otros equipos de la red (P2P). En la red institucional del SENA puede saturar el ancho de banda de la LAN. Seguro deshabilitar si las actualizaciones se gestionan por WSUS o descarga directa."
+    },
+    {
+      "id": "usosvc",
+      "serviceName": "UsoSvc",
+      "displayLabel": "Servicio de uso y diagnóstico conectado",
+      "group": "Telemetría",
+      "defaultRecommended": true,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Recopila datos de uso y diagnóstico para Microsoft. Es telemetría adicional aparte de DiagTrack. Seguro deshabilitar en entornos institucionales."
+    },
+    {
+      "id": "onesyncsvc",
+      "serviceName": "OneSyncSvc",
+      "displayLabel": "Microsoft OneDrive",
+      "group": "Sistema",
+      "defaultRecommended": false,
+      "neverDisableWhenWifi": false,
+      "requiresAdmin": true,
+      "userDescription": "Sincronización de archivos con OneDrive / OneDrive for Business. Solo deshabilitar si el SENA no utiliza almacenamiento en la nube de Microsoft."
     }
   ],
   "serviceProfiles": [
     {
-      "id": "gaming",
-      "label": "Gaming / baja latencia",
-      "description": "Telemetría, Xbox en Store, indexación y prefetch agresivo. Revisa si usas Xbox Live en PC.",
+      "id": "sena-estandar",
+      "label": "Estándar SENA",
+      "description": "Perfil recomendado para la mayoría de equipos institucionales (especialmente aulas de aprendizaje). Deshabilita telemetría, servicios legacy, indexación, prefetch, impresión, escritorio remoto, Xbox, biometría y consumo innecesario de red. Seguro y estable para PCs fijos sin hardware especializado.",
       "disableServiceIds": [
         "diagtrack",
         "dmwappushservice",
-        "sensrsvc",
-        "wisvc",
-        "mapsbroker",
-        "wmpnetworksvc",
-        "sysmain",
         "wsearch",
-        "xblauthmanager",
-        "xblgamesave",
-        "wersvc",
-        "pcasvc",
-        "phonesvc",
-        "smsrouter"
-      ]
-    },
-    {
-      "id": "productivity",
-      "label": "Productividad (ligero)",
-      "description": "Solo telemetría y sugerencias evidentes; mantiene búsqueda e impresión.",
-      "disableServiceIds": [
-        "diagtrack",
-        "dmwappushservice",
-        "mapsbroker",
-        "wisvc",
-        "fax",
-        "retaildemo",
-        "embeddedmode"
-      ]
-    },
-    {
-      "id": "balanced",
-      "label": "Equilibrado (CTT-style)",
-      "description": "Conjunto habitual de scripts abiertos: telemetría, Insider, mapas, fax, WAP.",
-      "disableServiceIds": [
-        "diagtrack",
-        "dmwappushservice",
+        "sysmain",
+        "spooler",
         "sensrsvc",
-        "fax",
         "wisvc",
         "mapsbroker",
-        "remoteregistry",
+        "lfsvc",
+        "fax",
         "remoteaccess",
         "trkwks",
         "nettcpportsharing",
+        "xblauthmanager",
+        "xblgamesave",
+        "xboxgipsvc",
+        "xboxnetapisvc",
+        "wersvc",
         "wmpnetworksvc",
         "pcasvc",
-        "shpamsvc",
+        "smsrouter",
+        "phonesvc",
+        "retaildemo",
+        "sharedaccess",
+        "lmhosts",
+        "sessionenv",
+        "termservice",
+        "umrdpservice",
+        "wbiosrvc",
+        "btagservice",
+        "wpnservice",
+        "scdeviceenum",
+        "scardsvr",
         "semgrsvc",
-        "walletservice"
+        "walletservice",
+        "embeddedmode",
+        "dosvc",
+        "usosvc"
       ]
     },
     {
-      "id": "battery",
-      "label": "Bajo consumo / portátil",
-      "description": "Reduce indexación, prefetch y telemetría en segundo plano. No desactiva Wi‑Fi.",
+      "id": "sena-aulas",
+      "label": "Aulas de aprendizaje",
+      "description": "Incluye todo el perfil Estándar SENA más servicios adicionales específicos de aulas: desactiva Superfetch, indexación, impresión, escritorio remoto, biometría, Bluetooth audio, notificaciones push, Xbox completo y OneDrive. Orientado a máximo rendimiento en PCs fijos de aprendizaje.",
       "disableServiceIds": [
         "diagtrack",
         "dmwappushservice",
-        "sysmain",
         "wsearch",
-        "mapsbroker",
+        "sysmain",
+        "spooler",
+        "sensrsvc",
         "wisvc",
-        "wmpnetworksvc",
-        "wersvc",
+        "mapsbroker",
+        "lfsvc",
+        "fax",
+        "remoteaccess",
+        "trkwks",
+        "nettcpportsharing",
         "xblauthmanager",
-        "xblgamesave"
+        "xblgamesave",
+        "xboxgipsvc",
+        "xboxnetapisvc",
+        "wersvc",
+        "wmpnetworksvc",
+        "pcasvc",
+        "smsrouter",
+        "phonesvc",
+        "retaildemo",
+        "sharedaccess",
+        "lmhosts",
+        "sessionenv",
+        "termservice",
+        "umrdpservice",
+        "wbiosrvc",
+        "btagservice",
+        "wpnservice",
+        "scdeviceenum",
+        "scardsvr",
+        "semgrsvc",
+        "walletservice",
+        "embeddedmode",
+        "dosvc",
+        "usosvc",
+        "shpamsvc",
+        "onesyncsvc"
+      ]
+    },
+    {
+      "id": "sena-oficinas",
+      "label": "Oficinas administrativas",
+      "description": "Conserva indexación, impresión y reportes de error para soporte técnico. Solo elimina telemetría obvia y servicios claramente innecesarios.",
+      "disableServiceIds": [
+        "diagtrack",
+        "dmwappushservice",
+        "wisvc",
+        "mapsbroker",
+        "fax",
+        "retaildemo",
+        "embeddedmode",
+        "dosvc",
+        "usosvc",
+        "xblauthmanager",
+        "xblgamesave",
+        "xboxgipsvc",
+        "xboxnetapisvc"
+      ]
+    },
+    {
+      "id": "sena-portatiles",
+      "label": "Portátiles / móviles",
+      "description": "Incluye todo el perfil Estándar SENA. Reduce consumo de batería eliminando telemetría, indexación, prefetch, impresión y servicios en segundo plano. En portátiles con sensores o biometría, el hardware seguirá funcionando; estos servicios se pueden reactivar si se necesitan.",
+      "disableServiceIds": [
+        "diagtrack",
+        "dmwappushservice",
+        "wsearch",
+        "sysmain",
+        "spooler",
+        "sensrsvc",
+        "wisvc",
+        "mapsbroker",
+        "lfsvc",
+        "fax",
+        "remoteaccess",
+        "trkwks",
+        "nettcpportsharing",
+        "xblauthmanager",
+        "xblgamesave",
+        "xboxgipsvc",
+        "xboxnetapisvc",
+        "wersvc",
+        "wmpnetworksvc",
+        "pcasvc",
+        "smsrouter",
+        "phonesvc",
+        "retaildemo",
+        "sharedaccess",
+        "lmhosts",
+        "sessionenv",
+        "termservice",
+        "umrdpservice",
+        "wbiosrvc",
+        "btagservice",
+        "wpnservice",
+        "scdeviceenum",
+        "scardsvr",
+        "semgrsvc",
+        "walletservice",
+        "embeddedmode",
+        "dosvc",
+        "usosvc"
       ]
     }
   ],

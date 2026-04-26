@@ -80,6 +80,27 @@ public sealed partial class MainShellWindow : Window
             ViewModel.ApplyServiceProfileCommand.Execute(id);
     }
 
+    private void InputProfile_Click(object sender, RoutedEventArgs e)
+    {
+        var id = sender is Button b ? b.Tag as string : null;
+        if (!string.IsNullOrWhiteSpace(id))
+            ViewModel.ApplyInputProfileCommand.Execute(id);
+    }
+
+    private void NetworkProfile_Click(object sender, RoutedEventArgs e)
+    {
+        var id = sender is Button b ? b.Tag as string : null;
+        if (!string.IsNullOrWhiteSpace(id))
+            ViewModel.ApplyNetworkProfileCommand.Execute(id);
+    }
+
+    private void NetworkQuickAction_Click(object sender, RoutedEventArgs e)
+    {
+        var id = sender is Button b ? b.Tag as string : null;
+        if (!string.IsNullOrWhiteSpace(id))
+            ViewModel.ExecuteNetworkQuickActionCommand.Execute(id);
+    }
+
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         this.Activated -= MainWindow_Activated;

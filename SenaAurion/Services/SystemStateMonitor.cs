@@ -20,13 +20,44 @@ public static class SystemStateMonitor
     {
         lock (_lock)
         {
-            string menuDelay = GetRegistryString(Registry.CurrentUser, @"Control Panel\Desktop", "MenuShowDelay") ?? "400";
             string kbdSpeed = GetRegistryString(Registry.CurrentUser, @"Control Panel\Keyboard", "KeyboardSpeed") ?? "31";
-            string mouDelay = GetRegistryString(Registry.CurrentUser, @"Control Panel\Mouse", "MouseHoverTime") ?? "400";
+            string kbdDelay = GetRegistryString(Registry.CurrentUser, @"Control Panel\Keyboard", "KeyboardDelay") ?? "1";
+            string mouseSpeed = GetRegistryString(Registry.CurrentUser, @"Control Panel\Mouse", "MouseSpeed") ?? "10";
+            string wheelScroll = GetRegistryString(Registry.CurrentUser, @"Control Panel\Desktop", "WheelScrollLines") ?? "3";
+            string menuDelay = GetRegistryString(Registry.CurrentUser, @"Control Panel\Desktop", "MenuShowDelay") ?? "400";
+            string mouHover = GetRegistryString(Registry.CurrentUser, @"Control Panel\Mouse", "MouseHoverTime") ?? "400";
 
-            // MouseHoverTime "optimizado" en el dataset actual es 100 (no 10).
-            bool isOptimized = menuDelay == "0" && mouDelay == "100";
-            return $"{(isOptimized ? "ðŸŸ¢ Modo Latencia Baja Activa" : "ðŸŸ  Ajustes EstÃ¡ndar")} | MenÃºs: {menuDelay}ms | MouseHover: {mouDelay}ms";
+            // Valores objetivo del perfil institucional SENA
+            bool kbdSpeedOk = kbdSpeed == "31";
+            bool kbdDelayOk = kbdDelay == "0";
+            bool mouseSpeedOk = mouseSpeed == "12";
+            bool wheelScrollOk = wheelScroll == "6";
+            bool menuDelayOk = menuDelay == "50";
+            bool mouHoverOk = mouHover == "100";
+
+            int score = 0;
+            if (kbdSpeedOk) score++;
+            if (kbdDelayOk) score++;
+            if (mouseSpeedOk) score++;
+            if (wheelScrollOk) score++;
+            if (menuDelayOk) score++;
+            if (mouHoverOk) score++;
+
+            string statusEmoji = score switch
+            {
+                6 => "ðŸŸ¢",
+                >= 3 => "ðŸŸ¡",
+                _ => "ðŸŸ "
+            };
+
+            string statusText = score switch
+            {
+                6 => "Entrada optimizada",
+                >= 3 => "Entrada parcial",
+                _ => "Ajustes estÃ¡ndar"
+            };
+
+            return $"{statusEmoji} {statusText} | Teclado: {kbdSpeed}/{kbdDelay} | RatÃ³n: {mouseSpeed} | Scroll: {wheelScroll} | MenÃºs: {menuDelay}ms | Hover: {mouHover}ms";
         }
     }
 
@@ -37,9 +68,38 @@ public static class SystemStateMonitor
             bool isWifi = NetworkHardwareDetector.IsWirelessAdapterActive();
             int? tcpAck = GetFirstInterfaceRegistryDWord(@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces", "TcpAckFrequency");
             int? tcpNoDelay = GetFirstInterfaceRegistryDWord(@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces", "TCPNoDelay");
+            int? tcp1323 = GetRegistryDWord(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "Tcp1323Opts");
+            int? throttling = GetRegistryDWord(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile", "NetworkThrottlingIndex");
+            int? lmhosts = GetRegistryDWord(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\NetBT\Parameters", "EnableLMHosts");
 
-            bool isOptimized = tcpAck == 1 && tcpNoDelay == 1;
-            return $"{(isOptimized ? "ðŸŸ¢ Modo Baja Latencia TCP" : "ðŸŸ  Ajustes NDIS Originales")} | Enlace: {(isWifi ? "Wi-Fi" : "Ethernet")} | ACK/NoDelay: {(isOptimized ? "1 (Activo)" : "0/Original")}";
+            bool ackOk = tcpAck == 1;
+            bool noDelayOk = tcpNoDelay == 1;
+            bool tcp1323Ok = tcp1323 == 1;
+            bool throttlingOk = throttling == -1 || throttling == 0xFFFFFFFF;
+            bool lmhostsOk = lmhosts == 0;
+
+            int score = 0;
+            if (ackOk) score++;
+            if (noDelayOk) score++;
+            if (tcp1323Ok) score++;
+            if (throttlingOk) score++;
+            if (lmhostsOk) score++;
+
+            string statusEmoji = score switch
+            {
+                >= 4 => "ðŸŸ¢",
+                >= 2 => "ðŸŸ¡",
+                _ => "ðŸŸ "
+            };
+
+            string statusText = score switch
+            {
+                >= 4 => "Red optimizada",
+                >= 2 => "Red parcial",
+                _ => "Ajustes originales"
+            };
+
+            return $"{statusEmoji} {statusText} | Enlace: {(isWifi ? "Wi-Fi" : "Ethernet")} | ACK: {(ackOk ? "1" : "-")} / NoDelay: {(noDelayOk ? "1" : "-")} / RFC1323: {(tcp1323Ok ? "1" : "-")} | Throttling: {(throttlingOk ? "OFF" : "ON")} | LMHOSTS: {(lmhostsOk ? "OFF" : "ON")}";
         }
     }
 
@@ -138,5 +198,61 @@ public static class SystemStateMonitor
             return null;
         }
         catch { return null; }
+    }
+
+    private static int? GetRegistryDWord(RegistryKey root, string subKey, string valueName)
+    {
+        try
+        {
+            using var key = root.OpenSubKey(subKey, false);
+            var val = key?.GetValue(valueName);
+            if (val == null) return null;
+            return val as int? ?? (val is long l ? (int)l : null);
+        }
+        catch { return null; }
+    }
+
+    public static string GetServicesState(IEnumerable<string> serviceNames)
+    {
+        lock (_lock)
+        {
+            int total = 0;
+            int disabled = 0;
+            int active = 0;
+            int notFound = 0;
+
+            foreach (var name in serviceNames)
+            {
+                try
+                {
+                    using var sc = new ServiceController(name);
+                    _ = sc.Status;
+                    using var key = Registry.LocalMachine.OpenSubKey($@"SYSTEM\CurrentControlSet\Services\{name}");
+                    var start = key?.GetValue("Start");
+                    int startType = start as int? ?? (start is long l ? (int)l : -1);
+
+                    total++;
+                    if (startType == 4)
+                        disabled++;
+                    else
+                        active++;
+                }
+                catch
+                {
+                    total++;
+                    notFound++;
+                }
+            }
+
+            string statusEmoji = disabled > active
+                ? "ðŸŸ¢"
+                : disabled > 0 ? "ðŸŸ¡" : "ðŸŸ ";
+
+            string statusText = disabled > active
+                ? "Servicios optimizados"
+                : disabled > 0 ? "Servicios parcialmente optimizados" : "Servicios activos";
+
+            return $"{statusEmoji} {statusText} | Total: {total} | Deshabilitados: {disabled} | Activos: {active} | No encontrados: {notFound}";
+        }
     }
 }

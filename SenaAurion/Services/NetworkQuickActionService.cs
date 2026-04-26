@@ -24,6 +24,9 @@ public sealed class NetworkQuickActionService(IOptimizationLogger log)
             "dnsgoogle" => RunPowerShellScript(DnsGoogleScript, "DNS Google (8.8.8.8)"),
             "dnsadguard" => RunPowerShellScript(DnsAdGuardScript, "DNS AdGuard"),
             "dnsdhcpreset" => RunPowerShellScript(DnsDhcpResetScript, "Restaurar DNS por DHCP"),
+            "releaserenew" => RunReleaseRenew(),
+            "resetwinsock" => RunResetWinsock(),
+            "resettcpip" => RunResetTcpIp(),
             _ => $"Acción no reconocida: {action}"
         };
     }
@@ -47,6 +50,98 @@ public sealed class NetworkQuickActionService(IOptimizationLogger log)
             return p.ExitCode == 0
                 ? "Caché DNS vaciada correctamente."
                 : $"ipconfig terminó con código {p.ExitCode}: {err.Trim()}";
+        }
+        catch (Exception ex)
+        {
+            return $"Error: {ex.Message}";
+        }
+    }
+
+    private static string RunReleaseRenew()
+    {
+        try
+        {
+            using var pRelease = Process.Start(new ProcessStartInfo
+            {
+                FileName = "ipconfig",
+                Arguments = "/release",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+            });
+            if (pRelease is null) return "No se pudo iniciar ipconfig /release.";
+            pRelease.WaitForExit(60_000);
+
+            using var pRenew = Process.Start(new ProcessStartInfo
+            {
+                FileName = "ipconfig",
+                Arguments = "/renew",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+            });
+            if (pRenew is null) return "No se pudo iniciar ipconfig /renew.";
+            pRenew.WaitForExit(60_000);
+            var err = pRenew.StandardError.ReadToEnd();
+            return pRenew.ExitCode == 0
+                ? "IP liberada y renovada correctamente."
+                : $"ipconfig /renew terminó con código {pRenew.ExitCode}: {err.Trim()}";
+        }
+        catch (Exception ex)
+        {
+            return $"Error: {ex.Message}";
+        }
+    }
+
+    private static string RunResetWinsock()
+    {
+        try
+        {
+            using var p = Process.Start(new ProcessStartInfo
+            {
+                FileName = "netsh",
+                Arguments = "winsock reset",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+            });
+            if (p is null) return "No se pudo iniciar netsh.";
+            p.WaitForExit(60_000);
+            var outStr = p.StandardOutput.ReadToEnd();
+            var err = p.StandardError.ReadToEnd();
+            return p.ExitCode == 0
+                ? $"Winsock restaurado. {outStr.Trim()} Reinicio requerido para completar."
+                : $"netsh terminó con código {p.ExitCode}: {err.Trim()}";
+        }
+        catch (Exception ex)
+        {
+            return $"Error: {ex.Message}";
+        }
+    }
+
+    private static string RunResetTcpIp()
+    {
+        try
+        {
+            using var p = Process.Start(new ProcessStartInfo
+            {
+                FileName = "netsh",
+                Arguments = "int ip reset",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+            });
+            if (p is null) return "No se pudo iniciar netsh.";
+            p.WaitForExit(60_000);
+            var outStr = p.StandardOutput.ReadToEnd();
+            var err = p.StandardError.ReadToEnd();
+            return p.ExitCode == 0
+                ? $"Pila TCP/IP restaurada. {outStr.Trim()} Reinicio requerido para completar."
+                : $"netsh terminó con código {p.ExitCode}: {err.Trim()}";
         }
         catch (Exception ex)
         {

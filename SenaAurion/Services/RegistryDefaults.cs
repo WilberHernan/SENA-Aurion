@@ -17,17 +17,17 @@ public static class RegistryDefaults
         { "MouseHoverHeight", "4" },
         { "MouseHoverWidth", "4" },
         { "MouseDataQueueSize", 100 },
-        { "KeyboardDataQueueSize", 100 }
+        { "KeyboardDataQueueSize", 100 },
+        { "WheelScrollLines", "3" },
+        { "MouseTrails", "0" }
     };
 
     private static readonly Dictionary<string, object> TcpDefaults = new(StringComparer.OrdinalIgnoreCase)
     {
         // Interface-scoped values vary; missing is typical default.
-        { "TcpDelAckTicks", 2 }, // common default (varies)
-        { "Tcp1323Opts", 3 },    // common default (varies)
-        { "DefaultTTL", 128 },   // Windows default often 128
-        { "MaxUserPort", 0 },    // 0 = system default range
-        { "TcpTimedWaitDelay", 240 } // default historically 240 seconds
+        { "Tcp1323Opts", 3 },             // common default (varies)
+        { "NetworkThrottlingIndex", 10 }, // 10 = limitar al ~10% (default Windows)
+        { "EnableLMHosts", 1 }            // 1 = habilitado (default Windows)
     };
 
     public static bool TryGetDefaultDisplayValue(RegistryTweakDefinition def, out string display)
